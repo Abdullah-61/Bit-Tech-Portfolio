@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generative AI & Image Processing — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { font-family: 'Inter', sans-serif; }
+
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-800/55"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"],
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="border-slate-600/50"],
+    body.light-theme [class*="border-slate-700/50"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme a[class*="bg-"][class*="text-white"],
+    body.light-theme button[class*="bg-"][class*="text-white"] { color: #ffffff !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #1f2937 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #374151 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    /* light-surface-pass */
+    body.light-theme .project-shell,
+    body.light-theme .workflow-canvas,
+    body.light-theme .flow-box,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .hero-border,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      background-color: #ffffff !important;
+    }
+    body.light-theme .workflow-canvas,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme section[class*="bg-slate-"] {
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .project-shell { background: #ffffff; border-color: #cbd5e1; }
+    body.light-theme .project-title { color: #0f172a !important; }
+    body.light-theme .project-desc { color: #334155 !important; }
+    body.light-theme .project-label, body.light-theme .panel-kicker { color: #475569 !important; }
+    body.light-theme .flow-list li { color: #1f2937 !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+                  linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .tag {
+      background: #eef2ff !important;
+      color: #0f172a !important;
+      border-color: #c7d2fe !important;
+    }
+    body.light-theme span[class*="rounded-full"][class*="border"] {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .hero-domain-tag {
+      background-color: #e0e7ff !important;
+      border-color: #a5b4fc !important;
+      color: #312e81 !important;
+    }
+    body.light-theme .tee-hero-visual {
+      background: linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.96)) !important;
+      border-color: rgba(99, 102, 241, 0.35) !important;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08) !important;
+    }
+    body.light-theme .tee-panel {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme .tee-panel h3 {
+      color: #64748b !important;
+    }
+    body.light-theme .tee-panel .hero-metric strong {
+      color: #0f172a !important;
+    }
+    body.light-theme .tee-panel .hero-metric span {
+      color: #4f46e5 !important;
+    }
+    body.light-theme .tee-panel .tee-hero-quality-sub {
+      color: #4338ca !important;
+    }
+    body.light-theme .tee-panel .hero-live-event {
+      border-color: rgba(79, 70, 229, 0.45) !important;
+      background: rgba(99, 102, 241, 0.1) !important;
+      color: #4338ca !important;
+    }
+    body.light-theme .tee-viz .tee-svg-bg {
+      fill: url(#teeStoryBgLight) !important;
+      stroke: rgba(148, 163, 184, 0.45) !important;
+    }
+    body.light-theme .tee-viz .tee-bubble {
+      fill: #f8fafc !important;
+      stroke: rgba(99, 102, 241, 0.45) !important;
+    }
+    body.light-theme .tee-viz .tee-spark {
+      fill: #ede9fe !important;
+      stroke: rgba(139, 92, 246, 0.45) !important;
+    }
+    body.light-theme .tee-viz .tee-logo-tile {
+      fill: #eef2ff !important;
+      stroke: rgba(79, 70, 229, 0.5) !important;
+    }
+    body.light-theme .tee-viz .tee-shirt-body {
+      fill: rgba(248, 250, 252, 0.95) !important;
+      stroke: rgba(71, 85, 105, 0.45) !important;
+    }
+    body.light-theme .tee-viz .tee-person-shirt {
+      fill: #f1f5f9 !important;
+      stroke: rgba(71, 85, 105, 0.45) !important;
+    }
+    body.light-theme .tee-viz .tee-person-pants {
+      fill: #334155 !important;
+      stroke: rgba(71, 85, 105, 0.5) !important;
+    }
+    body.light-theme .tee-viz .tee-person-head {
+      fill: #ffffff !important;
+      stroke: rgba(148, 163, 184, 0.5) !important;
+    }
+    body.light-theme .tee-viz .tee-cat-face {
+      fill: #4c1d95 !important;
+      opacity: 1 !important;
+    }
+    body.light-theme .tee-viz .tee-bubble-title {
+      fill: #4338ca !important;
+    }
+    body.light-theme .tee-viz .tee-stage-label {
+      fill: #475569 !important;
+    }
+    body.light-theme .tee-viz .tee-stage-sub {
+      fill: #64748b !important;
+    }
+    body.light-theme a[href^="mailto:"] {
+      background-color: #1e293b !important;
+      border-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    body.light-theme a[href^="mailto:"]:hover { background-color: #0f172a !important; color: #ffffff !important; }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8, #c084fc, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme .gradient-text {
+      background: linear-gradient(135deg, #4338ca, #7c3aed, #0369a1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Subtle card glow */
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4), 0 8px 32px rgba(99, 102, 241, 0.15);
+      transform: translateY(-2px);
+      transition: all 0.2s ease;
+    }
+    .card-glow { transition: all 0.2s ease; }
+
+    /* Animated gradient border on hero */
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box,
+                  linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
+
+    /* Pulse dot */
+    @keyframes pulse-ring {
+      0%   { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #6366f1;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    /* ─── T-shirt pipeline hero (Option A) ───────────────────────────── */
+    .tee-hero-visual {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.92));
+      border: 1px solid rgba(99, 102, 241, 0.32);
+      border-radius: 0.9rem;
+      padding: 1rem;
+      max-width: 760px;
+      margin: 0 auto 1.75rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    }
+    .tee-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    @media (min-width: 900px) {
+      .tee-hero-grid {
+        grid-template-columns: 1.55fr 1fr;
+        gap: 0.9rem;
+        align-items: start;
+      }
+      .tee-hero-grid > .tee-panel {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+    }
+    .tee-panel {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(71, 85, 105, 0.7);
+      background: rgba(15, 23, 42, 0.85);
+      padding: 0.55rem 0.7rem 0.6rem;
+    }
+    .tee-panel h3 {
+      margin: 0 0 0.25rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .tee-panel .hero-metric {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin: 0;
+    }
+    .tee-panel .hero-metric strong {
+      color: #f8fafc;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+    .tee-panel .hero-metric span {
+      color: #a5b4fc;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .tee-panel .hero-live-event {
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(129, 140, 248, 0.45);
+      background: rgba(99, 102, 241, 0.14);
+      color: #c7d2fe;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      animation: teeLivePulse 2.4s ease-in-out infinite;
+    }
+    @keyframes teeLivePulse {
+      0%, 100% { opacity: 0.88; box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.12); }
+      50% { opacity: 1; box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.08); }
+    }
+    .tee-bars rect {
+      animation: teeBarShift 1.55s ease-in-out infinite;
+      transform-origin: bottom;
+      transform-box: fill-box;
+    }
+    .tee-bars rect:nth-child(2) { animation-delay: 0.2s; }
+    .tee-bars rect:nth-child(3) { animation-delay: 0.35s; }
+    .tee-bars rect:nth-child(4) { animation-delay: 0.5s; }
+    .tee-bars rect:nth-child(5) { animation-delay: 0.65s; }
+    .tee-bars rect:nth-child(6) { animation-delay: 0.8s; }
+    .tee-bars rect:nth-child(7) { animation-delay: 0.95s; }
+    @keyframes teeBarShift {
+      0%, 100% { transform: scaleY(0.78); opacity: 0.75; }
+      50% { transform: scaleY(1.08); opacity: 1; }
+    }
+    @keyframes teeBgDriftA {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.22; }
+      50% { transform: translate(4px, -3px) scale(1.03); opacity: 0.34; }
+    }
+    @keyframes teeBgDriftB {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.2; }
+      50% { transform: translate(-5px, 4px) scale(0.98); opacity: 0.32; }
+    }
+    @keyframes teeBgPulse {
+      0%, 100% { opacity: 0.24; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes teeBgJump {
+      0%, 100% { transform: translateY(0); opacity: 0.55; }
+      20% { transform: translateY(-4px); opacity: 0.78; }
+      45% { transform: translateY(1px); opacity: 0.5; }
+      70% { transform: translateY(-2px); opacity: 0.7; }
+    }
+    /* Multi-phase story (8s loop): 3 prompt/cat-logo beats (fly in from prompt) → mockup placement → fly → wear */
+    .tee-viz .tee-anim { transform-box: fill-box; transform-origin: center; }
+    .tee-viz .tee-poster { opacity: 0; visibility: hidden; pointer-events: none; }
+    .tee-viz .tee-story-layer { animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-duration: 8s; }
+
+    @keyframes teeBeatP1 {
+      0%, 11% { opacity: 1; }
+      12%, 100% { opacity: 0; }
+    }
+    @keyframes teeBeatP2 {
+      0%, 11% { opacity: 0; }
+      13%, 23% { opacity: 1; }
+      24%, 100% { opacity: 0; }
+    }
+    @keyframes teeBeatP3 {
+      0%, 24% { opacity: 0; }
+      26%, 35% { opacity: 1; }
+      37%, 100% { opacity: 0; }
+    }
+    @keyframes teeBeatL1 {
+      0% { opacity: 1; transform: translate(-28px, 8px) scale(0.4); }
+      9% { opacity: 1; transform: translate(0, 0) scale(1); }
+      11%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    }
+    @keyframes teeBeatL2 {
+      0%, 12% { opacity: 0; transform: translate(0, 0) scale(1); }
+      13% { opacity: 1; transform: translate(-28px, 8px) scale(0.4); }
+      21% { opacity: 1; transform: translate(0, 0) scale(1); }
+      23%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    }
+    @keyframes teeBeatL3 {
+      0%, 25% { opacity: 0; transform: translate(0, 0) scale(1); }
+      26% { opacity: 1; transform: translate(-28px, 8px) scale(0.4); }
+      34% { opacity: 1; transform: translate(0, 0) scale(1); }
+      37%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    }
+    @keyframes teeBeatP3Hold {
+      0%, 24% { opacity: 0; }
+      26%, 99% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    @keyframes teeBeatL3Hold {
+      0%, 25% { opacity: 0; transform: translate(0, 0) scale(1); }
+      26% { opacity: 1; transform: translate(-28px, 8px) scale(0.4); }
+      34%, 99% { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    }
+    @keyframes teeFocusDot {
+      0% { opacity: 0.94; transform: translate(62px, 94px) rotate(0deg) scale(0.96); }
+      10% { opacity: 0.97; transform: translate(34px, 94px) rotate(420deg) scale(1.04); }
+      20% { opacity: 0.94; transform: translate(132px, 90px) rotate(840deg) scale(0.97); }
+      30% { opacity: 0.97; transform: translate(102px, 90px) rotate(1260deg) scale(1.04); }
+      40% { opacity: 0.94; transform: translate(224px, 106px) rotate(1680deg) scale(0.98); }
+      50% { opacity: 0.97; transform: translate(190px, 106px) rotate(2100deg) scale(1.05); }
+      60% { opacity: 0.94; transform: translate(224px, 106px) rotate(2520deg) scale(0.98); }
+      70% { opacity: 0.97; transform: translate(352px, 94px) rotate(2940deg) scale(1.04); }
+      80% { opacity: 0.94; transform: translate(318px, 94px) rotate(3360deg) scale(0.98); }
+      90% { opacity: 0.97; transform: translate(352px, 94px) rotate(3780deg) scale(1.04); }
+      100% { opacity: 0.94; transform: translate(62px, 94px) rotate(4200deg) scale(0.96); }
+    }
+    @keyframes teeSceneIter {
+      0%, 37% { opacity: 1; }
+      39%, 99.4% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes teeShirtWait {
+      0%, 37% { opacity: 0.28; }
+      40%, 100% { opacity: 0; }
+    }
+    @keyframes teeMockInner {
+      0%, 39% { opacity: 0; }
+      41%, 92% { opacity: 1; }
+      94%, 100% { opacity: 0; }
+    }
+    @keyframes teeFloatLogo {
+      0%, 44% { opacity: 0; transform: translate(10px, 6px) scale(0.42); }
+      45%, 54% { opacity: 1; transform: translate(14px, 4px) scale(0.52); }
+      55%, 92% { opacity: 1; transform: translate(0, 10px) scale(1); }
+      93%, 100% { opacity: 0; transform: translate(0, 0) scale(1); }
+    }
+    @keyframes teeMockFly {
+      0%, 78% { transform: translate(0, 0);  opacity: 1;}
+      79%, 85% { transform: translate(82px, -4px); }
+      86%, 99.5% { transform: translate(82px, -4px); }
+      100% { transform: translate(0, 0);  opacity: 0;}
+    }
+    @keyframes teePersonWait {
+      0%, 85.9% { opacity: 0.32; }
+      86%, 100% { opacity: 0; }
+    }
+    @keyframes teePersonWorn {
+      0%, 85.9% { opacity: 0; }
+      86%, 99% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .tee-prompt-b1 { animation-name: teeBeatP1; }
+    .tee-prompt-b2 { animation-name: teeBeatP2; }
+    .tee-prompt-b3 { animation-name: teeBeatP3; }
+    .tee-prompt-b3-hold { animation-name: teeBeatP3Hold; }
+    .tee-logo-b1 { animation-name: teeBeatL1; transform-box: fill-box; transform-origin: center center; }
+    .tee-logo-b2 { animation-name: teeBeatL2; transform-box: fill-box; transform-origin: center center; }
+    .tee-logo-b3 { animation-name: teeBeatL3; transform-box: fill-box; transform-origin: center center; }
+    .tee-bg-drift-a { animation: teeBgDriftA 8s ease-in-out infinite; transform-origin: center; }
+    .tee-bg-drift-b { animation: teeBgDriftB 10s ease-in-out infinite; transform-origin: center; }
+    .tee-bg-pulse { animation: teeBgPulse 6s ease-in-out infinite; }
+    .tee-bg-jump { animation: teeBgJump 1.4s ease-in-out infinite; transform-origin: center; }
+    .tee-bg-jump-2 { animation-delay: 0.2s; }
+    .tee-bg-jump-3 { animation-delay: 0.4s; }
+    .tee-logo-b3-hold { animation-name: teeBeatL3Hold; transform-box: fill-box; transform-origin: center center; }
+    .tee-focus-dot { animation-name: teeFocusDot; animation-timing-function: linear !important; transform-box: fill-box; transform-origin: center center; }
+    .tee-focus-tail { animation-name: teeFocusDot; animation-timing-function: linear !important; transform-box: fill-box; transform-origin: center center; }
+    .tee-focus-tail-1 { animation-delay: -0.16s; }
+    .tee-focus-tail-2 { animation-delay: -0.32s; }
+    .tee-focus-tail-3 { animation-delay: -0.48s; }
+    .tee-scene-iter { animation-name: teeSceneIter; }
+    .tee-shirt-wait { animation-name: teeShirtWait; }
+    .tee-mock-inner { animation-name: teeMockInner; }
+    .tee-float-logo { animation-name: teeFloatLogo; transform-origin: center; transform-box: fill-box; }
+    .tee-mock-fly { animation-name: teeMockFly; }
+    .tee-person-wait { animation-name: teePersonWait; }
+    .tee-person-worn { animation-name: teePersonWorn; }
+
+    .tee-viz .tee-prompt-b1, .tee-viz .tee-prompt-b2, .tee-viz .tee-prompt-b3, .tee-viz .tee-prompt-b3-hold,
+    .tee-viz .tee-logo-b1, .tee-viz .tee-logo-b2, .tee-viz .tee-logo-b3, .tee-viz .tee-logo-b3-hold,
+    .tee-viz .tee-scene-iter, .tee-viz .tee-shirt-wait,
+    .tee-viz .tee-mock-inner, .tee-viz .tee-float-logo, .tee-viz .tee-mock-fly,
+    .tee-viz .tee-person-wait, .tee-viz .tee-person-worn {
+      animation-duration: 8s;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
+
+    .tee-viz--static .tee-full-anim {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    .tee-viz--static .tee-poster {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tee-bars rect,
+      .tee-panel .hero-live-event {
+        animation: none !important;
+      }
+      .tee-viz .tee-full-anim {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+      .tee-viz .tee-poster {
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+    }
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .project-head {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+    .project-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0;
+      color: #ffffff;
+    }
+    .project-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 100%;
+    }
+    .workflow-canvas {
+      border-radius: 0.625rem;
+      padding: 1.25rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: flex-start; width: 100%; }
+    .tag { padding: 0.28rem 0.7rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+    .t-indigo { background: rgba(99,102,241,0.14); color: #c7d2fe; border: 1px solid rgba(129,140,248,0.35); }
+    .t-violet { background: rgba(139,92,246,0.12); color: #ddd6fe; border: 1px solid rgba(167,139,250,0.32); }
+    .t-sky { background: rgba(14,165,233,0.12); color: #7dd3fc; border: 1px solid rgba(14,165,233,0.28); }
+    .t-def { background: rgba(51,65,85,0.85); color: #cbd5e1; border: 1px solid #475569; }
+    .flow-list { list-style: none; margin: 0; padding: 0; }
+    .flow-list li { display: flex; gap: 0.55rem; align-items: flex-start; color: #cbd5e1; font-size: 0.9375rem; line-height: 1.55; margin-bottom: 0.5rem; }
+    .flow-list li:last-child { margin-bottom: 0; }
+    .project-shell .flow-list i { color: #818cf8; margin-top: 0.2rem; font-size: 0.75rem; flex-shrink: 0; }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <!-- ─── NAV ──────────────────────────────────────────────────── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0">
+        <i class="fas fa-shirt text-indigo-400 text-xl shrink-0"></i>
+        <span class="font-semibold text-white text-sm tracking-wide whitespace-nowrap">Generative AI</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/"
+           class="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition-colors font-medium">
+          Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────── -->
+  <section class="pt-28 pb-10 md:pb-12 px-6" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(99, 102, 241, 0.1), transparent);">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <!-- Badge -->
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-medium px-3 py-1.5 rounded-full mb-5">
+        <span class="relative w-2 h-2 pulse-dot">
+          <span class="block w-2 h-2 rounded-full bg-indigo-400"></span>
+        </span>
+        Live Build · Delivered
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Custom Merchandise Design,<br>
+        <span class="gradient-text">Powered by AI</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        We built an end-to-end platform that takes a <strong class="text-slate-200">text description</strong>
+        and delivers a <strong class="text-slate-200">photorealistic t-shirt mockup</strong>
+        with an automated quote — in minutes, not days.
+      </p>
+
+      <div class="tee-hero-visual" aria-label="Animated story: three prompt tries with cat logos arriving from each prompt, logo placed on shirt left chest then center, mockup flies to a person who wears it">
+        <div class="tee-hero-grid">
+          <div id="home-embed-root" class="tee-panel flex flex-col min-h-0">
+            <h3>prompt · mockup · order</h3>
+            <div class="min-h-0 min-w-0">
+              <svg class="tee-viz w-full h-auto block" viewBox="0 0 460 216" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="Three prompt and cat-logo iterations, then cat on shirt left chest then center, shirt flies to person wearing it">
+                <defs>
+                  <linearGradient id="teeStoryBg" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#312e81" stop-opacity="0.2" />
+                    <stop offset="50%" stop-color="#0f172a" stop-opacity="0.06" />
+                    <stop offset="100%" stop-color="#4c1d95" stop-opacity="0.12" />
+                  </linearGradient>
+                  <linearGradient id="teeStoryBgLight" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.98" />
+                    <stop offset="50%" stop-color="#ffffff" stop-opacity="0.99" />
+                    <stop offset="100%" stop-color="#eef2ff" stop-opacity="0.96" />
+                  </linearGradient>
+                </defs>
+                <rect class="tee-svg-bg" x="2" y="2" width="456" height="212" rx="10" fill="url(#teeStoryBg)" stroke="rgba(148,163,184,0.22)" />
+                <!-- Static decorative accents to keep the stage visually rich -->
+                <g class="tee-static-accents" aria-hidden="true">
+                  <circle class="tee-bg-jump" cx="26" cy="22" r="3.2" fill="rgba(129,140,248,0.55)" />
+                  <circle class="tee-bg-jump tee-bg-jump-2" cx="38" cy="28" r="1.8" fill="rgba(56,189,248,0.65)" />
+                  <circle class="tee-bg-jump tee-bg-jump-3" cx="430" cy="24" r="2.8" fill="rgba(52,211,153,0.55)" />
+                  <circle cx="418" cy="30" r="1.6" fill="rgba(251,191,36,0.65)" />
+
+                  <path d="M108 40 C148 30, 198 30, 238 40" fill="none" stroke="rgba(129,140,248,0.22)" stroke-width="1.2" stroke-linecap="round" />
+                  <path d="M284 174 C326 186, 366 186, 408 174" fill="none" stroke="rgba(56,189,248,0.18)" stroke-width="1.2" stroke-linecap="round" />
+
+                  <rect x="198" y="18" width="10" height="10" rx="2" fill="rgba(99,102,241,0.24)" stroke="rgba(165,180,252,0.35)" stroke-width="0.9" />
+                  <rect x="214" y="18" width="8" height="8" rx="2" fill="rgba(34,211,238,0.22)" stroke="rgba(125,211,252,0.35)" stroke-width="0.9" />
+                  <rect x="230" y="18" width="9" height="9" rx="2" fill="rgba(251,191,36,0.2)" stroke="rgba(252,211,77,0.35)" stroke-width="0.9" />
+                </g>
+                <g class="tee-bg-accents" aria-hidden="true">
+                  <path class="tee-bg-drift-a" d="M72 124 C122 106, 178 104, 232 118" fill="none" stroke="rgba(129,140,248,0.22)" stroke-width="1.4" stroke-linecap="round" />
+                  <path class="tee-bg-drift-b" d="M236 118 C286 132, 334 132, 386 118" fill="none" stroke="rgba(45,212,191,0.2)" stroke-width="1.4" stroke-linecap="round" />
+                  <circle class="tee-bg-pulse" cx="182" cy="148" r="5.2" fill="rgba(167,139,250,0.16)" stroke="rgba(196,181,253,0.28)" stroke-width="1" />
+                  <circle class="tee-bg-pulse" cx="268" cy="62" r="4.6" fill="rgba(56,189,248,0.14)" stroke="rgba(125,211,252,0.26)" stroke-width="1" />
+                  <rect class="tee-bg-drift-b" x="328" y="148" width="12" height="12" rx="3" fill="rgba(129,140,248,0.14)" stroke="rgba(165,180,252,0.24)" stroke-width="1" />
+                </g>
+                <!-- Stage labels -->
+                <g class="tee-stage-labels" aria-hidden="true">
+                  <text x="125" y="44" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#a5b4fc" text-anchor="middle" class="tee-stage-label">Generate Logo</text>
+                  <text x="210" y="165" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#c4b5fd" text-anchor="middle" class="tee-stage-label">Fit on shirt</text>
+                  <text x="308" y="60" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#22d3ee" text-anchor="middle" class="tee-stage-label">Print</text>
+                  <text x="378" y="175" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#34d399" text-anchor="middle" class="tee-stage-label">Wear</text>
+                </g>
+                
+                <g class="tee-full-anim" transform="translate(32, 0)">
+                  <!-- Iteration: prompts + logos (synced) -->
+                  <g class="tee-scene-iter tee-story-layer">
+                    <g transform="translate(4, 58)">
+                      <rect class="tee-bubble" x="0" y="0" width="86" height="56" rx="8" fill="rgba(30,27,75,0.85)" stroke="rgba(129,140,248,0.45)" stroke-width="1.2" />
+                      <text x="43" y="16" font-family="Inter, system-ui, sans-serif" font-size="9" font-weight="700" fill="#94a3b8" text-anchor="middle">Prompt</text>
+                      <g class="tee-prompt-b1 tee-story-layer">
+                        <text x="43" y="30" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#c7d2fe" text-anchor="middle">Side-sit cat</text>
+                        <line x1="10" y1="38" x2="72" y2="38" stroke="rgba(148,163,184,0.35)" stroke-width="1.2" stroke-linecap="round" />
+                        <line x1="10" y1="46" x2="58" y2="46" stroke="rgba(148,163,184,0.25)" stroke-width="1.2" stroke-linecap="round" />
+                      </g>
+                      <g class="tee-prompt-b2 tee-story-layer">
+                        <text x="43" y="30" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#c7d2fe" text-anchor="middle">Lying cat</text>
+                        <line x1="10" y1="38" x2="68" y2="38" stroke="rgba(148,163,184,0.35)" stroke-width="1.2" stroke-linecap="round" />
+                        <line x1="10" y1="46" x2="52" y2="46" stroke="rgba(148,163,184,0.25)" stroke-width="1.2" stroke-linecap="round" />
+                      </g>
+                    </g>
+                    <g transform="translate(96, 52)">
+                      <circle class="tee-spark" cx="30" cy="30" r="32" fill="rgba(76,29,149,0.18)" stroke="rgba(167,139,250,0.35)" stroke-width="1" />
+                      <!-- Cat silhouettes: one per prompt beat; animates in from prompt (left) -->
+                      <g class="tee-logo-b1 tee-story-layer">
+                        <g transform="translate(30, 30) scale(0.92) translate(-30, -29)">
+                          <!-- Thinner side-sit cat, tail attached to rump -->
+                          <path fill="#7c3aed"
+                    d="M 43 12 C 45 19 46 7 43 9 C 40 11 42 17 38 24 L 34 28 Q 34 31 30 33 L 29 38 Q 27 38 26 36 Q 25 38 23 38 L 21 34 Q 16 30 16 24 Q 16 20 21 16 Q 17 14 20 11 Q 19 9 20 7 Q 23 8 23 10 Q 24 8 26 7 Q 27 8 27 10 Q 31 12 28 16 Q 35 19 34 29 L 33 31 Q 41 26 42 19 Q 43 14 43 12 Z"
+                  />
+                        </g>
+                      </g>
+                      
+                      <g class="tee-logo-b2 tee-story-layer">
+                        <g transform="translate(30, 30) scale(0.9) translate(-30, -28)">
+                          <!-- 2: Lying — one outline; tail sweeps from haunch -->
+                          <path fill="#d97706" d="M 15 28 Q 15 24 20 22 Q 16 19 20 16 Q 19 17 19 13 Q 21 13 23 16 Q 25 13 26 13 Q 28 15 27 16 Q 32 20 26 22 Q 40.5 19 40 28 Q 39 22 41 19 C 45 16 47 21 50 20 Q 53 17 47 16 Q 44 15 48 15 Q 55 16 52 21 C 49 24 47 19 43 20 Q 41 22 42 29 Q 42 32 39 32 L 29 34 Q 21 34 18 32 Z" />
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+
+                  <!-- Persisted final prompt + logo (independent of tee-scene-iter fade) -->
+                  <g class="tee-story-layer">
+                    <g transform="translate(4, 58)">
+                      <g class="tee-prompt-b3-hold tee-story-layer">
+                        <text x="43" y="30" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700" fill="#c7d2fe" text-anchor="middle">Licking paw</text>
+                        <line x1="10" y1="38" x2="70" y2="38" stroke="rgba(148,163,184,0.35)" stroke-width="1.2" stroke-linecap="round" />
+                        <line x1="10" y1="46" x2="56" y2="46" stroke="rgba(148,163,184,0.25)" stroke-width="1.2" stroke-linecap="round" />
+                      </g>
+                    </g>
+                    <g transform="translate(96, 52)">
+                      <g class="tee-logo-b3-hold tee-story-layer">
+                        <g transform="translate(30, 30) scale(0.9) translate(-30, -30)">
+                          <!-- 3: Sitting + lick — rounder muzzle, peaked ears; eyes/nose on top -->
+                          <path fill="#a78bfa" d="M 16 44 Q 10 37 14 30 Q 16 25 22 27 Q 21 23 23 22 C 22 18 26 16 25 15 Q 22 12 25 10 L 25 8 L 28 9 L 31 8 L 32 10 Q 34 11 32 14 Q 40 26 36 30 L 33 32 L 30 32 Q 28 31 29 33 L 25 33 Q 20 29 20 33 C 20 41 17 41.3333 16 44 Z" />
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+
+                  <!-- Ghost shirt waiting -->
+                  <g class="tee-shirt-wait tee-story-layer" transform="translate(188, 50)">
+                    <g transform="translate(46, 0) scale(0.75, 1) translate(-46, 0)">
+                      <path fill="none" stroke="rgba(148,163,184,0.45)" stroke-width="1.2" stroke-dasharray="4 5" stroke-linejoin="round" d="M 38 105 L 29 105 Q 17 105 17 96 L 17 48 L 6 58 L -3 48 L 4 39 L 14 31 Q 20 27 28 28 Q 34 33 46 33 Q 58 33 66 28 Q 72 27 79 31 L 89 39 L 97 49 L 86 58 L 75 47 L 75 96 Q 75 105 66 105 L 38 105 Z" />
+                    </g>
+                  </g>
+
+                  <!-- Mockup: shirt + logo placement + fly -->
+                  <g class="tee-mock-fly tee-story-layer">
+                    <g class="tee-mock-inner" transform="translate(168, 46)">
+                      <g transform="translate(46, 0) scale(0.75, 1) translate(-46, 0)">
+                        <path class="tee-shirt-body" d="M 38 105 L 29 105 Q 17 105 17 96 L 17 48 L 6 58 L -3 48 L 4 39 L 14 31 Q 20 27 28 28 Q 34 33 46 33 Q 58 33 66 28 Q 72 27 79 31 L 89 39 L 97 49 L 86 58 L 75 47 L 75 96 Q 75 105 66 105 L 38 105 Z" fill="rgba(15,23,42,0.92)" stroke="rgba(148,163,184,0.4)" stroke-width="1.25" stroke-linejoin="round" />
+                        <g transform="translate(20, 32)">
+                          <g class="tee-float-logo tee-anim" transform="translate(-28, -40) scale(0.25)">
+                            <!-- Mini sitting + lick + face dots (beat 3) -->
+                            <path fill="rgba(129,140,248,0.92)" stroke="#c4b5fd" stroke-width="0.35" stroke-linejoin="round" d="M 16 44 Q 10 37 14 30 Q 16 25 22 27 Q 21 23 23 22 C 22 18 26 16 25 15 Q 22 12 25 10 L 25 8 L 28 9 L 31 8 L 32 10 Q 34 11 32 14 Q 40 26 36 30 L 33 32 L 30 32 Q 28 31 29 33 L 25 33 Q 20 29 20 33 C 20 41 17 41.3333 16 44 Z" />
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+
+                  <!-- Person waiting → worn -->
+                  <g transform="translate(298, 42)">
+                    <ellipse cx="44" cy="120" rx="36" ry="10" fill="rgba(15,23,42,0.35)" opacity="0.55" />
+                    <g class="tee-person-wait tee-person-wait tee-story-layer">
+                      <circle cx="44" cy="14" r="12" fill="rgba(148,163,184,0.25)" stroke="rgba(148,163,184,0.4)" stroke-width="1.2" />
+                      <path fill="none" stroke="rgba(148,163,184,0.35)" stroke-width="1.5" stroke-linecap="round" d="M44 26 L44 34" />
+                      <g transform="translate(44, 0) scale(0.75, 1) translate(-44, 0)">
+                        <path class="tee-person-pants" d="M 27 68 L 66 68 L 66 88 L 65 105 L 59 118 L 51 118 L 46 88 L 41 118 L 32 118 L 27 104 L 26 88 Z" fill="rgba(51,65,85,0.55)" stroke="rgba(100,116,139,0.4)" stroke-width="1" stroke-linejoin="round" />
+                        <g transform="translate(44, 42) scale(0.68, 0.6) translate(-44, -42)">
+                          <path d="M 38 105 L 29 105 Q 17 105 17 96 L 17 48 L 6 58 L -3 48 L 4 39 L 14 31 Q 20 27 28 28 Q 34 33 46 33 Q 58 33 66 28 Q 72 27 79 31 L 89 39 L 97 49 L 86 58 L 75 47 L 75 96 Q 75 105 66 105 L 38 105 Z" fill="rgba(51,65,85,0.45)" stroke="rgba(100,116,139,0.35)" stroke-width="1" stroke-linejoin="round" />
+                        </g>
+                        <path fill="none" stroke="rgba(148,163,184,0.45)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19 40 L13 50 L11 60 L10 70" />
+                        <path fill="none" stroke="rgba(148,163,184,0.45)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M69 40 L75 50 L77 60 L78 70" />
+                        <path fill="none" stroke="rgba(148,163,184,0.45)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M34 111 L33 117 M58 111 L59 117" />
+                      </g>
+                    </g>
+                    <g class="tee-person-worn tee-person-worn tee-story-layer">
+                      <circle class="tee-person-head" cx="44" cy="14" r="12" fill="rgba(248,250,252,0.92)" stroke="rgba(148,163,184,0.45)" stroke-width="1.2" />
+                      <path fill="none" stroke="rgba(148,163,184,0.4)" stroke-width="1.5" stroke-linecap="round" d="M44 26 L44 32" />
+                      <g transform="translate(44, 0) scale(0.75, 1) translate(-44, 0)">
+                        <path class="tee-person-pants" d="M 27 68 L 66 68 L 66 88 L 65 105 L 59 118 L 51 118 L 46 88 L 41 118 L 32 118 L 27 104 L 26 88 Z" fill="rgba(30,41,59,0.98)" stroke="rgba(71,85,105,0.55)" stroke-width="1.1" stroke-linejoin="round" />
+                        <g transform="translate(44, 42) scale(0.68, 0.6) translate(-44, -42)">
+                          <path class="tee-person-shirt" d="M 38 105 L 29 105 Q 17 105 17 96 L 17 48 L 6 58 L -3 48 L 4 39 L 14 31 Q 20 27 28 28 Q 34 33 46 33 Q 58 33 66 28 Q 72 27 79 31 L 89 39 L 97 49 L 86 58 L 75 47 L 75 96 Q 75 105 66 105 L 38 105 Z" fill="rgba(30,41,59,0.95)" stroke="rgba(100,116,139,0.5)" stroke-width="1.2" stroke-linejoin="round" />
+                          <g transform="translate(28, 44) scale(0.82)">
+                            <path fill="rgba(129,140,248,0.9)" stroke="#a5b4fc" d="M 16 44 Q 10 37 14 30 Q 16 25 22 27 Q 21 23 23 22 C 22 18 26 16 25 15 Q 22 12 25 10 L 25 8 L 28 9 L 31 8 L 32 10 Q 34 11 32 14 Q 40 26 36 30 L 33 32 L 30 32 Q 28 31 29 33 L 25 33 Q 20 29 20 33 C 20 41 17 41.3333 16 44 Z" />
+                          </g>
+                          </g>
+                        </g>
+                        <path fill="none" stroke="rgba(248,250,252,0.55)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19 40 L13 50 L11 60 L10 70" />
+                        <path fill="none" stroke="rgba(248,250,252,0.55)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M69 40 L75 50 L77 60 L78 70" />
+                        <path fill="none" stroke="rgba(248,250,252,0.5)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M34 111 L33 117 M58 111 L59 117" />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+                <g class="tee-focus-dot tee-story-layer" transform="translate(32, 0)">
+                  <circle class="tee-focus-tail tee-focus-tail-3" cx="0" cy="0" r="2.1" fill="#c4b5fd" opacity="0.16" />
+                  <circle class="tee-focus-tail tee-focus-tail-2" cx="0" cy="0" r="2.2" fill="#ddd6fe" opacity="0.2" />
+                  <circle class="tee-focus-tail tee-focus-tail-1" cx="0" cy="0" r="2.3" fill="#e0e7ff" opacity="0.25" />
+                  <circle cx="0" cy="0" r="2.4" fill="#f8fafc" opacity="0.95" />
+                  <circle cx="5.2" cy="0" r="1.2" fill="#fbbf24" opacity="0.95" />
+                </g>
+
+                <!-- Static poster (reduced motion + fallback) -->
+                <g class="tee-poster" transform="translate(330, 42)">
+                  <ellipse cx="44" cy="120" rx="36" ry="10" fill="rgba(15,23,42,0.35)" opacity="0.55" />
+                  <circle class="tee-person-head" cx="44" cy="14" r="12" fill="rgba(248,250,252,0.92)" stroke="rgba(148,163,184,0.45)" stroke-width="1.2" />
+                  <path fill="none" stroke="rgba(148,163,184,0.4)" stroke-width="1.5" stroke-linecap="round" d="M44 26 L44 32" />
+                  <g transform="translate(44, 0) scale(0.75, 1) translate(-44, 0)">
+                    <path class="tee-person-pants" d="M 27 68 L 66 68 L 66 88 L 65 105 L 59 118 L 51 118 L 46 88 L 41 118 L 32 118 L 27 104 L 26 88 Z" fill="rgba(30,41,59,0.98)" stroke="rgba(71,85,105,0.55)" stroke-width="1.1" stroke-linejoin="round" />
+                    <g transform="translate(44, 42) scale(0.68, 0.6) translate(-44, -42)">
+                      <path class="tee-person-shirt" d="M23 84 L15 84 Q11 84 11 78 L11 60 L9 55 L9 50 L11 45 L18 41 L27 38 Q36 35 44 35 Q52 35 61 38 L70 41 L77 45 L79 50 L79 55 L77 60 L77 78 Q77 84 73 84 L65 84 Q44 88 23 84 Z" fill="rgba(30,41,59,0.95)" stroke="rgba(100,116,139,0.5)" stroke-width="1.2" stroke-linejoin="round" />
+                      <g transform="translate(44, 52) translate(-28, -26) scale(0.22)">
+                        <path fill="rgba(129,140,248,0.9)" stroke="#a5b4fc" stroke-width="0.28" stroke-linejoin="round" d="M 16 44 Q 10 37 14 30 Q 16 25 22 27 Q 21 23 23 22 C 22 18 26 16 25 15 Q 22 12 25 10 L 25 8 L 28 9 L 31 8 L 32 10 Q 34 11 32 14 Q 40 26 36 30 L 33 32 L 30 32 Q 28 31 29 33 L 25 33 Q 20 29 20 33 C 20 41 17 41.3333 16 44 Z" />
+                      </g>
+                    </g>
+                    <path fill="none" stroke="rgba(248,250,252,0.55)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M19 40 L13 50 L11 60 L10 70" />
+                    <path fill="none" stroke="rgba(248,250,252,0.55)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M69 40 L75 50 L77 60 L78 70" />
+                    <path fill="none" stroke="rgba(248,250,252,0.5)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M34 111 L33 117 M58 111 L59 117" />
+                  </g>
+                </g>
+
+                <text x="230" y="208" font-family="Inter, system-ui, sans-serif" font-size="9.5" fill="#64748b" text-anchor="middle" class="tee-stage-sub">3 prompts · cat logos from prompt · chest (left → center) · fly · wear</text>
+              </svg>
+            </div>
+          </div>
+          <div class="tee-panel text-left flex flex-col min-h-0">
+            <h3>Story loop</h3>
+            <p class="hero-metric shrink-0">
+              <strong>~60s</strong>
+              <span>prompt to mockup</span>
+            </p>
+            <p class="tee-hero-quality-sub text-[10px] text-indigo-300/85 uppercase tracking-widest font-semibold mt-0.5 mb-0.5 leading-tight">
+              prompt · place · print · wear
+            </p>
+            <p class="hero-live-event shrink-0"><i class="fas fa-wave-square"></i> Live</p>
+            <h3 class="mt-1">Key</h3>
+            <ul class="text-[11px] text-slate-400 space-y-1 mb-1.5 shrink-0 leading-tight text-left">
+              <li class="flex gap-2 items-start">
+                <span class="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" aria-hidden="true"></span>
+                <span><span class="text-indigo-300 font-semibold">Prompt</span> — make custom logo with text.</span>
+              </li>
+              <li class="flex gap-2 items-start">
+                <span class="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" aria-hidden="true"></span>
+                <span><span class="text-indigo-300 font-semibold">Mockup</span> — view how logo looks on t-shirt.</span>
+              </li>
+              <li class="flex gap-2 items-start">
+                <span class="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" aria-hidden="true"></span>
+                <span><span class="text-indigo-300 font-semibold">Order</span> — get quote for chosen mockup.</span>
+              </li>
+            </ul>
+            <svg viewBox="0 0 240 92" class="tee-bars w-full h-auto max-h-14 mt-1 shrink-0" role="img" aria-label="Activity pulse bars">
+              <rect x="10" y="54" width="20" height="30" rx="3" fill="#6366f1" />
+              <rect x="43" y="42" width="20" height="42" rx="3" fill="#818cf8" />
+              <rect x="76" y="32" width="20" height="52" rx="3" fill="#8b5cf6" />
+              <rect x="109" y="48" width="20" height="36" rx="3" fill="#a78bfa" />
+              <rect x="142" y="37" width="20" height="47" rx="3" fill="#34d399" />
+              <rect x="175" y="29" width="20" height="55" rx="3" fill="#2dd4bf" />
+              <rect x="208" y="22" width="20" height="62" rx="3" fill="#10b981" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech badges -->
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i class="fab fa-react mr-1 text-sky-400"></i>React
+        </span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i class="fab fa-python mr-1 text-yellow-400"></i>Django
+        </span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i class="fas fa-robot mr-1 text-violet-400"></i>DALL·E 3
+        </span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i class="fas fa-cloud mr-1 text-blue-400"></i>Azure Blob
+        </span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full">
+          <i class="fas fa-gear mr-1 text-slate-400"></i>Make.com
+        </span>
+      </div>
+
+      <!-- Stat pills -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto text-center">
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">~60s</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Prompt to mockup</p>
+        </div>
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">0</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Design skills needed</p>
+        </div>
+        <div class="hero-border px-4 py-3 col-span-2 md:col-span-1">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">Auto</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Quote routing</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS SNAPSHOT ────────────────────────────────────── -->
+  <section class="py-8 md:py-10 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Problem</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Merch mockups and quotes are slow when they depend on designers and manual CRM follow-up.</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Solution</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Prompt-to-logo (DALL·E), CV compositing on product photos, and Make.com webhook to CRM.</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-2">Outcome</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Sub-minute mockups and automated quote routing — usable by non-technical sales and ops teams.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CAPABILITY SUMMARY ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Capability focus</p>
+          <h2 class="project-title">Conversational Product Mockups + Quote Automation</h2>
+          <p class="project-desc">A domain-ready workflow that converts plain-language requests into branded visuals and routed quote requests — designed for sales and ops teams, not designers.</p>
+          <div class="tags">
+            <span class="tag t-indigo">DALL·E 3</span>
+            <span class="tag t-sky">OpenCV</span>
+            <span class="tag t-def">Django + React</span>
+            <span class="tag t-violet">Make.com</span>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <i class="fas fa-hourglass-half text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">From days to minutes</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Replaces manual revision loops with instant generation and composited mockups.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <i class="fas fa-user-check text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">No specialist dependency</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Non-design teams can produce customer-ready visuals from plain English prompts.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <i class="fas fa-bolt text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Lead response acceleration</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Quote payloads route automatically into CRM and outreach workflows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WORKFLOW DIAGRAM ──────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+      <div class="project-head">
+      <p class="project-label">Under the hood</p>
+      <h2 class="project-title">System Workflow</h2>
+      <p class="project-desc">
+        The full pipeline — from user input to generated mockup and automated CRM routing.
+      </p>
+      <div class="tags">
+        <span class="tag t-indigo">DALL·E 3</span>
+        <span class="tag t-sky">OpenCV + Pillow</span>
+        <span class="tag t-def">Azure Blob</span>
+        <span class="tag t-violet">Make.com</span>
+      </div>
+      </div>
+
+      <!-- CSS workflow diagram -->
+      <div class="bg-slate-900 border border-slate-700/50 workflow-canvas overflow-x-auto mb-4">
+
+        <!-- Row 1: AI Generation -->
+        <div class="mb-3 text-center">
+          <span class="text-xs text-indigo-400 font-semibold uppercase tracking-widest">AI Logo Generation</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-6 flex-wrap">
+          <div class="bg-slate-800 border border-indigo-500/50 rounded-lg px-4 py-3 text-center min-w-[120px]">
+            <div class="mb-1"><i class="fas fa-comments fa-lg text-indigo-400"></i></div>
+            <p class="text-xs font-semibold text-white">User Chat</p>
+            <p class="text-xs text-slate-500">describe logo</p>
+          </div>
+          <div class="text-indigo-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-violet-500/50 rounded-lg px-4 py-3 text-center min-w-[140px]">
+            <div class="mb-1"><i class="fas fa-robot fa-lg text-violet-400"></i></div>
+            <p class="text-xs font-semibold text-white">Azure DALL·E 3</p>
+            <p class="text-xs text-slate-500">text-to-image</p>
+          </div>
+          <div class="text-indigo-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-violet-500/50 rounded-lg px-4 py-3 text-center min-w-[120px]">
+            <div class="mb-1"><i class="fas fa-palette fa-lg text-violet-400"></i></div>
+            <p class="text-xs font-semibold text-white">Logo Generated</p>
+            <p class="text-xs text-slate-500">image URL</p>
+          </div>
+        </div>
+
+        <!-- Row 2: Image Processing -->
+        <div class="mb-3 text-center">
+          <span class="text-xs text-emerald-400 font-semibold uppercase tracking-widest">Image Processing Pipeline</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 mb-6 flex-wrap">
+          <div class="bg-slate-800 border border-emerald-500/50 rounded-lg px-4 py-3 text-center min-w-[130px]">
+            <div class="mb-1"><i class="fas fa-scissors fa-lg text-emerald-400"></i></div>
+            <p class="text-xs font-semibold text-white">BG Removal</p>
+            <p class="text-xs text-slate-500">rembg + ONNX</p>
+          </div>
+          <div class="text-emerald-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-emerald-500/50 rounded-lg px-4 py-3 text-center min-w-[130px]">
+            <div class="mb-1"><i class="fas fa-ruler-combined fa-lg text-emerald-400"></i></div>
+            <p class="text-xs font-semibold text-white">Perspective Warp</p>
+            <p class="text-xs text-slate-500">mesh transform</p>
+          </div>
+          <div class="text-emerald-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-emerald-500/50 rounded-lg px-4 py-3 text-center min-w-[130px]">
+            <div class="mb-1"><i class="fas fa-shirt fa-lg text-emerald-400"></i></div>
+            <p class="text-xs font-semibold text-white">Composite</p>
+            <p class="text-xs text-slate-500">Pillow / OpenCV</p>
+          </div>
+          <div class="text-emerald-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-emerald-500/50 rounded-lg px-4 py-3 text-center min-w-[130px]">
+            <div class="mb-1"><i class="fas fa-cloud fa-lg text-emerald-400"></i></div>
+            <p class="text-xs font-semibold text-white">Azure Blob</p>
+            <p class="text-xs text-slate-500">cloud storage</p>
+          </div>
+        </div>
+
+        <!-- Row 3: Quote Automation -->
+        <div class="mb-3 text-center">
+          <span class="text-xs text-amber-400 font-semibold uppercase tracking-widest">Quote Automation</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 flex-wrap">
+          <div class="bg-slate-800 border border-amber-500/50 rounded-lg px-4 py-3 text-center min-w-[130px]">
+            <div class="mb-1"><i class="fas fa-image fa-lg text-amber-400"></i></div>
+            <p class="text-xs font-semibold text-white">Mockup Ready</p>
+            <p class="text-xs text-slate-500">download link</p>
+          </div>
+          <div class="text-amber-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-amber-500/50 rounded-lg px-4 py-3 text-center min-w-[120px]">
+            <div class="mb-1"><i class="fas fa-clipboard-list fa-lg text-amber-400"></i></div>
+            <p class="text-xs font-semibold text-white">Quote Request</p>
+            <p class="text-xs text-slate-500">contact + assets</p>
+          </div>
+          <div class="text-amber-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-amber-500/50 rounded-lg px-4 py-3 text-center min-w-[120px]">
+            <div class="mb-1"><i class="fas fa-gear fa-lg text-amber-400"></i></div>
+            <p class="text-xs font-semibold text-white">Make.com</p>
+            <p class="text-xs text-slate-500">webhook trigger</p>
+          </div>
+          <div class="text-amber-400 font-bold text-lg flex-shrink-0">&rarr;</div>
+          <div class="bg-slate-800 border border-amber-500/50 rounded-lg px-4 py-3 text-center min-w-[120px]">
+            <div class="mb-1"><i class="fas fa-envelope fa-lg text-amber-400"></i></div>
+            <p class="text-xs font-semibold text-white">CRM + Email</p>
+            <p class="text-xs text-slate-500">auto-routed</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3 text-left">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Collect intent:</strong> User describes logo/style in plain language.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Generate art:</strong> DALL·E 3 creates assets (with fallback options if needed).</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Process image:</strong> Background removal, warp, and compositing align design to fabric geometry.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Store outputs:</strong> Mockups and assets persist in Azure Blob with shareable links.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Route lead:</strong> Make.com webhook sends quote payload to CRM and email follow-up.</span></li>
+        </ul>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 text-left">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-layer-group text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Composable image pipeline</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Overlay blend, perspective warp, and seamless clone modes for realism.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-cloud text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Cloud-native output flow</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Blob-hosted assets and endpoint-driven delivery across front and back end.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-share-nodes text-indigo-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">CRM automation</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Lead data and artifact links routed automatically to sales operations.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TECHNICAL CAPABILITIES ───────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-indigo-400 font-medium text-sm uppercase tracking-widest mb-4 text-center">Technical Depth</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-3">Built on production-grade technology</h2>
+      <p class="text-slate-400 text-center mb-8 max-w-xl mx-auto text-sm">
+        For teams that want to know what's under the hood.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-robot text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">AI Logo Generation</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">Azure OpenAI DALL·E 3 — text-to-image via structured prompt engineering with style and format controls.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-scissors text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">Background Removal</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">rembg + ONNX Runtime — ML-based background removal with no manual selection required.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-ruler-combined text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">Perspective Correction</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">Custom grid-based mesh transform (Pillow) to match logo curvature to shirt fabric realistically.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-cloud text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">Cloud Storage</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">Azure Blob Storage for generated logos and mockups — persistent, shareable URLs for CRM and email.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-gear text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">CRM Automation</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">Make.com webhook integration routes quote payloads (name, email, phone, logo URL, mockup URL) to any CRM.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-rocket text-xl text-indigo-400"></i>
+            <h3 class="font-semibold text-white text-sm">Azure Deployment</h3>
+          </div>
+          <p class="text-slate-400 text-xs leading-relaxed">Deployed on Azure VM with systemd, automated via Makefile pipeline — build, package, sync, restart.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT THIS PROVES ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="mb-6"><i class="fas fa-trophy fa-3x text-indigo-400"></i></div>
+      <h2 class="text-2xl font-bold text-white mb-6">What This Proves</h2>
+      <div class="grid md:grid-cols-3 gap-4 text-left">
+        <div class="bg-slate-800/60 border border-indigo-700/40 rounded-xl p-5">
+          <p class="text-indigo-200 font-bold mb-2 text-base">
+            <i class="fas fa-check mr-1"></i>End-to-end pipeline
+          </p>
+          <p class="text-slate-200 text-sm leading-relaxed">From prompt intake to generated visual assets and automated CRM handoff.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-indigo-700/40 rounded-xl p-5">
+          <p class="text-indigo-200 font-bold mb-2 text-base">
+            <i class="fas fa-check mr-1"></i>Azure cloud native
+          </p>
+          <p class="text-slate-200 text-sm leading-relaxed">DALL·E 3, Blob storage, and service deployment aligned to production cloud operations.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-indigo-700/40 rounded-xl p-5">
+          <p class="text-indigo-200 font-bold mb-2 text-base">
+            <i class="fas fa-check mr-1"></i>CRM-ready
+          </p>
+          <p class="text-slate-200 text-sm leading-relaxed">Webhook automation that integrates with existing sales and follow-up systems.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ───────────────────────────────────────────────────── -->
+  <section id="contact" class="py-12 md:py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          Working on something similar?
+        </h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+          AI-powered product visuals, automated workflows, or a full custom platform — let's talk.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/"
+             class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-indigo-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com"
+             class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ─── DOMAIN REFERENCE CARD ──────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-12" style="background: linear-gradient(to right, transparent, rgba(129,140,248,0.5));"></div>
+        <i class="fas fa-compass text-indigo-400" style="font-size:0.7rem;"></i>
+        <div class="h-px w-12" style="background: linear-gradient(to left, transparent, rgba(129,140,248,0.5));"></div>
+      </div>
+      <p class="text-indigo-400 font-medium text-sm uppercase tracking-widest mb-2 text-center">Technical Scope</p>
+      <h2 class="text-2xl font-bold text-white text-center mb-3">Domain Coverage</h2>
+      <p class="text-slate-300 text-sm text-center max-w-3xl mx-auto mb-6">
+        Business and technical capabilities delivered in this generative visual-commerce portfolio.
+      </p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="rounded-xl p-4 md:col-span-2 lg:col-span-3" style="background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(30,41,59,0.7)); border: 1px solid rgba(129,140,248,0.45);">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-tag text-indigo-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Core Domain</p>
+              </div>
+              <p class="text-white font-semibold text-sm">AI Model Development</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-link text-indigo-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Also Covers</p>
+              </div>
+              <p class="text-slate-200 text-sm leading-relaxed">Automation and workflow integration for sales operations and CRM routing.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-4 mb-2">
+            <i class="fas fa-sitemap text-indigo-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Subdomains</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Generative AI · text-to-image · image compositing · vision + language</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-code-branch text-indigo-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Techniques</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Prompt-to-image · ML background removal · perspective warp · compositing · bounding-box placement · aspect handling</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-toolbox text-indigo-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Frameworks / Tools</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">DALL·E 3 · OpenCV · Pillow · Django · Azure Blob · rembg + ONNX Runtime · Make.com</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-bullseye text-indigo-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Use Cases</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">On-demand product mockups from text prompts with CRM-ready quote automation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-shirt text-indigo-400"></i>
+        <span>MerchAI — AI Merchandise Design Platform</span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-indigo-400 hover:text-indigo-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const raw = link.getAttribute('href');
+        if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return;
+        if (raw.startsWith('http://') || raw.startsWith('https://')) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set('theme', theme);
+          link.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark") ? paramTheme : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+  })();
+  (function () {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var svg = document.querySelector(".tee-viz");
+    if (svg) svg.classList.add("tee-viz--static");
+  })();
+</script>
+<script src="../assets/home-embed.js"></script>
+</body>
+</html>

@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Voice Agents & Lead Generation — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-800/55"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"],
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="border-slate-600/50"],
+    body.light-theme [class*="border-slate-700/50"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme a[class*="bg-"][class*="text-white"],
+    body.light-theme button[class*="bg-"][class*="text-white"] { color: #ffffff !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #1f2937 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #374151 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    /* light-surface-pass */
+    body.light-theme .project-shell,
+    body.light-theme .workflow-canvas,
+    body.light-theme .flow-box,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .hero-border,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      background-color: #ffffff !important;
+    }
+    body.light-theme .workflow-canvas,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme section[class*="bg-slate-"] {
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .project-shell, body.light-theme .flow-box { background: #ffffff; border-color: #cbd5e1; }
+    body.light-theme .project-title { color: #0f172a !important; }
+    body.light-theme .project-desc { color: #334155 !important; }
+    body.light-theme .project-label, body.light-theme .panel-kicker { color: #475569 !important; }
+    body.light-theme .flow-list li { color: #1f2937 !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+                  linear-gradient(135deg, #7c3aed, #6366f1, #06b6d4) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .tag {
+      background: #f5f3ff !important;
+      color: #0f172a !important;
+      border-color: #c4b5fd !important;
+    }
+    body.light-theme span[class*="rounded-full"][class*="border"] {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .hero-domain-tag {
+      background-color: #ede9fe !important;
+      border-color: #c4b5fd !important;
+      color: #3b0764 !important;
+    }
+    body.light-theme a[href^="mailto:"] {
+      background-color: #1e293b !important;
+      border-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    body.light-theme a[href^="mailto:"]:hover { background-color: #0f172a !important; color: #ffffff !important; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-violet {
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme .gradient-text {
+      background: linear-gradient(135deg, #6d28d9, #2563eb, #047857);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme .gradient-text-violet {
+      background: linear-gradient(135deg, #5b21b6, #6d28d9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme [class*="text-teal-300"] { color: #0f766e !important; }
+    body.light-theme [class*="text-teal-400"] { color: #0d9488 !important; }
+    body.light-theme [class*="text-emerald-300"] { color: #047857 !important; }
+    body.light-theme [class*="text-emerald-400"] { color: #059669 !important; }
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.4), 0 8px 32px rgba(139, 92, 246, 0.15);
+      transform: translateY(-2px);
+      transition: all 0.2s ease;
+    }
+    .card-glow { transition: all 0.2s ease; }
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box,
+                  linear-gradient(135deg, #7c3aed, #6366f1, #06b6d4) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    .flow-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 110px;
+      padding: 0.75rem 1rem;
+      border-radius: 0.625rem;
+      background: #1e293b;
+    }
+    .flow-arrow {
+      color: #94a3b8;
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      align-self: center;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 3px; }
+
+    @keyframes pulse-ring {
+      0%   { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #7c3aed;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .section-kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #a78bfa; text-align: center; margin-bottom: 0.75rem; }
+    .workflow-panel { background: #0f172a; border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 1rem; padding: 1.75rem; }
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    /* Match automation portfolio workflow card-header: label, title, desc, tags */
+    .project-head {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+    .project-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0;
+      color: #ffffff;
+    }
+    .project-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 100%;
+    }
+    .workflow-canvas {
+      border-radius: 0.625rem;
+      padding: 1.25rem;
+    }
+    .step-chip {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.75rem;
+      padding: 0.9rem;
+    }
+    .step-chip .step-no {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .flow-list li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      color: #cbd5e1;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      margin-bottom: 0.55rem;
+    }
+    .flow-list i {
+      color: #c4b5fd;
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    /* Project tags (same pattern as automation portfolio) */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: flex-start;
+    }
+    .tag {
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .t-vapi   { background: rgba(124, 92, 191, 0.14); color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.35); }
+    .t-twilio { background: rgba(248, 113, 113, 0.12); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.32); }
+    .t-ai     { background: rgba(16, 163, 127, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 163, 127, 0.3); }
+    .t-stripe { background: rgba(99, 102, 241, 0.12); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.32); }
+    .t-oauth  { background: rgba(59, 130, 246, 0.12); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.28); }
+    .t-def    { background: rgba(51, 65, 85, 0.85); color: #cbd5e1; border: 1px solid #475569; }
+    .voice-hero-orchestrator {
+      margin: 0 auto 1.8rem;
+      max-width: 860px;
+      padding: 0.95rem;
+      border-radius: 0.95rem;
+      border: 1px solid rgba(167,139,250,0.4);
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.95));
+      box-shadow: 0 14px 30px rgba(2, 6, 23, 0.28);
+    }
+    .voice-hero-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; align-items: stretch; }
+    .voice-hero-grid > .voice-orch-panel { min-height: 0; }
+    .voice-orch-panel {
+      background: rgba(15,23,42,0.88);
+      border: 1px solid rgba(71,85,105,0.75);
+      border-radius: 0.75rem;
+      padding: 0.72rem 0.8rem;
+    }
+    .voice-orch-panel--pulse {
+      padding: 0.38rem 0.5rem 0.42rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
+      min-height: 0;
+      height: 100%;
+      max-height: 100%;
+      box-sizing: border-box;
+    }
+    .voice-orch-panel h3 {
+      margin: 0 0 0.35rem;
+      color: #a5b4fc;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+    .voice-orch-panel--pulse h3 { margin: 0 0 0.12rem; flex-shrink: 0; font-size: 0.68rem; }
+    .voice-pulse-now {
+      border-radius: 0.4rem;
+      padding: 0.28rem 0.35rem;
+      background: rgba(2,6,23,0.45);
+      border: 1px solid rgba(71,85,105,0.55);
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .voice-pulse-phase {
+      margin: 0;
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      line-height: 1.15;
+      flex-shrink: 0;
+    }
+    .voice-pulse-lanes {
+      margin: 0.18rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.22rem;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+    .voice-pulse-lane {
+      margin: 0;
+      padding: 0.2rem 0.3rem;
+      border-radius: 0.3rem;
+      border: 1px solid rgba(51,65,85,0.55);
+      border-left-width: 3px;
+      background: rgba(15,23,42,0.5);
+      min-height: 0;
+    }
+    .voice-pulse-lane--inbound { border-left-color: rgba(253,186,116,0.95); }
+    .voice-pulse-lane--outbound { border-left-color: rgba(251,113,133,0.85); }
+    .voice-pulse-lane-label {
+      display: block;
+      font-size: 0.52rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.06rem;
+    }
+    .voice-pulse-lane--inbound .voice-pulse-lane-label { color: #fdba74; }
+    .voice-pulse-lane--outbound .voice-pulse-lane-label { color: #fca5a5; }
+    .voice-pulse-lane-text {
+      margin: 0;
+      font-size: 0.6rem;
+      line-height: 1.28;
+      color: #e2e8f0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .voice-pulse-waves {
+      margin: 0.14rem 0 0;
+      font-size: 0.52rem;
+      color: #94a3b8;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 0;
+    }
+    .voice-pulse-metrics-hint {
+      margin: 0 0 0.18rem;
+      font-size: 0.52rem;
+      line-height: 1.2;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .voice-pulse-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.2rem 0.28rem;
+      flex: 0 0 auto;
+      align-content: start;
+    }
+    .voice-pulse-metric {
+      margin: 0;
+      padding: 0.16rem 0.22rem;
+      border-radius: 0.3rem;
+      background: rgba(15,23,42,0.65);
+      border: 1px solid rgba(51,65,85,0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 0.02rem;
+    }
+    .voice-pulse-metric strong {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #f8fafc;
+      line-height: 1.05;
+    }
+    .voice-pulse-metric span {
+      font-size: 0.5rem;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      color: #a78bfa;
+      line-height: 1.1;
+    }
+    .voice-live-chip {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.28rem;
+      padding: 0.16rem 0.38rem;
+      border-radius: 0.35rem;
+      background: rgba(124,58,237,0.18);
+      border: 1px solid rgba(167,139,250,0.5);
+      color: #ddd6fe;
+      font-size: 0.54rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      flex-shrink: 0;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .voice-pulse-booked {
+      margin: 0;
+      font-size: 0.52rem;
+      line-height: 1.2;
+      color: #6ee7b7;
+      flex-shrink: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .voice-metric {
+      margin: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 0.45rem;
+    }
+    .voice-metric strong { font-size: 1.28rem; color: #f8fafc; font-weight: 800; }
+    .voice-metric span { font-size: 0.72rem; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.08em; }
+    .voice-wave {
+      opacity: 0.45;
+      transform-origin: center;
+      transition: opacity 180ms ease;
+    }
+    .voice-wave.speaking {
+      opacity: 1;
+    }
+    .voice-wave-path {
+      transition: opacity 140ms ease;
+      opacity: 0.65;
+    }
+    .voice-wave.speaking .voice-wave-path { opacity: 1; }
+    .voice-dot {
+      opacity: 0.35;
+      transition: opacity 120ms ease, r 120ms ease;
+    }
+    .voice-dot.active { opacity: 1; r: 6.5; }
+    .voice-token {
+      filter: drop-shadow(0 0 8px rgba(167,139,250,0.7));
+      transition: cx 240ms linear, cy 240ms linear;
+    }
+    .voice-token-alt-a {
+      fill: #bfdbfe;
+      stroke: #60a5fa;
+      filter: drop-shadow(0 0 8px rgba(96,165,250,0.6));
+    }
+    .voice-token-alt-b {
+      fill: #bbf7d0;
+      stroke: #34d399;
+      filter: drop-shadow(0 0 8px rgba(52,211,153,0.6));
+    }
+    .voice-connector {
+      stroke-dasharray: 4 4;
+      opacity: 0.35;
+      transition: opacity 140ms ease;
+    }
+    .voice-connector.active { opacity: 1; }
+    .voice-call-lane {
+      opacity: 0.6;
+      transform-origin: center;
+      animation: voiceCallLanePulse 1.6s ease-in-out infinite;
+    }
+    .voice-call-lane:nth-child(2) { animation-delay: 0.2s; }
+    .voice-call-lane:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes voiceCallLanePulse {
+      0%, 100% { opacity: 0.35; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.12); }
+    }
+    @media (min-width: 920px) {
+      .voice-hero-grid { grid-template-columns: 1.55fr 0.95fr; gap: 0.8rem; align-items: stretch; }
+    }
+    body.light-theme .voice-hero-orchestrator {
+      background: linear-gradient(155deg, #ffffff 0%, #faf5ff 40%, #f5f3ff 100%);
+      border-color: rgba(139, 92, 246, 0.35);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07), 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    }
+    body.light-theme .voice-orch-panel {
+      background: #ffffff;
+      border-color: #e2e8f0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    body.light-theme .voice-orch-panel h3 { color: #5b21b6; }
+    body.light-theme .voice-orch-panel svg > rect[rx="12"] {
+      fill: rgba(255, 255, 255, 0.85) !important;
+      stroke: rgba(100, 116, 139, 0.35) !important;
+    }
+    body.light-theme .voice-orch-panel svg text {
+      fill: #334155 !important;
+    }
+    body.light-theme .voice-orch-panel svg path[stroke-opacity="0.6"] {
+      stroke-opacity: 0.78;
+    }
+    body.light-theme .voice-pulse-now { background: #fafafa; border-color: #e2e8f0; }
+    body.light-theme .voice-pulse-phase { color: #6d28d9; }
+    body.light-theme .voice-pulse-lane { background: #ffffff; border-color: #e2e8f0; }
+    body.light-theme .voice-pulse-lane--inbound { border-left-color: #ea580c; }
+    body.light-theme .voice-pulse-lane--outbound { border-left-color: #e11d48; }
+    body.light-theme .voice-pulse-lane--inbound .voice-pulse-lane-label { color: #c2410c; }
+    body.light-theme .voice-pulse-lane--outbound .voice-pulse-lane-label { color: #be123c; }
+    body.light-theme .voice-pulse-lane-text { color: #475569; }
+    body.light-theme .voice-pulse-waves { color: #64748b; }
+    body.light-theme .voice-pulse-metrics-hint { color: #64748b; }
+    body.light-theme .voice-pulse-metric { background: #fafafa; border-color: #e2e8f0; }
+    body.light-theme .voice-pulse-metric strong { color: #0f172a; }
+    body.light-theme .voice-pulse-metric span { color: #6d28d9; }
+    body.light-theme .voice-metric strong { color: #0f172a; }
+    body.light-theme .voice-metric span { color: #6d28d9; }
+    body.light-theme .voice-live-chip {
+      background: linear-gradient(180deg, #f5f3ff, #ede9fe);
+      border-color: #c4b5fd;
+      color: #5b21b6;
+    }
+    body.light-theme .voice-pulse-booked { color: #047857 !important; }
+    body.light-theme .voice-connector { opacity: 0.62; }
+    body.light-theme .voice-connector.active { opacity: 1; }
+    body.light-theme .voice-dot { opacity: 0.62; }
+    body.light-theme .voice-dot.active { opacity: 1; }
+    body.light-theme .voice-wave .voice-wave-path { opacity: 0.85; }
+    body.light-theme .voice-wave.speaking .voice-wave-path { opacity: 1; stroke-width: 2.6; }
+    @media (prefers-reduced-motion: reduce) {
+      .voice-wave-path { transition: none !important; }
+      .voice-token { transition: none !important; }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0 max-w-[min(100%,14rem)] sm:max-w-none">
+        <i class="fas fa-phone-volume text-violet-400 text-lg shrink-0"></i>
+        <span class="font-semibold text-white text-xs sm:text-sm tracking-wide leading-tight">AI Voice Agents</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/"
+           class="text-sm bg-violet-700 hover:bg-violet-600 text-white px-4 py-2 rounded-lg transition-colors font-medium">
+          Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+  <section class="pt-28 pb-10 px-6" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(124,58,237,0.12), transparent);">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-medium px-4 py-2 rounded-full mb-6">
+        <span class="relative w-2 h-2 pulse-dot">
+          <span class="block w-2 h-2 rounded-full bg-violet-400"></span>
+        </span>
+        Production Systems · Delivered
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-5">
+        AI Voice Agents<br>
+        <span class="gradient-text">From Cold Lead to Booked Meeting</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+        End-to-end AI voice systems — from lead discovery and enrichment through to
+        <strong class="text-white font-semibold">real-time outbound calling</strong>, mass campaigns, and a
+        <strong class="text-white font-semibold">full-stack AI receptionist SaaS</strong> with billing and CRM.
+      </p>
+
+      <div id="home-embed-root" class="voice-hero-orchestrator" aria-label="Live outbound call orchestration animation">
+        <div class="voice-hero-grid">
+          <div class="voice-orch-panel">
+            <h3>Live Orchestration Flow</h3>
+            <svg viewBox="0 0 640 320" class="w-full h-auto" role="img" aria-label="Lead enrichment tree with multi-channel outreach">
+              <defs>
+                <linearGradient id="voiceFlowLine" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#a78bfa"/>
+                  <stop offset="55%" stop-color="#818cf8"/>
+                  <stop offset="100%" stop-color="#34d399"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="636" height="316" rx="12" fill="rgba(2,6,23,0.25)" stroke="rgba(148,163,184,0.2)"/>
+              <g class="voice-flow-shift" transform="translate(-22 0)">
+              <line id="voice-conn-main" class="voice-connector" x1="92" y1="190" x2="206" y2="190" stroke="#a78bfa" stroke-width="2"/>
+              <line id="voice-conn-inbound-start-a" class="voice-connector" x1="92" y1="36" x2="320" y2="65" stroke="#fdba74" stroke-width="2"/>
+              <line id="voice-conn-inbound-start-b" class="voice-connector" x1="92" y1="65" x2="320" y2="65" stroke="#fdba74" stroke-width="2"/>
+              <line id="voice-conn-inbound-start-c" class="voice-connector" x1="92" y1="94" x2="320" y2="65" stroke="#fdba74" stroke-width="2"/>
+              <line id="voice-conn-call" class="voice-connector" x1="206" y1="190" x2="320" y2="165" stroke="#fb7185" stroke-width="2"/>
+              <line id="voice-conn-email" class="voice-connector" x1="206" y1="190" x2="320" y2="195" stroke="#60a5fa" stroke-width="2"/>
+              <line id="voice-conn-inbound-booked" class="voice-connector" x1="320" y1="65" x2="548" y2="180" stroke="#f97316" stroke-width="2"/>
+              <line id="voice-conn-inbound-records" class="voice-connector" x1="320" y1="65" x2="548" y2="65" stroke="#f59e0b" stroke-width="2"/>
+              <line id="voice-conn-inbound-cancel" class="voice-connector" x1="320" y1="65" x2="548" y2="90" stroke="#94a3b8" stroke-width="2"/>
+              <line id="voice-conn-inbound-reschedule" class="voice-connector" x1="320" y1="65" x2="548" y2="145" stroke="#fb7185" stroke-width="2"/>
+              <line id="voice-conn-call-booked" class="voice-connector" x1="320" y1="165" x2="548" y2="180" stroke="#f59e0b" stroke-width="2"/>
+              <line id="voice-conn-email-booked" class="voice-connector" x1="320" y1="195" x2="548" y2="180" stroke="#60a5fa" stroke-width="2"/>
+              <line id="voice-conn-call-followup" class="voice-connector" x1="320" y1="165" x2="500" y2="235" stroke="#fb7185" stroke-width="2"/>
+              <line id="voice-conn-email-followup" class="voice-connector" x1="320" y1="195" x2="500" y2="260" stroke="#93c5fd" stroke-width="2"/>
+              <line id="voice-conn-followup-call-booked" class="voice-connector" x1="500" y1="235" x2="548" y2="180" stroke="#f59e0b" stroke-width="2"/>
+              <line id="voice-conn-followup-email-booked" class="voice-connector" x1="500" y1="260" x2="548" y2="180" stroke="#60a5fa" stroke-width="2"/>
+              <line id="voice-conn-followup-call-cold" class="voice-connector" x1="500" y1="235" x2="612" y2="272" stroke="#94a3b8" stroke-width="2"/>
+              <line id="voice-conn-followup-email-cold" class="voice-connector" x1="500" y1="260" x2="612" y2="272" stroke="#94a3b8" stroke-width="2"/>
+              <line id="voice-conn-booked-crm" class="voice-connector" x1="548" y1="180" x2="612" y2="205" stroke="#60a5fa" stroke-width="2"/>
+              <line id="voice-conn-booked-notify" class="voice-connector" x1="548" y1="180" x2="612" y2="148" stroke="#a78bfa" stroke-width="2"/>
+              <circle id="voice-node-crm-hub" class="voice-dot" cx="320" cy="65" r="5.5" fill="#fdba74"/>
+              <circle id="voice-node-1" class="voice-dot" cx="92" cy="190" r="5.5" fill="#c4b5fd"/>
+              <circle id="voice-node-2" class="voice-dot" cx="206" cy="190" r="5.5" fill="#a5b4fc"/>
+              <circle id="voice-node-inbound-a" class="voice-dot" cx="92" cy="36" r="5.5" fill="#fdba74"/>
+              <circle id="voice-node-inbound-b" class="voice-dot" cx="92" cy="65" r="5.5" fill="#fdba74"/>
+              <circle id="voice-node-inbound-c" class="voice-dot" cx="92" cy="94" r="5.5" fill="#fdba74"/>
+              <circle id="voice-node-call" class="voice-dot" cx="320" cy="165" r="5.5" fill="#fca5a5"/>
+              <circle id="voice-node-email" class="voice-dot" cx="320" cy="195" r="5.5" fill="#93c5fd"/>
+              <circle id="voice-node-5" class="voice-dot" cx="548" cy="180" r="5.5" fill="#6ee7b7"/>
+              <circle id="voice-node-followup-call" class="voice-dot" cx="500" cy="235" r="5.5" fill="#fb7185"/>
+              <circle id="voice-node-followup-email" class="voice-dot" cx="500" cy="260" r="5.5" fill="#93c5fd"/>
+              <circle id="voice-node-records" class="voice-dot" cx="548" cy="65" r="5.5" fill="#f59e0b"/>
+              <circle id="voice-node-cancel" class="voice-dot" cx="548" cy="90" r="5.5" fill="#94a3b8"/>
+              <circle id="voice-node-reschedule" class="voice-dot" cx="548" cy="145" r="5.5" fill="#fb7185"/>
+              <circle id="voice-node-crm" class="voice-dot" cx="612" cy="205" r="5.5" fill="#93c5fd"/>
+              <circle id="voice-node-notify" class="voice-dot" cx="612" cy="148" r="5.5" fill="#c4b5fd"/>
+              <circle id="voice-node-cold-lead" class="voice-dot" cx="612" cy="272" r="5.5" fill="#64748b"/>
+              <text x="320" y="56" text-anchor="middle" fill="#cbd5e1" font-size="13">CRM</text>
+              <text x="92" y="209" text-anchor="middle" fill="#cbd5e1" font-size="13">Lead</text>
+              <text x="206" y="209" text-anchor="middle" fill="#cbd5e1" font-size="13">Enrich</text>
+              <text x="92" y="28" text-anchor="middle" fill="#cbd5e1" font-size="12">Inbound 1</text>
+              <text x="92" y="59" text-anchor="middle" fill="#cbd5e1" font-size="12">Inbound 2</text>
+              <text x="92" y="113" text-anchor="middle" fill="#cbd5e1" font-size="12">Inbound 3</text>
+              <text x="320" y="156" text-anchor="middle" fill="#cbd5e1" font-size="13">Call</text>
+              <text x="320" y="185" text-anchor="middle" fill="#cbd5e1" font-size="13">Email</text>
+              <text x="548" y="208" text-anchor="middle" fill="#cbd5e1" font-size="13">Booked</text>
+              <text x="500" y="226" text-anchor="middle" fill="#cbd5e1" font-size="12">Follow-up Call</text>
+              <text x="500" y="279" text-anchor="middle" fill="#cbd5e1" font-size="12">Follow-up Email</text>
+              <text x="548" y="56" text-anchor="middle" fill="#cbd5e1" font-size="13">Records</text>
+              <text x="548" y="83" text-anchor="middle" fill="#cbd5e1" font-size="13">Cancel</text>
+              <text x="548" y="128" text-anchor="middle" fill="#cbd5e1" font-size="13">Reschedule</text>
+              <text x="612" y="224" text-anchor="middle" fill="#cbd5e1" font-size="13">CRM Log</text>
+              <text x="612" y="166" text-anchor="middle" fill="#cbd5e1" font-size="13">Notify Rep</text>
+              <text x="612" y="291" text-anchor="middle" fill="#cbd5e1" font-size="12">Cold Lead</text>
+              <g transform="translate(76 28)">
+                <circle class="voice-call-lane" cx="0" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="9" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="18" cy="0" r="2.5" fill="#fdba74"/>
+              </g>
+              <g transform="translate(76 57)">
+                <circle class="voice-call-lane" cx="0" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="9" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="18" cy="0" r="2.5" fill="#fdba74"/>
+              </g>
+              <g transform="translate(76 86)">
+                <circle class="voice-call-lane" cx="0" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="9" cy="0" r="2.5" fill="#fdba74"/>
+                <circle class="voice-call-lane" cx="18" cy="0" r="2.5" fill="#fdba74"/>
+              </g>
+              <g transform="translate(304 179)">
+                <circle class="voice-call-lane" cx="0" cy="0" r="2.5" fill="#fca5a5"/>
+                <circle class="voice-call-lane" cx="9" cy="0" r="2.5" fill="#fca5a5"/>
+                <circle class="voice-call-lane" cx="18" cy="0" r="2.5" fill="#fca5a5"/>
+              </g>
+              <g id="voice-wave-inbound-a" class="voice-wave" transform="translate(66 24)">
+                <path id="voice-wave-path-inbound-a" class="voice-wave-path" d="M0 22 Q6 20 12 22 T24 22 T36 22 T48 22 T60 22" fill="none" stroke="#fdba74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g id="voice-wave-inbound-b" class="voice-wave" transform="translate(66 53)">
+                <path id="voice-wave-path-inbound-b" class="voice-wave-path" d="M0 22 Q6 20 12 22 T24 22 T36 22 T48 22 T60 22" fill="none" stroke="#fdba74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g id="voice-wave-inbound-c" class="voice-wave" transform="translate(66 82)">
+                <path id="voice-wave-path-inbound-c" class="voice-wave-path" d="M0 22 Q6 20 12 22 T24 22 T36 22 T48 22 T60 22" fill="none" stroke="#fdba74" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g id="voice-wave" class="voice-wave" transform="translate(278 144)">
+                <path id="voice-wave-path" class="voice-wave-path" d="M0 22 Q6 20 12 22 T24 22 T36 22 T48 22 T60 22" fill="none" stroke="#fca5a5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <circle id="voice-token" class="voice-token" cx="92" cy="36" r="7" fill="#e9d5ff" stroke="#a78bfa" stroke-width="1.6"/>
+              <circle id="voice-token-b" class="voice-token voice-token-alt-a" cx="92" cy="190" r="6.2" stroke-width="1.4"/>
+              <circle id="voice-token-c" class="voice-token voice-token-alt-b" cx="92" cy="45" r="6.2" stroke-width="1.4"/>
+              <circle id="voice-token-d" class="voice-token voice-token-alt-a" cx="86" cy="190" r="5.8" stroke-width="1.3"/>
+              <circle id="voice-token-e" class="voice-token voice-token-alt-b" cx="92" cy="94" r="5.8" stroke-width="1.3"/>
+              <path d="M62 314 C152 304, 244 324, 334 308 C426 296, 518 316, 610 306" fill="none" stroke="url(#voiceFlowLine)" stroke-opacity="0.6" stroke-width="2"/>
+              </g>
+            </svg>
+          </div>
+          <div class="voice-orch-panel voice-orch-panel--pulse text-left">
+            <h3>Campaign Pulse</h3>
+            <div class="voice-pulse-now">
+              <p id="voice-pulse-phase" class="voice-pulse-phase">Overview</p>
+              <div class="voice-pulse-lanes">
+                <div class="voice-pulse-lane voice-pulse-lane--inbound">
+                  <span class="voice-pulse-lane-label">Incoming calls</span>
+                  <p id="voice-pulse-inbound" class="voice-pulse-lane-text">People call in; you book, move, cancel, or check their file.</p>
+                </div>
+                <div class="voice-pulse-lane voice-pulse-lane--outbound">
+                  <span class="voice-pulse-lane-label">Outgoing</span>
+                  <p id="voice-pulse-outbound" class="voice-pulse-lane-text">You reach out by phone or email until a meeting is on the calendar.</p>
+                </div>
+              </div>
+              <p id="voice-pulse-waves" class="voice-pulse-waves" aria-live="polite">Who is talking: line 1 no, 2 no, 3 no</p>
+            </div>
+            <div class="voice-pulse-metrics" aria-label="Illustrative campaign counters">
+              <p class="voice-pulse-metric"><strong id="voice-live-calls">12</strong><span>Outbound calls</span></p>
+              <p class="voice-pulse-metric"><strong id="voice-live-inbound">5</strong><span>Inbound calls</span></p>
+              <p class="voice-pulse-metric"><strong id="voice-live-emails">7</strong><span>Emails queued</span></p>
+              <p class="voice-pulse-metric"><strong id="voice-booked">3</strong><span>Meetings booked</span></p>
+              <p class="voice-pulse-metric"><strong id="voice-rescheduled">2</strong><span>Rescheduled</span></p>
+              <p class="voice-pulse-metric"><strong id="voice-cancelled">1</strong><span>Cancelled</span></p>
+            </div>
+            <p id="voice-stage-chip" class="voice-live-chip"><i class="fas fa-diagram-project"></i> branching outreach active</p>
+            <p id="voice-last-booked" class="voice-pulse-booked text-emerald-300">Last booked (demo): Acme Dental — Sarah</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="bg-slate-800 border border-violet-700/50 text-violet-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-phone-volume mr-1"></i>VAPI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-phone mr-1 text-red-400"></i>Twilio</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-microphone mr-1 text-sky-400"></i>Deepgram</span>
+        <span class="bg-slate-800 border border-teal-700/50 text-teal-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-robot mr-1"></i>Azure OpenAI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-waveform-lines mr-1 text-amber-400"></i>Pipecat</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-chart-line mr-1 text-emerald-400"></i>Langfuse</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 max-w-3xl mx-auto text-center">
+        <div class="hero-border px-3 py-2.5">
+          <p class="text-xl md:text-2xl font-bold text-white leading-none mb-1">300+</p>
+          <p class="text-[11px] md:text-xs text-slate-300 uppercase tracking-wide">Leads Called</p>
+        </div>
+        <div class="hero-border px-3 py-2.5">
+          <p class="text-xl md:text-2xl font-bold text-white leading-none mb-1">&lt;1s</p>
+          <p class="text-[11px] md:text-xs text-slate-300 uppercase tracking-wide">LLM Latency</p>
+        </div>
+        <div class="hero-border px-3 py-2.5">
+          <p class="text-xl md:text-2xl font-bold text-white leading-none mb-1">4</p>
+          <p class="text-[11px] md:text-xs text-slate-300 uppercase tracking-wide">Optimisation Phases</p>
+        </div>
+        <div class="hero-border px-3 py-2.5">
+          <p class="text-xl md:text-2xl font-bold text-white leading-none mb-1">SaaS</p>
+          <p class="text-[11px] md:text-xs text-slate-300 uppercase tracking-wide">Multi-tenant</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS SNAPSHOT ─────────────────────────────────────────── -->
+  <section class="py-10 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-violet-400 uppercase tracking-widest mb-2">Problem</p>
+        <p class="text-slate-200 text-base leading-relaxed">B2B teams need outbound voice that sounds human, scales, and books meetings — without a full call center.</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-violet-400 uppercase tracking-widest mb-2">Solution</p>
+        <p class="text-slate-200 text-base leading-relaxed">Lead discovery, AI enrichment, VAPI/Twilio voice agents, observability, and optional multi-tenant SaaS (ReceptionCrew).</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-violet-400 uppercase tracking-widest mb-2">Outcome</p>
+        <p class="text-slate-200 text-base leading-relaxed">Hundreds of real calls placed, latency tuned to sub-second, production deployment on Azure VM.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── OUTBOUND CALL AGENT ───────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+      <div class="project-head">
+      <p class="project-label">Project 1</p>
+      <h2 class="project-title">
+        AI Outbound Lead Generation Agent
+      </h2>
+      <p class="project-desc">
+        A complete B2B lead generation and outreach system. Discovers businesses, enriches them with AI web scraping,
+        then contacts them via personalised AI voice calls — tracking every conversation through to meeting booked.
+      </p>
+      <div class="tags">
+        <span class="tag t-vapi">VAPI</span>
+        <span class="tag t-twilio">Twilio</span>
+        <span class="tag t-ai">Azure OpenAI</span>
+        <span class="tag t-def">Langfuse</span>
+        <span class="tag t-def">Apollo</span>
+        <span class="tag t-def">ScrapeGraphAI</span>
+        <span class="tag t-def">SSE / real-time</span>
+      </div>
+      </div>
+      <!-- Main workflow diagram -->
+      <div class="workflow-canvas bg-slate-900 border border-slate-700/50 mb-5">
+        <p class="text-xs text-violet-400 font-semibold uppercase tracking-widest mb-4 text-center">End-to-End Pipeline</p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-5">
+          <div class="flow-box border border-slate-600/60" style="min-width:120px;">
+            <i class="fas fa-magnifying-glass text-violet-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Lead Discovery</p>
+            <p class="text-xs text-slate-400 mt-0.5">Apollo · LinkedIn<br>Azure Maps</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-violet-500/40" style="min-width:130px;">
+            <i class="fas fa-brain text-violet-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">AI Enrichment</p>
+            <p class="text-xs text-slate-400 mt-0.5">ScrapeGraphAI<br>Fathom scraper</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-red-500/40" style="min-width:140px;">
+            <i class="fas fa-phone-volume text-red-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Outbound Call</p>
+            <p class="text-xs text-slate-400 mt-0.5">VAPI + Twilio<br>Pipecat (Phase 1)</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-teal-500/40" style="min-width:130px;">
+            <i class="fas fa-chart-line text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Transcript Analysis</p>
+            <p class="text-xs text-slate-400 mt-0.5">Langfuse tracing<br>Prompt iteration</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-emerald-500/40" style="min-width:120px;">
+            <i class="fas fa-calendar-check text-emerald-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Meeting Booked</p>
+            <p class="text-xs text-slate-400 mt-0.5">Email sent in-call<br>CRM updated</p>
+          </div>
+        </div>
+
+        <!-- VAPI tech diagram -->
+        <p class="text-xs text-sky-400 font-semibold uppercase tracking-widest mb-4 text-center">VAPI Call Architecture</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="flow-box border border-sky-500/40" style="min-width:130px;">
+            <i class="fas fa-microphone text-sky-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">STT</p>
+            <p class="text-xs text-slate-400 mt-0.5">Deepgram<br>Speechmatics</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-teal-500/40" style="min-width:130px;">
+            <i class="fas fa-robot text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">LLM</p>
+            <p class="text-xs text-slate-400 mt-0.5">Azure gpt-4.1 nano<br>500-word prompt</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-amber-500/40" style="min-width:140px;">
+            <i class="fas fa-volume-high text-amber-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">TTS</p>
+            <p class="text-xs text-slate-400 mt-0.5">Cartesia Sonic 3<br>Azure SSML</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-red-500/40" style="min-width:120px;">
+            <i class="fas fa-phone text-red-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Twilio</p>
+            <p class="text-xs text-slate-400 mt-0.5">CNAM enabled<br>DNC screened</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Discover leads:</strong> Apollo, LinkedIn, and map sources provide candidate businesses.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Enrich with context:</strong> ScrapeGraphAI/Fathom add business-specific details for personalization.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Run voice calls:</strong> VAPI + Twilio execute outbound conversations with STT/LLM/TTS loop.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Track and follow up:</strong> SSE progress, transcript logs, and prioritization feed campaign actions.</span></li>
+        </ul>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-2">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-bolt text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Mass Calls Architecture</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Thread-per-call execution with configurable parallelism and unique per-call channels.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-tower-broadcast text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Live Progress Streaming</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">SSE updates campaign state in real-time between call agent and lead-gen app.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-clock text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Timezone-Aware Scheduling</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Calls are scheduled per recipient timezone with compliance-hour safeguards.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-chart-line text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">LLM Observability</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Langfuse traces each call turn for faster QA iteration and prompt tuning.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-globe text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">AI Lead Enrichment</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Multi-source scraping enriches profile context before outreach begins.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-check-double text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Post-call Prioritisation</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Transcript-driven tagging helps teams focus on high-intent follow-ups.</p>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── AI RECEPTIONIST SAAS ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+      <div class="project-head">
+      <p class="project-label">Project 2</p>
+      <h2 class="project-title">
+        AI Receptionist SaaS Platform
+      </h2>
+      <p class="project-desc">
+        A fully functional multi-tenant SaaS enabling businesses to deploy AI voice receptionists.
+        Built end-to-end as sole developer — public marketing site, client dashboard, billing, and full campaign management.
+      </p>
+      <div class="tags">
+        <span class="tag t-vapi">VAPI</span>
+        <span class="tag t-stripe">Stripe</span>
+        <span class="tag t-oauth">Google OAuth</span>
+        <span class="tag t-def">FastAPI</span>
+        <span class="tag t-def">Multi-tenant SaaS</span>
+        <span class="tag t-def">Azure VM</span>
+        <span class="tag t-def">SQLAlchemy</span>
+      </div>
+      </div>
+      <!-- SaaS diagram -->
+      <div class="workflow-canvas bg-slate-900 border border-slate-700/50 mb-5">
+        <p class="text-xs text-violet-400 font-semibold uppercase tracking-widest mb-5 text-center">Platform Flow</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="flow-box border border-indigo-500/40" style="min-width:120px;">
+            <i class="fas fa-user-plus text-indigo-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Client Onboards</p>
+            <p class="text-xs text-slate-400 mt-0.5">Google OAuth<br>Company setup</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-violet-500/40" style="min-width:130px;">
+            <i class="fas fa-phone-volume text-violet-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">VAPI Agent Created</p>
+            <p class="text-xs text-slate-400 mt-0.5">Custom config<br>per company</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-teal-500/40" style="min-width:140px;">
+            <i class="fas fa-phone-arrow-up-right text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Inbound / Outbound</p>
+            <p class="text-xs text-slate-400 mt-0.5">Calls · Campaigns<br>Scheduling</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-emerald-500/40" style="min-width:120px;">
+            <i class="fas fa-database text-emerald-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Lead CRM</p>
+            <p class="text-xs text-slate-400 mt-0.5">Logs · Qualification<br>Exports</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-indigo-500/40" style="min-width:120px;">
+            <i class="fab fa-stripe text-indigo-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Stripe Billing</p>
+            <p class="text-xs text-slate-400 mt-0.5">Credit system<br>Usage limits</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Client onboarding:</strong> OAuth sign-in, company setup, and assistant configuration.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Agent activation:</strong> VAPI assistants are provisioned per tenant with business rules.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Campaign operations:</strong> Inbound/outbound calls and scheduling run from one dashboard.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Billing and governance:</strong> Credits, limits, and logs are tracked for controlled scaling.</span></li>
+        </ul>
+      </div>
+
+      <!-- Platform capabilities -->
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-building text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Multi-Tenant Dashboard</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Core company workspace: leads, calls, campaigns, logs, and reporting in isolated tenant scopes.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-calendar-days text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Campaign Scheduling</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Scheduler module for timed call/email dispatch and recurring contact sync jobs.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fab fa-stripe text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Stripe Billing & Credits</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Billing module with subscription handling and credit-limit enforcement at tenant level.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-users-gear text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">AI Squads</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Reusable agent-orchestration layer for receptionist, sales, and support voice configurations.</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-shield-halved text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Access Control</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Auth + team management module (Google OAuth, role-based controls, secure records boundaries).</p>
+        </div>
+        <div class="bg-slate-800/60 rounded-xl p-4">
+          <i class="fas fa-server text-violet-400 text-xl mb-3"></i>
+          <h3 class="font-semibold text-white mb-2 text-base">Production Deployment</h3>
+          <p class="text-slate-200 text-sm leading-relaxed">Deployment module: Azure VM runtime, process supervision, reverse proxy, and TLS automation.</p>
+        </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT THIS PROVES ──────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-white mb-6">What This Proves</h2>
+      <div class="grid md:grid-cols-3 gap-4 text-left">
+        <div class="bg-slate-800/60 border border-violet-700/40 rounded-xl p-5">
+          <p class="text-violet-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Full-stack voice AI delivery</p>
+          <p class="text-slate-200 text-sm leading-relaxed">From STT selection and TTS tuning to latency profiling, call hooks, and mass parallel campaigns — owned end-to-end.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-violet-700/40 rounded-xl p-5">
+          <p class="text-violet-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Production-grade SaaS</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Multi-tenant platform with Stripe billing, OAuth, and campaign management built and deployed solo on Azure VM.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-violet-700/40 rounded-xl p-5">
+          <p class="text-violet-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Iterative optimisation</p>
+          <p class="text-slate-200 text-sm leading-relaxed">4 phases over 5 months — each phase delivered measurable gains in call quality, latency, and scale (300+ calls placed).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DOMAIN REFERENCE CARD ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-12" style="background: linear-gradient(to right, transparent, rgba(167,139,250,0.5));"></div>
+        <i class="fas fa-compass text-violet-400" style="font-size:0.7rem;"></i>
+        <div class="h-px w-12" style="background: linear-gradient(to left, transparent, rgba(167,139,250,0.5));"></div>
+      </div>
+      <p class="text-violet-400 font-medium text-sm uppercase tracking-widest mb-2 text-center">Technical Scope</p>
+      <h2 class="text-2xl font-bold text-white text-center mb-3">Domain Coverage</h2>
+      <p class="text-slate-300 text-sm text-center max-w-3xl mx-auto mb-6">
+        Business capabilities and technical depth delivered in this voice AI portfolio.
+      </p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="rounded-xl p-4 md:col-span-2 lg:col-span-3" style="background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(30,41,59,0.7)); border: 1px solid rgba(167,139,250,0.45);">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-tag text-violet-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Core Domain</p>
+              </div>
+              <p class="text-white font-semibold text-sm">AI Integration &amp; Agents</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-link text-violet-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Also Covers</p>
+              </div>
+              <p class="text-slate-200 text-sm leading-relaxed">MLOps &amp; Deployment, including production SaaS and API deployment.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-4 mb-2">
+            <i class="fas fa-sitemap text-violet-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Subdomains</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Real-time Voice Agents · Conversational Logic · Campaign Management · LLM Observability · Lead Generation Pipelines · AI Web Scraping</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-code-branch text-violet-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Techniques</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">STT/TTS streaming · VAD · DTMF/IVR · latency optimisation · mass parallel calls · SSE streaming · timezone-aware scheduling · DNC filtering · phone normalisation.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-toolbox text-violet-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Frameworks / Tools</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">VAPI, Pipecat, Twilio, Deepgram, Speechmatics, Cartesia Sonic 3, Azure OpenAI, FastAPI, Langfuse, Stripe, SQLAlchemy, ScrapeGraphAI, Apollo API, Azure Maps API, systemd, nginx, certbot.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-bullseye text-violet-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-violet-400 font-bold uppercase tracking-widest">Use Cases</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">B2B outbound AI call agents, mass lead campaigns, AI receptionist operations, and multi-tenant SaaS with billing and CRM.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────────────── -->
+  <section class="py-12 md:py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          Need AI voice agents or a call platform?
+        </h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+          Outbound campaigns, AI receptionists, or a full SaaS — let's build it.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/"
+             class="bg-violet-700 hover:bg-violet-600 text-white px-7 py-3.5 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-violet-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com"
+             class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-7 py-3.5 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-phone-volume text-violet-400"></i>
+        <span>AI Voice Agents &amp; Lead Generation</span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-violet-400 hover:text-violet-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const raw = link.getAttribute('href');
+        if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return;
+        if (raw.startsWith('http://') || raw.startsWith('https://')) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set('theme', theme);
+          link.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark") ? paramTheme : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+
+    const voiceToken = document.getElementById("voice-token");
+    const voiceTokenB = document.getElementById("voice-token-b");
+    const voiceTokenC = document.getElementById("voice-token-c");
+    const voiceTokenD = document.getElementById("voice-token-d");
+    const voiceTokenE = document.getElementById("voice-token-e");
+    const voiceWave = document.getElementById("voice-wave");
+    const voiceWaveInboundA = document.getElementById("voice-wave-inbound-a");
+    const voiceWaveInboundB = document.getElementById("voice-wave-inbound-b");
+    const voiceWaveInboundC = document.getElementById("voice-wave-inbound-c");
+    const voiceWavePath = document.getElementById("voice-wave-path");
+    const voiceWavePathInboundA = document.getElementById("voice-wave-path-inbound-a");
+    const voiceWavePathInboundB = document.getElementById("voice-wave-path-inbound-b");
+    const voiceWavePathInboundC = document.getElementById("voice-wave-path-inbound-c");
+    const voiceCalls = document.getElementById("voice-live-calls");
+    const voiceInbound = document.getElementById("voice-live-inbound");
+    const voiceEmails = document.getElementById("voice-live-emails");
+    const voiceBooked = document.getElementById("voice-booked");
+    const voiceRescheduled = document.getElementById("voice-rescheduled");
+    const voiceCancelled = document.getElementById("voice-cancelled");
+    const voiceStageChip = document.getElementById("voice-stage-chip");
+    const voiceLastBooked = document.getElementById("voice-last-booked");
+    const voicePulsePhase = document.getElementById("voice-pulse-phase");
+    const voicePulseInbound = document.getElementById("voice-pulse-inbound");
+    const voicePulseOutbound = document.getElementById("voice-pulse-outbound");
+    const voicePulseWaves = document.getElementById("voice-pulse-waves");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const setPulseNow = function (phase, inboundText, outboundText) {
+      if (voicePulsePhase) voicePulsePhase.textContent = phase;
+      if (voicePulseInbound) voicePulseInbound.textContent = inboundText;
+      if (voicePulseOutbound) voicePulseOutbound.textContent = outboundText;
+    };
+    const setPulseWaves = function (a, b, c) {
+      if (!voicePulseWaves) return;
+      const yn = function (on) {
+        return on ? "yes" : "no";
+      };
+      voicePulseWaves.textContent = "Who is talking: line 1 " + yn(a) + ", 2 " + yn(b) + ", 3 " + yn(c);
+    };
+    if (voiceToken && voiceTokenB && voiceTokenC && voiceTokenD && voiceTokenE && voiceWave && voiceWaveInboundA && voiceWaveInboundB && voiceWaveInboundC && voiceWavePath && voiceWavePathInboundA && voiceWavePathInboundB && voiceWavePathInboundC && voiceCalls && voiceInbound && voiceEmails && voiceBooked && voiceRescheduled && voiceCancelled && voiceStageChip && voiceLastBooked) {
+      let liveCalls = 12;
+      let inboundCalls = 5;
+      let emailQueue = 7;
+      let booked = 3;
+      let rescheduled = 2;
+      let cancelled = 1;
+      const bookedPeople = ["Acme Dental - rep Sarah", "Bright Homecare - rep Malik", "Northside HVAC - rep Emma", "Urban Legal - rep David"];
+      let bookedIdx = 0;
+      const nodes = {
+        crmHub: document.getElementById("voice-node-crm-hub"),
+        lead: document.getElementById("voice-node-1"),
+        enrich: document.getElementById("voice-node-2"),
+        inboundA: document.getElementById("voice-node-inbound-a"),
+        inboundB: document.getElementById("voice-node-inbound-b"),
+        inboundC: document.getElementById("voice-node-inbound-c"),
+        call: document.getElementById("voice-node-call"),
+        email: document.getElementById("voice-node-email"),
+        booked: document.getElementById("voice-node-5"),
+        followupCall: document.getElementById("voice-node-followup-call"),
+        followupEmail: document.getElementById("voice-node-followup-email"),
+        crm: document.getElementById("voice-node-crm"),
+        notify: document.getElementById("voice-node-notify"),
+        coldLead: document.getElementById("voice-node-cold-lead")
+      };
+      const conns = {
+        main: document.getElementById("voice-conn-main"),
+        inboundStartA: document.getElementById("voice-conn-inbound-start-a"),
+        inboundStartB: document.getElementById("voice-conn-inbound-start-b"),
+        inboundStartC: document.getElementById("voice-conn-inbound-start-c"),
+        call: document.getElementById("voice-conn-call"),
+        email: document.getElementById("voice-conn-email"),
+        inboundBooked: document.getElementById("voice-conn-inbound-booked"),
+        inboundRecords: document.getElementById("voice-conn-inbound-records"),
+        inboundReschedule: document.getElementById("voice-conn-inbound-reschedule"),
+        inboundCancel: document.getElementById("voice-conn-inbound-cancel"),
+        callBooked: document.getElementById("voice-conn-call-booked"),
+        emailBooked: document.getElementById("voice-conn-email-booked"),
+        callFollowup: document.getElementById("voice-conn-call-followup"),
+        emailFollowup: document.getElementById("voice-conn-email-followup"),
+          followupCallBooked: document.getElementById("voice-conn-followup-call-booked"),
+          followupEmailBooked: document.getElementById("voice-conn-followup-email-booked"),
+          followupCallCold: document.getElementById("voice-conn-followup-call-cold"),
+          followupEmailCold: document.getElementById("voice-conn-followup-email-cold"),
+        bookedCrm: document.getElementById("voice-conn-booked-crm"),
+        bookedNotify: document.getElementById("voice-conn-booked-notify")
+      };
+      const routes = {
+        inboundA: [{ x: 92, y: 36 }, { x: 320, y: 65 }, { x: 548, y: 180 }, { x: 548, y: 180 }, { x: 92, y: 36 }],
+        inboundB: [{ x: 92, y: 65 }, { x: 92, y: 65 }, { x: 320, y: 65 }, { x: 548, y: 65 }, { x: 92, y: 65 }],
+        inboundC: [{ x: 92, y: 94 }, { x: 92, y: 94 }, { x: 92, y: 94 }, { x: 320, y: 65 }, { x: 548, y: 145 }],
+        call: [{ x: 92, y: 190 }, { x: 206, y: 190 }, { x: 320, y: 165 }, { x: 548, y: 180 }],
+        email: [{ x: 92, y: 190 }, { x: 206, y: 190 }, { x: 320, y: 195 }, { x: 548, y: 180 }, { x: 612, y: 205 }],
+        lead2: [{ x: 86, y: 190 }, { x: 206, y: 190 }, { x: 320, y: 165 }, { x: 548, y: 180 }, { x: 612, y: 205 }],
+        inboundRecords: [{ x: 92, y: 65 }, { x: 92, y: 65 }, { x: 320, y: 65 }, { x: 548, y: 65 }],
+        inboundReschedule: [{ x: 92, y: 94 }, { x: 92, y: 94 }, { x: 320, y: 65 }, { x: 548, y: 145 }]
+      };
+      const stageText = {
+        inbound: '<i class="fas fa-phone"></i> inbound queue active',
+        call: '<i class="fas fa-phone-volume"></i> call track converting',
+        email: '<i class="fas fa-envelope"></i> email track nurturing',
+        records: '<i class="fas fa-file-medical"></i> records verified',
+        crm: '<i class="fas fa-address-card"></i> client profile updated in CRM',
+        followupCall: '<i class="fas fa-phone"></i> follow-up call scheduled',
+        followupEmail: '<i class="fas fa-envelope-open-text"></i> follow-up email scheduled',
+        coldLead: '<i class="fas fa-snowflake"></i> lead moved to cold list',
+          followupCallBooked: '<i class="fas fa-calendar-check"></i> follow-up call converted to booked',
+          followupEmailBooked: '<i class="fas fa-calendar-check"></i> follow-up email converted to booked',
+          followupCallCold: '<i class="fas fa-snowflake"></i> follow-up call moved to cold lead',
+          followupEmailCold: '<i class="fas fa-snowflake"></i> follow-up email moved to cold lead',
+        reschedule: '<i class="fas fa-calendar-day"></i> appointment rescheduled',
+        cancel: '<i class="fas fa-calendar-xmark"></i> appointment cancelled'
+      };
+      const pulseNode = function (key) {
+        Object.keys(nodes).forEach(function (k) {
+          if (nodes[k]) nodes[k].classList.toggle("active", k === key);
+        });
+      };
+      const pulseConn = function (keys) {
+        Object.keys(conns).forEach(function (k) {
+          if (conns[k]) conns[k].classList.toggle("active", keys.indexOf(k) >= 0);
+        });
+      };
+      const setTokenPos = function (token, point) {
+        token.setAttribute("cx", String(point.x));
+        token.setAttribute("cy", String(point.y));
+      };
+      setTokenPos(voiceToken, routes.inboundA[0]);
+      setTokenPos(voiceTokenB, routes.email[0]);
+      setTokenPos(voiceTokenC, routes.inboundB[0]);
+      setTokenPos(voiceTokenD, routes.lead2[0]);
+      setTokenPos(voiceTokenE, routes.inboundC[0]);
+      pulseNode("lead");
+      pulseConn(["main"]);
+      voiceStageChip.innerHTML = '<i class="fas fa-diagram-project"></i> branching outreach active';
+      setPulseNow(
+        "Overview",
+        "Three incoming lines; one place to work them.",
+        "Separate track for outbound calls and emails until a meeting lands."
+      );
+      setPulseWaves(false, false, false);
+      if (voiceWave) voiceWave.dataset.waveSpeaking = "false";
+      if (voiceWaveInboundA) voiceWaveInboundA.dataset.waveSpeaking = "false";
+      if (voiceWaveInboundB) voiceWaveInboundB.dataset.waveSpeaking = "false";
+      if (voiceWaveInboundC) voiceWaveInboundC.dataset.waveSpeaking = "false";
+      if (!reducedMotion) {
+        let step = 0;
+        let inboundFrame = 0;
+        let lastActiveTrack = "call";
+        const getRoutePoint = function (route, idx) {
+          return route[idx % route.length];
+        };
+        const crmHubPoint = { x: 320, y: 65 };
+        const inboundTracks = [
+          {
+            token: voiceToken,
+            wave: voiceWaveInboundA,
+            inboundPoint: { x: 92, y: 36 },
+            outcomePoint: { x: 548, y: 180 },
+            afterOutcomePoint: { x: 612, y: 148 },
+            offset: 0,
+            dwell: 1
+          },
+          {
+            token: voiceTokenC,
+            wave: voiceWaveInboundB,
+            inboundPoint: { x: 92, y: 65 },
+            outcomePoint: { x: 548, y: 65 },
+            offset: 2,
+            dwell: 2
+          },
+          {
+            token: voiceTokenE,
+            wave: voiceWaveInboundC,
+            inboundPoint: { x: 92, y: 94 },
+            outcomePoint: { x: 548, y: 145 },
+            offset: 4,
+            dwell: 3
+          }
+        ];
+        const buildInboundSequence = function (track) {
+          const seq = [];
+          for (let i = 0; i < track.offset; i += 1) seq.push(track.inboundPoint);
+          for (let i = 0; i < track.dwell; i += 1) seq.push(track.inboundPoint);
+          // Keep non-inbound processing duration identical across tracks.
+          seq.push(crmHubPoint);
+          seq.push(track.outcomePoint);
+          if (track.afterOutcomePoint) seq.push(track.afterOutcomePoint);
+          seq.push(track.inboundPoint);
+          return seq;
+        };
+        inboundTracks.forEach(function (track) {
+          track.sequence = buildInboundSequence(track);
+        });
+        const tickFlow = function () {
+          step = (step + 1) % 5;
+          inboundFrame += 1;
+          setTokenPos(voiceTokenB, getRoutePoint(routes.email, step));
+          setTokenPos(voiceTokenD, getRoutePoint(routes.lead2, step));
+          voiceWave.classList.remove("speaking");
+          voiceWaveInboundA.classList.remove("speaking");
+          voiceWaveInboundB.classList.remove("speaking");
+          voiceWaveInboundC.classList.remove("speaking");
+          if (voiceWave) voiceWave.dataset.waveSpeaking = "false";
+          if (voiceWaveInboundA) voiceWaveInboundA.dataset.waveSpeaking = "false";
+          if (voiceWaveInboundB) voiceWaveInboundB.dataset.waveSpeaking = "false";
+          if (voiceWaveInboundC) voiceWaveInboundC.dataset.waveSpeaking = "false";
+          inboundTracks.forEach(function (track) {
+            const idx = inboundFrame % track.sequence.length;
+            const point = track.sequence[idx];
+            const isInInboundNode = point.x === track.inboundPoint.x && point.y === track.inboundPoint.y;
+            setTokenPos(track.token, point);
+            if (isInInboundNode) {
+              track.wave.classList.add("speaking");
+              track.wave.dataset.waveSpeaking = "true";
+            }
+          });
+          const wa = voiceWaveInboundA && voiceWaveInboundA.dataset.waveSpeaking === "true";
+          const wb = voiceWaveInboundB && voiceWaveInboundB.dataset.waveSpeaking === "true";
+          const wc = voiceWaveInboundC && voiceWaveInboundC.dataset.waveSpeaking === "true";
+          setPulseWaves(wa, wb, wc);
+          if (step === 0) {
+            pulseNode("lead");
+            pulseConn(["main", "inboundStartA", "inboundStartB", "inboundStartC"]);
+            voiceStageChip.innerHTML = '<i class="fas fa-magnifying-glass"></i> new leads entering flow';
+            setPulseNow(
+              "1 · New traffic",
+              "Calls are coming in.",
+              "New prospects show up."
+            );
+          } else if (step === 1) {
+            pulseNode("enrich");
+            pulseConn(["main", "inboundStartA", "inboundStartB", "inboundStartC"]);
+            voiceStageChip.innerHTML = '<i class="fas fa-brain"></i> enrichment complete';
+            setPulseNow(
+              "2 · Context",
+              "We know who is calling before the next step.",
+              "Notes added—then a call or email goes out."
+            );
+          } else if (step === 2) {
+            const activeTrack = ["inbound", "call", "email"][Math.floor(Math.random() * 3)];
+            lastActiveTrack = activeTrack;
+            pulseNode("call");
+            pulseConn(["inboundStartA", "inboundStartB", "inboundStartC", "call", "email", "inboundRecords", "inboundReschedule"]);
+            voiceStageChip.innerHTML = stageText[activeTrack];
+            liveCalls = Math.max(8, Math.min(20, liveCalls + (Math.random() > 0.45 ? 1 : -1)));
+            inboundCalls = Math.max(3, Math.min(12, inboundCalls + (Math.random() > 0.48 ? 1 : -1)));
+            emailQueue = Math.max(4, Math.min(16, emailQueue + (Math.random() > 0.5 ? 1 : -1)));
+            // Lead call waveform should always animate during the call stage.
+            voiceWave.classList.add("speaking");
+            if (voiceWave) voiceWave.dataset.waveSpeaking = "true";
+            // Inbound waveform can animate too when inbound is the active sub-track.
+            if (activeTrack === "inbound") {
+              inboundCalls = Math.max(3, Math.min(12, inboundCalls + 1));
+            }
+            if (activeTrack === "inbound") {
+              setPulseNow(
+                "3 · Incoming",
+                "Callers book, ask for files, move times, or cancel.",
+                "Outbound keeps moving below."
+              );
+            } else if (activeTrack === "call") {
+              setPulseNow(
+                "3 · Outbound calls",
+                "Incoming still runs behind this.",
+                "Live dialing—the wiggly line means someone is talking."
+              );
+            } else {
+              setPulseNow(
+                "3 · Email",
+                "Incoming calls stay on.",
+                "Email follow-up instead of a call this round."
+              );
+            }
+          } else if (step === 3) {
+            const inboundOutcome = ["booked", "crm", "records", "reschedule", "cancel", "followupCall", "followupEmail", "coldLead"][Math.floor(Math.random() * 8)];
+            if (inboundOutcome === "booked") {
+              pulseNode("booked");
+              if (lastActiveTrack === "inbound") {
+                pulseConn(["inboundBooked", "bookedNotify"]);
+                voiceStageChip.innerHTML = '<i class="fas fa-bell"></i> inbound booking sent to rep';
+                setPulseNow(
+                  "4 · Booked",
+                  "They booked—your rep gets a heads-up.",
+                  "Quiet."
+                );
+              } else if (lastActiveTrack === "email") {
+                pulseConn(["emailBooked", "bookedCrm"]);
+                voiceStageChip.innerHTML = '<i class="fas fa-database"></i> lead booking logged to CRM';
+                setPulseNow(
+                  "4 · Booked",
+                  "Quiet.",
+                  "Yes by email—meeting saved."
+                );
+              } else {
+                pulseConn(["callBooked", "bookedCrm"]);
+                voiceStageChip.innerHTML = '<i class="fas fa-database"></i> lead booking logged to CRM';
+                setPulseNow(
+                  "4 · Booked",
+                  "Other lines may still be busy.",
+                  "Yes on the call—meeting saved."
+                );
+              }
+            } else if (inboundOutcome === "crm") {
+              pulseNode("crm");
+              pulseConn(["inboundCrm"]);
+              voiceStageChip.innerHTML = stageText.crm;
+              setPulseNow(
+                "4 · Saved",
+                "Their details are on file for the next question.",
+                "Same story for inbound and outbound."
+              );
+            } else if (inboundOutcome === "records") {
+              pulseNode("records");
+              pulseConn(["inboundRecords"]);
+              voiceStageChip.innerHTML = stageText.records;
+              setPulseNow(
+                "4 · File lookup",
+                "Opening their record while they wait.",
+                "Quiet."
+              );
+            } else if (inboundOutcome === "followupCall") {
+              pulseNode("followupCall");
+              if (Math.random() < 0.55) {
+                pulseNode("booked");
+                pulseConn(["callFollowup", "followupCallBooked", "bookedCrm"]);
+                voiceStageChip.innerHTML = stageText.followupCallBooked;
+                setPulseNow(
+                  "4 · Booked",
+                  "Quiet.",
+                  "Second call worked—meeting saved."
+                );
+              } else {
+                pulseNode("coldLead");
+                pulseConn(["callFollowup", "followupCallCold"]);
+                voiceStageChip.innerHTML = stageText.followupCallCold;
+                setPulseNow(
+                  "4 · No deal",
+                  "Quiet.",
+                  "No yes yet—try again later."
+                );
+              }
+            } else if (inboundOutcome === "followupEmail") {
+              pulseNode("followupEmail");
+              if (Math.random() < 0.45) {
+                pulseNode("booked");
+                pulseConn(["emailFollowup", "followupEmailBooked", "bookedCrm"]);
+                voiceStageChip.innerHTML = stageText.followupEmailBooked;
+                setPulseNow(
+                  "4 · Booked",
+                  "Quiet.",
+                  "They replied—meeting saved."
+                );
+              } else {
+                pulseNode("coldLead");
+                pulseConn(["emailFollowup", "followupEmailCold"]);
+                voiceStageChip.innerHTML = stageText.followupEmailCold;
+                setPulseNow(
+                  "4 · No reply",
+                  "Quiet.",
+                  "No answer to email—try later."
+                );
+              }
+            } else if (inboundOutcome === "coldLead") {
+              pulseNode("coldLead");
+              pulseConn(["emailFollowup", "followupEmailCold"]);
+              voiceStageChip.innerHTML = stageText.coldLead;
+              setPulseNow(
+                "4 · Low priority",
+                "Quiet.",
+                "Not a fit now—park the lead."
+              );
+            } else if (inboundOutcome === "reschedule") {
+              pulseNode("reschedule");
+              pulseConn(["inboundReschedule"]);
+              voiceStageChip.innerHTML = stageText.reschedule;
+              rescheduled = Math.min(9, rescheduled + 1);
+              setPulseNow(
+                "4 · New time",
+                "They moved the appointment.",
+                "Quiet."
+              );
+            } else {
+              pulseNode("cancel");
+              pulseConn(["inboundCancel"]);
+              voiceStageChip.innerHTML = stageText.cancel;
+              cancelled = Math.min(9, cancelled + 1);
+              setPulseNow(
+                "4 · Cancelled",
+                "They cancelled the visit.",
+                "Quiet."
+              );
+            }
+            if (Math.random() > 0.3) {
+              booked = Math.min(9, booked + 1);
+              bookedIdx = (bookedIdx + 1) % bookedPeople.length;
+              voiceLastBooked.textContent = "Last booked (demo): " + bookedPeople[bookedIdx];
+            }
+          } else {
+            pulseNode("crmHub");
+            pulseConn(["inboundStartA", "inboundStartB", "inboundStartC"]);
+            voiceStageChip.innerHTML = '<i class="fas fa-database"></i> inbound calls synced to CRM';
+            setPulseNow(
+              "5 · All set",
+              "Calls are wrapped and ready for the next cycle.",
+              "Outreach queue resets for new names."
+            );
+          }
+          voiceCalls.textContent = String(liveCalls);
+          voiceInbound.textContent = String(inboundCalls);
+          voiceEmails.textContent = String(emailQueue);
+          voiceBooked.textContent = String(booked);
+          voiceRescheduled.textContent = String(rescheduled);
+          voiceCancelled.textContent = String(cancelled);
+          const nextDelay = step === 2 ? 4500 : 2200;
+          setTimeout(tickFlow, nextDelay);
+        };
+        setTimeout(tickFlow, 2200);
+      }
+      if (voiceWavePath && voiceWavePathInboundA && voiceWavePathInboundB && voiceWavePathInboundC && !reducedMotion) {
+        const idleShape = "M0 22 Q6 20 12 22 T24 22 T36 22 T48 22 T60 22";
+        const speakingShapes = [
+          "M0 22 Q3 20 6 22 T12 22 T18 20 T24 22 T30 22 T36 20 T42 22 T48 22 T54 20 T60 22 T66 22",
+          "M0 22 Q4 22 8 20 T16 22 T24 20 T32 22 T40 20 T48 22 T56 20 T64 22",
+          "M0 22 Q2 20 4 22 T8 22 T12 20 T16 22 T20 22 T24 20 T28 22 T32 22 T36 20 T40 22 T44 22 T48 20 T52 22 T56 22 T60 20 T64 22",
+          "M0 22 Q5 20 10 22 T20 22 T30 20 T40 22 T50 20 T60 22 T70 22"
+        ];
+        let waveIdx = 0;
+        setInterval(function () {
+          const speaking = voiceWave && voiceWave.dataset.waveSpeaking === "true";
+          const speakingInboundA = voiceWaveInboundA && voiceWaveInboundA.dataset.waveSpeaking === "true";
+          const speakingInboundB = voiceWaveInboundB && voiceWaveInboundB.dataset.waveSpeaking === "true";
+          const speakingInboundC = voiceWaveInboundC && voiceWaveInboundC.dataset.waveSpeaking === "true";
+          if (!speaking) {
+            voiceWavePath.setAttribute("d", idleShape);
+          } else {
+            waveIdx = (waveIdx + 1) % speakingShapes.length;
+            voiceWavePath.setAttribute("d", speakingShapes[waveIdx]);
+          }
+          if (!speakingInboundA) {
+            voiceWavePathInboundA.setAttribute("d", idleShape);
+          } else {
+            waveIdx = (waveIdx + 1) % speakingShapes.length;
+            voiceWavePathInboundA.setAttribute("d", speakingShapes[waveIdx]);
+          }
+          if (!speakingInboundB) {
+            voiceWavePathInboundB.setAttribute("d", idleShape);
+          } else {
+            waveIdx = (waveIdx + 1) % speakingShapes.length;
+            voiceWavePathInboundB.setAttribute("d", speakingShapes[(waveIdx + 1) % speakingShapes.length]);
+          }
+          if (!speakingInboundC) {
+            voiceWavePathInboundC.setAttribute("d", idleShape);
+          } else {
+            waveIdx = (waveIdx + 1) % speakingShapes.length;
+            voiceWavePathInboundC.setAttribute("d", speakingShapes[(waveIdx + 2) % speakingShapes.length]);
+          }
+        }, 120);
+      }
+    }
+  })();
+</script>
+<script src="../assets/home-embed.js"></script>
+</body>
+</html>

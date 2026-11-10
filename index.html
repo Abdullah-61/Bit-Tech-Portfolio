@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Portfolio — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-800/55"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"],
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="border-slate-600/50"],
+    body.light-theme [class*="border-slate-700/50"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme a[class*="bg-"][class*="text-white"],
+    body.light-theme button[class*="bg-"][class*="text-white"] { color: #ffffff !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #1f2937 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #374151 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    /* light-surface-pass */
+    body.light-theme .project-shell,
+    body.light-theme .workflow-canvas,
+    body.light-theme .flow-box,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .hero-border,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      background-color: #ffffff !important;
+    }
+    body.light-theme .workflow-canvas,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme section[class*="bg-slate-"] {
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .domain-card { background: #ffffff; border-color: #cbd5e1; }
+    body.light-theme span[class*="rounded-full"][class*="border"] {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .hero-domain-tag {
+      background-color: #e0e7ff !important;
+      border-color: #a5b4fc !important;
+      color: #1e1b4b !important;
+    }
+    body.light-theme a[href^="mailto:"] {
+      background-color: #1e293b !important;
+      border-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    body.light-theme a[href^="mailto:"]:hover { background-color: #0f172a !important; color: #ffffff !important; }
+    .cta-panel {
+      background:
+        linear-gradient(#0f172a, #0f172a) padding-box,
+        linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    body.light-theme .cta-panel {
+      background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4) border-box;
+      border-color: transparent !important;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8, #38bdf8, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .domain-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      transition: all 0.2s ease;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+    .domain-card:hover {
+      border-color: var(--card-color, #6366f1);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+    .card-top-bar {
+      height: 4px;
+      background: var(--card-color, #6366f1);
+    }
+    .domain-card .card-body { padding: 1.75rem; flex: 1; }
+    .domain-card .card-footer {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 3px; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float-icon { animation: float 4s ease-in-out infinite; }
+    .portfolio-site-logo {
+      height: 2rem;
+      width: auto;
+      max-width: 10.5rem;
+      object-fit: contain;
+      object-position: left center;
+      display: block;
+    }
+    .portfolio-site-logo--footer {
+      height: 1.75rem;
+      max-width: 9rem;
+      opacity: 0.92;
+    }
+
+    body.light-theme .home-clarity-card {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    /* Home hero: ambient AI motes — stay in margins (not over copy); content is z-10 */
+    .home-hero {
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero-ambient {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* Badge sits above ambient motes/morphs so the rabbit can pass “behind” it */
+    .hero-domain-tag {
+      position: relative;
+      z-index: 2;
+    }
+
+    .home-hero-content {
+      position: relative;
+      z-index: 10;
+      border-radius: 1.75rem;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      background: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.78) 0%,
+        rgba(15, 23, 42, 0.5) 45%,
+        rgba(15, 23, 42, 0.65) 100%
+      );
+      box-shadow: 0 0 0 1px rgba(51, 65, 85, 0.15);
+    }
+    body.light-theme .home-hero-content {
+      background: linear-gradient(
+        180deg,
+        rgba(248, 250, 252, 0.92) 0%,
+        rgba(248, 250, 252, 0.82) 100%
+      );
+      box-shadow: 0 0 0 1px rgba(203, 213, 225, 0.5);
+    }
+    .home-hero-orb {
+      position: absolute;
+      border-radius: 9999px;
+      will-change: transform;
+      box-shadow: 0 0 18px rgba(99, 102, 241, 0.35);
+    }
+    .home-hero-orb--sm { width: 8px; height: 8px; }
+    .home-hero-orb--md { width: 11px; height: 11px; }
+    .home-hero-orb--lg { width: 14px; height: 14px; }
+    .home-hero-orb--violet {
+      background: radial-gradient(circle at 30% 25%, #e0e7ff, #6366f1 55%, #3730a3);
+    }
+    .home-hero-orb--cyan {
+      background: radial-gradient(circle at 30% 25%, #cffafe, #22d3ee 55%, #0e7490);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.35);
+    }
+    .home-hero-orb--emerald {
+      background: radial-gradient(circle at 30% 25%, #d1fae5, #34d399 55%, #047857);
+      box-shadow: 0 0 14px rgba(52, 211, 153, 0.3);
+    }
+    .home-hero-ring {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 9999px;
+      border: 2px solid rgba(129, 140, 248, 0.55);
+      box-shadow: inset 0 0 12px rgba(99, 102, 241, 0.15);
+      will-change: transform;
+    }
+    .home-hero-chip {
+      position: absolute;
+      width: 22px;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.35), rgba(34, 211, 238, 0.4));
+      will-change: transform;
+    }
+    /* Dart: quick hops + full stops */
+    @keyframes home-hero-dart-1 {
+      0%, 100% { transform: translate(0, 0); opacity: 0.75; }
+      6% { transform: translate(52px, 28px); opacity: 1; }
+      6.01%, 20% { transform: translate(52px, 28px); opacity: 1; }
+      32% { transform: translate(8px, 64px); opacity: 0.9; }
+      32.01%, 44% { transform: translate(8px, 64px); }
+      58% { transform: translate(76px, 12px); }
+      58.01%, 72% { transform: translate(76px, 12px); }
+      88% { transform: translate(0, 0); opacity: 0.75; }
+    }
+    @keyframes home-hero-dart-2 {
+      0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+      10% { transform: translate(-44px, 36px); opacity: 1; }
+      10.01%, 28% { transform: translate(-44px, 36px); }
+      42% { transform: translate(-12px, -24px); }
+      42.01%, 58% { transform: translate(-12px, -24px); }
+      72% { transform: translate(-68px, 8px); }
+      72.01%, 88% { transform: translate(-68px, 8px); }
+    }
+    /* Jump: vertical bounce */
+    @keyframes home-hero-jump {
+      0%, 100% { transform: translateY(0); }
+      12% { transform: translateY(-28px); }
+      24% { transform: translateY(0); }
+      36% { transform: translateY(-18px); }
+      48% { transform: translateY(0); }
+      60%, 75% { transform: translateY(0); }
+      88% { transform: translateY(-36px); }
+    }
+    /* Roll: move + spin */
+    @keyframes home-hero-roll {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-72px, 40px) rotate(180deg); }
+      50% { transform: translate(-120px, -16px) rotate(360deg); }
+      75% { transform: translate(-40px, 56px) rotate(540deg); }
+      100% { transform: translate(0, 0) rotate(720deg); }
+    }
+    /* Stop / idle with rare nudge */
+    @keyframes home-hero-stopgo {
+      0%, 35% { transform: translate(0, 0); opacity: 0.45; }
+      38% { transform: translate(6px, -4px); opacity: 0.85; }
+      42%, 78% { transform: translate(6px, -4px); opacity: 0.85; }
+      82% { transform: translate(0, 0); opacity: 0.45; }
+      100% { transform: translate(0, 0); opacity: 0.45; }
+    }
+    /* Chip: slide + pause */
+    @keyframes home-hero-slide {
+      0%, 100% { transform: translate(0, 0) scaleX(1); opacity: 0.55; }
+      15% { transform: translate(90px, -20px) scaleX(1.2); opacity: 0.95; }
+      15.01%, 40% { transform: translate(90px, -20px) scaleX(1.2); }
+      55% { transform: translate(24px, 32px) scaleX(0.9); }
+      55.01%, 78% { transform: translate(24px, 32px) scaleX(0.9); }
+    }
+    /* Placements: corners / strips only (avoids centered headline column on wide viewports) */
+    .home-hero-a1 { left: min(6%, 3rem); top: 14%; animation: home-hero-dart-1 16s ease-in-out infinite; }
+    .home-hero-a2 { right: min(7%, 3.5rem); top: 18%; animation: home-hero-dart-2 18s ease-in-out infinite 1.5s; }
+    .home-hero-a3 { left: min(4%, 2rem); bottom: 22%; animation: home-hero-jump 5.5s ease-in-out infinite; }
+    .home-hero-a4 { right: min(5%, 2.5rem); bottom: 26%; animation: home-hero-stopgo 12s ease-in-out infinite 0.5s; }
+    .home-hero-a5 { left: min(8%, 4rem); top: 42%; animation: home-hero-dart-1 19s ease-in-out infinite 3s reverse; }
+    .home-hero-a6 { right: min(6%, 3rem); top: 48%; animation: home-hero-jump 4.8s ease-in-out infinite 1s; }
+    .home-hero-r1 { right: min(10%, 5rem); bottom: 14%; animation: home-hero-roll 22s ease-in-out infinite; }
+    .home-hero-c1 { left: min(12%, 5rem); bottom: 12%; animation: home-hero-slide 20s ease-in-out infinite 2s; }
+    @media (max-width: 640px) {
+      .home-hero-a5,
+      .home-hero-a6 {
+        opacity: 0.55;
+      }
+    }
+    body.light-theme .home-hero-orb--violet { box-shadow: 0 0 14px rgba(79, 70, 229, 0.25); }
+    body.light-theme .home-hero-ring { border-color: rgba(99, 102, 241, 0.4); }
+
+    /* AI-themed mini SVGs (neural graph, layers, spark) */
+    .home-hero-ai-wrap {
+      position: absolute;
+      display: block;
+      opacity: 0.88;
+      color: #a5b4fc;
+      will-change: transform;
+    }
+    .home-hero-ai-wrap svg {
+      display: block;
+      width: 42px;
+      height: auto;
+      overflow: visible;
+    }
+    body.light-theme .home-hero-ai-wrap {
+      color: #4f46e5;
+      opacity: 0.9;
+    }
+    @keyframes home-hero-ai-edge-flow {
+      to { stroke-dashoffset: -18; }
+    }
+    .home-hero-ai-edge {
+      stroke-dasharray: 5 4;
+      animation: home-hero-ai-edge-flow 2.4s linear infinite;
+    }
+    @keyframes home-hero-ai-spark-spin {
+      0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.75; }
+      40% { transform: rotate(72deg) scale(1.08); opacity: 1; }
+      45%, 70% { transform: rotate(72deg) scale(1.08); opacity: 1; }
+      100% { transform: rotate(0deg) scale(1); opacity: 0.75; }
+    }
+    @keyframes home-hero-ai-layers-shift {
+      0%, 100% { transform: translate(0, 0); opacity: 0.7; }
+      30% { transform: translate(-6px, 4px); opacity: 0.95; }
+      33%, 55% { transform: translate(-6px, 4px); }
+      75% { transform: translate(4px, -6px); opacity: 0.85; }
+    }
+    .home-hero-ai-net {
+      left: min(9%, 4.5rem);
+      top: 20%;
+      animation: home-hero-dart-2 21s ease-in-out infinite 0.8s;
+    }
+    .home-hero-ai-layers {
+      right: min(11%, 5.5rem);
+      bottom: 30%;
+      animation: home-hero-ai-layers-shift 14s ease-in-out infinite;
+    }
+    .home-hero-ai-spark {
+      left: min(6%, 3rem);
+      bottom: 38%;
+      animation: home-hero-ai-spark-spin 10s ease-in-out infinite;
+    }
+
+    /* “text” jumps → becomes a small cat (loops) */
+    .home-hero-morph {
+      position: absolute;
+      right: min(14%, 6.5rem);
+      top: 34%;
+      width: 44px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+    .home-morph-word {
+      grid-area: 1 / 1;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: #e9d5ff;
+      text-shadow: 0 0 12px rgba(167, 139, 250, 0.45);
+      animation: home-morph-word 11s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+    .home-morph-cat {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: home-morph-cat 11s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+    .home-morph-cat svg {
+      width: 28px;
+      height: 28px;
+      filter: drop-shadow(0 0 8px rgba(251, 146, 60, 0.35));
+    }
+    @keyframes home-morph-word {
+      0%, 12% { opacity: 1; transform: translateY(0) scale(1); }
+      6% { transform: translateY(-16px) scale(1.12); }
+      18% { opacity: 0; transform: translateY(4px) scale(0.65); }
+      18.01%, 62% { opacity: 0; transform: scale(0.6); }
+      68% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes home-morph-cat {
+      0%, 16% { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+      22% { opacity: 1; transform: scale(1.05) rotate(0deg); }
+      28% { transform: scale(1) translateY(-3px); }
+      32% { transform: scale(1) translateY(0); }
+      22%, 58% { opacity: 1; }
+      64% { opacity: 0; transform: scale(0.75) rotate(8deg); }
+      100% { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+    }
+
+    /* “text” → rabbit, then quick hops toward center; vanishes behind .home-hero-content / badge */
+    .home-hero-morph--rabbit {
+      left: 3.5%;
+      right: auto;
+      top: clamp(28%, 9.5rem, 38%);
+      width: 52px;
+      height: 44px;
+      overflow: visible;
+    }
+    .home-morph-rword {
+      grid-area: 1 / 1;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: lowercase;
+      color: #fce7f3;
+      text-shadow: 0 0 12px rgba(244, 114, 182, 0.4);
+      animation: home-morph-rword 4.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    }
+    .home-morph-rabbit {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: home-morph-rabbit-hopaway 4.4s linear infinite;
+    }
+    .home-morph-rabbit svg {
+      width: 30px;
+      height: 34px;
+      filter: drop-shadow(0 0 10px rgba(148, 163, 184, 0.45));
+    }
+    @keyframes home-morph-rword {
+      0%, 8% { opacity: 1; transform: translateY(0) scale(1); }
+      4% { transform: translateY(-14px) scale(1.08); }
+      12% { opacity: 0; transform: translateY(4px) scale(0.62); }
+      12.01%, 84% { opacity: 0; transform: scale(0.55); }
+      90%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes home-morph-rabbit-hopaway {
+      0%, 10% { opacity: 0; transform: translate(0, 0) scale(0.45) rotate(-8deg); }
+      13% { opacity: 1; transform: translate(0, 0) scale(1.08) rotate(0deg); }
+      16% { transform: translate(10px, -8px) scale(1); }
+      19% { transform: translate(18px, 0) scale(1); }
+      /* quick hops right toward the production badge (under content z-10) */
+      22% { transform: translate(32px, -9px) scale(1); opacity: 1; }
+      25% { transform: translate(48px, 0) scale(1); }
+      28% { transform: translate(64px, -10px) scale(1); }
+      31% { transform: translate(82px, 0) scale(1); }
+      34% { transform: translate(100px, -9px) scale(1); }
+      37% { transform: translate(120px, 0) scale(0.99); }
+      40% { transform: translate(142px, -10px) scale(0.98); }
+      43% { transform: translate(164px, 0) scale(0.97); }
+      46% { transform: translate(188px, -9px) scale(0.96); }
+      49% { transform: translate(212px, 1px) scale(0.95); }
+      52% { transform: translate(232px, -8px) scale(0.94); opacity: 0.95; }
+      56% { transform: translate(256px, 2px) scale(0.92); opacity: 0.75; }
+      60% { transform: translate(278px, -7px) scale(0.9); opacity: 0.45; }
+      64% { transform: translate(298px, 4px) scale(0.86); opacity: 0.2; }
+      68%, 100% { transform: translate(312px, 10px) scale(0.82); opacity: 0; }
+    }
+
+    /* Labels fly in, “collide”, then edges form a tiny knowledge graph */
+    .home-hero-kg {
+      position: absolute;
+      left: min(10%, 4.5rem);
+      bottom: 6%;
+      width: 136px;
+      height: 92px;
+      pointer-events: none;
+    }
+    .home-kg-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .home-kg-line {
+      fill: none;
+      stroke: url(#homeKgStroke);
+      stroke-width: 1.35;
+      stroke-linecap: round;
+      opacity: 0.55;
+      stroke-dasharray: 72;
+      stroke-dashoffset: 72;
+      animation: home-kg-draw 9s ease-in-out infinite;
+    }
+    .home-kg-line--b {
+      animation-delay: 0.12s;
+    }
+    .home-kg-line--c {
+      animation-delay: 0.24s;
+    }
+    @keyframes home-kg-draw {
+      0%, 22% { stroke-dashoffset: 72; opacity: 0.2; }
+      38%, 72% { stroke-dashoffset: 0; opacity: 0.65; }
+      88%, 100% { stroke-dashoffset: 72; opacity: 0.2; }
+    }
+    .home-kg-node {
+      position: absolute;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+      white-space: nowrap;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: rgba(30, 41, 59, 0.75);
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      animation-timing-function: cubic-bezier(0.34, 1.2, 0.64, 1);
+    }
+    body.light-theme .home-kg-node {
+      background: rgba(255, 255, 255, 0.9);
+      color: #5b21b6;
+      border-color: rgba(165, 180, 252, 0.65);
+    }
+    .home-kg-n1 {
+      left: 50%;
+      top: 0;
+      margin-left: -22px;
+      animation: home-kg-n1 9s ease-in-out infinite;
+    }
+    .home-kg-n2 {
+      left: 0;
+      bottom: 4px;
+      animation: home-kg-n2 9s ease-in-out infinite;
+    }
+    .home-kg-n3 {
+      right: 0;
+      bottom: 4px;
+      animation: home-kg-n3 9s ease-in-out infinite;
+    }
+    @keyframes home-kg-n1 {
+      0% { transform: translate(-38px, 46px) rotate(-6deg); opacity: 0.45; }
+      32% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      40%, 68% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(-38px, 46px) rotate(-6deg); opacity: 0.45; }
+    }
+    @keyframes home-kg-n2 {
+      0% { transform: translate(52px, -28px) rotate(8deg); opacity: 0.45; }
+      32% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      40%, 68% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(52px, -28px) rotate(8deg); opacity: 0.45; }
+    }
+    @keyframes home-kg-n3 {
+      0% { transform: translate(-44px, 36px) rotate(-10deg); opacity: 0.45; }
+      32% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+      40%, 68% { transform: translate(0, 0); opacity: 1; }
+      100% { transform: translate(-44px, 36px) rotate(-10deg); opacity: 0.45; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-hero-ambient .home-hero-orb,
+      .home-hero-ambient .home-hero-ring,
+      .home-hero-ambient .home-hero-chip {
+        animation: none !important;
+        opacity: 0.35;
+      }
+      .home-hero-ai-edge {
+        animation: none !important;
+      }
+      .home-hero-ambient .home-hero-ai-wrap {
+        animation: none !important;
+        opacity: 0.42;
+      }
+      .home-morph-word,
+      .home-morph-cat,
+      .home-morph-rword,
+      .home-morph-rabbit {
+        animation: none !important;
+      }
+      .home-morph-word { opacity: 1 !important; transform: none !important; }
+      .home-morph-cat { opacity: 0 !important; }
+      .home-morph-rword { opacity: 1 !important; transform: none !important; }
+      .home-morph-rabbit { opacity: 0 !important; transform: none !important; }
+      .home-kg-node {
+        animation: none !important;
+        transform: none !important;
+        opacity: 0.85 !important;
+      }
+      .home-kg-line {
+        animation: none !important;
+        stroke-dashoffset: 0 !important;
+        opacity: 0.4 !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="https://bittechsol.com/" class="shrink-0 flex items-center" aria-label="Bit Tech Solutions">
+          <img src="assets/bit-tech-solutions-logo.png" alt="Bit Tech Solutions" class="portfolio-site-logo" width="200" height="57" />
+        </a>
+        <span class="text-slate-500 text-xs hidden sm:block">AI Portfolio</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/"
+           class="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition-colors font-medium">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+  <section class="home-hero py-5 px-6 text-center min-h-[28rem]" style="background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.15), transparent);">
+    <div class="home-hero-ambient" aria-hidden="true">
+      <span class="home-hero-orb home-hero-orb--sm home-hero-orb--violet home-hero-a1"></span>
+      <span class="home-hero-orb home-hero-orb--md home-hero-orb--cyan home-hero-a2"></span>
+      <span class="home-hero-orb home-hero-orb--lg home-hero-orb--emerald home-hero-a3"></span>
+      <span class="home-hero-orb home-hero-orb--sm home-hero-orb--violet home-hero-a4"></span>
+      <span class="home-hero-orb home-hero-orb--md home-hero-orb--cyan home-hero-a5"></span>
+      <span class="home-hero-orb home-hero-orb--sm home-hero-orb--emerald home-hero-a6"></span>
+      <span class="home-hero-ring home-hero-r1"></span>
+      <span class="home-hero-chip home-hero-c1"></span>
+      <!-- AI motifs: tiny neural graph, model layers, spark -->
+      <span class="home-hero-ai-wrap home-hero-ai-net">
+        <svg viewBox="0 0 52 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line class="home-hero-ai-edge" x1="8" y1="14" x2="26" y2="24" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.5" />
+          <line class="home-hero-ai-edge" x1="26" y1="24" x2="44" y1="14" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.5" style="animation-delay: -0.4s" />
+          <line class="home-hero-ai-edge" x1="16" y1="34" x2="26" y2="24" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.45" style="animation-delay: -0.8s" />
+          <line class="home-hero-ai-edge" x1="36" y1="34" x2="26" y2="24" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.45" style="animation-delay: -1.1s" />
+          <circle cx="8" cy="14" r="4" fill="#6366f1" />
+          <circle cx="44" cy="14" r="4" fill="#818cf8" />
+          <circle cx="26" cy="24" r="5" fill="#22d3ee" opacity="0.95" />
+          <circle cx="16" cy="34" r="3.5" fill="#a78bfa" opacity="0.9" />
+          <circle cx="36" cy="34" r="3.5" fill="#34d399" opacity="0.85" />
+        </svg>
+      </span>
+      <span class="home-hero-ai-wrap home-hero-ai-layers">
+        <svg viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="4" y="4" width="32" height="7" rx="2" stroke="currentColor" stroke-width="1.2" opacity="0.55" fill="rgba(99,102,241,0.12)" />
+          <rect x="7" y="14" width="26" height="7" rx="2" stroke="currentColor" stroke-width="1.2" opacity="0.65" fill="rgba(34,211,238,0.1)" />
+          <rect x="10" y="24" width="20" height="7" rx="2" stroke="currentColor" stroke-width="1.2" opacity="0.75" fill="rgba(129,140,248,0.14)" />
+          <path d="M20 31v3" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+        </svg>
+      </span>
+      <span class="home-hero-ai-wrap home-hero-ai-spark">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="16" cy="16" r="3.2" fill="#6366f1" opacity="0.95" />
+          <path d="M16 4v6M16 22v6M4 16h6M22 16h6" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" opacity="0.85" />
+          <path d="M8.5 8.5l4 4M19.5 19.5l4 4M23.5 8.5l-4 4M12.5 19.5l-4 4" stroke="#a5b4fc" stroke-width="1.2" stroke-linecap="round" opacity="0.55" />
+        </svg>
+      </span>
+      <!-- word “text” jumps, then swaps to a tiny cat -->
+      <div class="home-hero-morph">
+        <span class="home-morph-word">text</span>
+        <span class="home-morph-cat">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 18c0-4 2.2-7 5-7.5 1-2.2 2.8-3.8 5-3.8s4 1.6 5 3.8c2.8.5 5 3.5 5 7.5 0 5-3.6 8-8 8H9c-4.4 0-8-3-8-8z" fill="#fb923c" stroke="#ea580c" stroke-width="0.9" />
+            <path d="M7 14 L9 6 L13 12.5 Z" fill="#fb923c" stroke="#ea580c" stroke-width="0.7" stroke-linejoin="round" />
+            <path d="M25 14 L23 6 L19 12.5 Z" fill="#fb923c" stroke="#ea580c" stroke-width="0.7" stroke-linejoin="round" />
+            <ellipse cx="12.5" cy="17.5" rx="1.4" ry="1.6" fill="#0f172a" />
+            <ellipse cx="19.5" cy="17.5" rx="1.4" ry="1.6" fill="#0f172a" />
+            <path d="M14 22.5 Q16 24.5 18 22.5" stroke="#0f172a" stroke-width="0.9" stroke-linecap="round" fill="none" />
+            <ellipse cx="16" cy="20" rx="4" ry="2.2" fill="#fdba74" opacity="0.35" />
+          </svg>
+        </span>
+      </div>
+      <!-- “text” jumps → rabbit, quick hops toward badge (behind content layer) -->
+      <div class="home-hero-morph home-hero-morph--rabbit">
+        <span class="home-morph-rword">text</span>
+        <span class="home-morph-rabbit">
+          <svg viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <ellipse cx="18" cy="27" rx="13" ry="11" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1" />
+            <ellipse cx="13" cy="11" rx="4.5" ry="11" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.85" />
+            <ellipse cx="23" cy="11" rx="4.5" ry="11" fill="#e2e8f0" stroke="#94a3b8" stroke-width="0.85" />
+            <ellipse cx="18" cy="25" rx="2.2" ry="1.8" fill="#fda4af" />
+            <circle cx="14.5" cy="23" r="1.5" fill="#0f172a" />
+            <circle cx="21.5" cy="23" r="1.5" fill="#0f172a" />
+            <circle cx="25" cy="31" r="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="0.6" />
+            <path d="M10 28 Q18 32 26 28" stroke="#94a3b8" stroke-width="0.9" stroke-linecap="round" fill="none" />
+          </svg>
+        </span>
+      </div>
+      <!-- labels converge, then edges draw a 3-node knowledge graph -->
+      <div class="home-hero-kg">
+        <svg class="home-kg-svg" viewBox="0 0 136 92" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="homeKgStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#a78bfa" />
+              <stop offset="100%" stop-color="#22d3ee" />
+            </linearGradient>
+          </defs>
+          <line class="home-kg-line" x1="68" y1="24" x2="34" y2="76" />
+          <line class="home-kg-line home-kg-line--b" x1="68" y1="24" x2="102" y2="76" />
+          <line class="home-kg-line home-kg-line--c" x1="34" y1="76" x2="102" y2="76" />
+        </svg>
+        <span class="home-kg-node home-kg-n1">Concept</span>
+        <span class="home-kg-node home-kg-n2">Fact</span>
+        <span class="home-kg-node home-kg-n3">Query</span>
+      </div>
+    </div>
+
+    <div class="home-hero-content max-w-6xl mx-auto py-10">
+
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-medium px-4 py-2 rounded-full mb-8">
+        <i class="fas fa-check-circle"></i>
+        Real client work · Live in production
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-5">
+        See what we’ve built<br>
+        <span class="gradient-text">End to end</span>
+      </h1>
+
+      <p class="text-lg text-slate-400 max-w-xl mx-auto mb-10 leading-relaxed">
+        This portfolio is a set of real systems—calling, assistants, automation, custom AI, and more—not slide decks.
+        Each example shows the business outcome first; technical detail is there when you want it.
+      </p>
+
+      <!-- Stats -->
+      <div class="flex flex-wrap justify-center gap-8 text-center">
+        <div>
+          <p class="text-2xl font-bold text-white">7</p>
+          <p class="text-xs text-slate-400 uppercase tracking-wider">Focus areas</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white">12+</p>
+          <p class="text-xs text-slate-400 uppercase tracking-wider">Projects delivered</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white">Azure</p>
+          <p class="text-xs text-slate-400 uppercase tracking-wider">Cloud-hosted</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-white">Full build</p>
+          <p class="text-xs text-slate-400 uppercase tracking-wider">Design to deployment</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── HOW TO READ THIS PAGE (clarity for non-technical visitors) ── -->
+  <section class="py-14 px-6 border-y border-slate-800/70 bg-slate-900/35" aria-labelledby="home-clarity-heading">
+    <div class="max-w-3xl mx-auto text-center mb-10">
+      <p class="text-slate-500 text-xs uppercase tracking-widest font-semibold mb-2">Simple layout</p>
+      <h2 id="home-clarity-heading" class="text-xl md:text-2xl font-bold text-white mb-3">
+        How to use this portfolio
+      </h2>
+      <p class="text-slate-400 text-sm leading-relaxed">
+        The cards below are delivery areas—like “AI phone agents” or “document Q&amp;A”—not internal team names.
+        Open any card for a short business summary first; scroll for diagrams and technical notes only if you need them.
+      </p>
+    </div>
+    <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-5">
+      <div class="home-clarity-card rounded-xl border border-slate-700/80 bg-slate-800/45 p-5 text-center sm:text-left">
+        <p class="text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">Step 1</p>
+        <p class="text-white font-semibold mb-1.5">Choose a topic that fits</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Pick the card that sounds closest to the problem you care about—sales calls, documents, workflows, images, or data.</p>
+      </div>
+      <div class="home-clarity-card rounded-xl border border-slate-700/80 bg-slate-800/45 p-5 text-center sm:text-left">
+        <p class="text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">Step 2</p>
+        <p class="text-white font-semibold mb-1.5">Read the overview</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Each page explains what we built, who it’s for, and what “done” means—without assuming you know our tools.</p>
+      </div>
+      <div class="home-clarity-card rounded-xl border border-slate-700/80 bg-slate-800/45 p-5 text-center sm:text-left">
+        <p class="text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-2">Step 3</p>
+        <p class="text-white font-semibold mb-1.5">Invite your technical lead</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Diagrams and product names are on the same pages for your IT or data team—share a link when you’re ready to go deeper.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DOMAIN CARDS ──────────────────────────────────────────────── -->
+  <section class="py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-slate-500 text-xs uppercase tracking-widest font-semibold text-center mb-4">Pick a topic below</p>
+      <p class="text-slate-400 text-sm text-center max-w-2xl mx-auto mb-10 leading-relaxed">
+        Every page follows the same rhythm: <span class="text-slate-300">what we delivered</span>, a visual of how it fits together,
+        then <span class="text-slate-300">how it works</span> in plain language—plus detail for technical readers.
+      </p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card 1: Voice AI -->
+        <a href="voice-ai/index.html" class="domain-card" style="--card-color: #7c3aed;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);">
+                <i class="fas fa-phone-volume text-xl" style="color:#a78bfa;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Integration &amp; Agents</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">AI Voice Agents &amp; Lead Generation</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              End-to-end B2B outbound call agents, mass campaigns, and a full multi-tenant AI receptionist SaaS — from lead discovery to booked meeting.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-violet-900/40 border border-violet-700/50 text-violet-300 px-2.5 py-1 rounded-full">VAPI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Twilio</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Deepgram</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Pipecat</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Outbound &amp; reception · 300+ calls · VAPI/Twilio</span>
+            <i class="fas fa-arrow-right" style="color:#a78bfa;"></i>
+          </div>
+        </a>
+
+        <!-- Card 2: RAG & LLM -->
+        <a href="rag-llm/index.html" class="domain-card" style="--card-color: #0d9488;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(13,148,136,0.15); border: 1px solid rgba(13,148,136,0.3);">
+                <i class="fas fa-database text-xl" style="color:#2dd4bf;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Model Development</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">RAG Pipelines &amp; LLM Integration</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Production RAG systems, prompt engineering, NeMo Guardrails, and LLM-as-verifier — across four deployed integrations including industrial QA and a financial document library (FAISS + FastAPI).
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-teal-900/40 border border-teal-700/50 text-teal-300 px-2.5 py-1 rounded-full">ChromaDB</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">NeMo Guardrails</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure OpenAI</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Industrial, financial RAG &amp; doc QA · 13+ issues closed · Guardrails</span>
+            <i class="fas fa-arrow-right" style="color:#2dd4bf;"></i>
+          </div>
+        </a>
+
+        <!-- Card 3: Agentic AI -->
+        <a href="agentic-ai/index.html" class="domain-card" style="--card-color: #059669;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(5,150,105,0.15); border: 1px solid rgba(5,150,105,0.3);">
+                <i class="fas fa-diagram-project text-xl" style="color:#34d399;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Integration &amp; Agents</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Agentic AI &amp; Knowledge Graph Memory</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              AI agents with persistent Neo4j knowledge graph memory, multi-API orchestration, and real-time streaming — deployed on Azure VM.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-emerald-900/40 border border-emerald-700/50 text-emerald-300 px-2.5 py-1 rounded-full">Neo4j</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Graphiti</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">ScrapeGraphAI</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Personalisation · Neo4j memory · Multi-API</span>
+            <i class="fas fa-arrow-right" style="color:#34d399;"></i>
+          </div>
+        </a>
+
+        <!-- Card 4: Automation -->
+        <a href="automation/index.html" class="domain-card" style="--card-color: #ea4b71;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(234,75,113,0.15); border: 1px solid rgba(234,75,113,0.3);">
+                <i class="fas fa-gears text-xl" style="color:#f472b6;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Integration &amp; Agents</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">AI Workflow Automation</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              n8n pipelines for AI-powered news summarisation, social media publishing with human-in-the-loop, CRM sync, and SEO-optimised multi-platform content generation.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-rose-900/40 border border-rose-700/50 text-rose-300 px-2.5 py-1 rounded-full">n8n</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure OpenAI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">LinkedIn API</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Odoo</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Marketing ops · HITL publishing · n8n/Azure</span>
+            <i class="fas fa-arrow-right" style="color:#f472b6;"></i>
+          </div>
+        </a>
+
+        <!-- Card 5: Generative AI -->
+        <a href="t-shirt/index.html" class="domain-card" style="--card-color: #6366f1;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);">
+                <i class="fas fa-palette text-xl" style="color:#818cf8;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Model Development</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Generative AI &amp; Image Processing</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Text-to-image generation, ML background removal, and perspective compositing — delivering photorealistic product mockups from a plain-English description in under 60 seconds.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-indigo-900/40 border border-indigo-700/50 text-indigo-300 px-2.5 py-1 rounded-full">DALL·E 3</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">OpenCV</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Pillow</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Django</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">E‑commerce &amp; merch · ~60s mockup · DALL·E + CV</span>
+            <i class="fas fa-arrow-right" style="color:#818cf8;"></i>
+          </div>
+        </a>
+
+        <!-- Card 6: Sports analytics -->
+        <a href="nba-predictor/index.html" class="domain-card" style="--card-color: #f97316;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3);">
+                <i class="fas fa-basketball text-xl" style="color:#fb923c;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Model Development</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Sports Analytics &amp; Live Inference</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Predictive ML for sports: per-stat XGBoost models moved from batch to real-time via live game API ingestion, with alternative-data sentiment (Twitter/X, Reddit, Google Trends). Example domain: professional basketball stats and line-adjacent analysis.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-orange-900/40 border border-orange-700/50 text-orange-300 px-2.5 py-1 rounded-full">XGBoost</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Scikit-learn</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">RapidAPI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Pandas</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Sports analytics · Live API · XGBoost</span>
+            <i class="fas fa-arrow-right" style="color:#fb923c;"></i>
+          </div>
+        </a>
+
+
+        <!-- Card 7: Data Collection & Engineering -->
+        <a href="data-collection-engineering/index.html" class="domain-card" style="--card-color: #16a34a;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(22,163,74,0.15); border: 1px solid rgba(22,163,74,0.3);">
+                <i class="fas fa-database text-xl" style="color:#4ade80;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">Data Collection &amp; Engineering</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Data Collection &amp; Engineering</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Source acquisition, cleaning, and enrichment pipelines across batch and real-time systems — including BioFuel dataset preparation and live sports feature ingestion for inference.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-green-900/40 border border-green-700/50 text-green-300 px-2.5 py-1 rounded-full">Python</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Pandas</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">RapidAPI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">PostgreSQL</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Batch curation · Live ingestion · Feature state</span>
+            <i class="fas fa-arrow-right" style="color:#4ade80;"></i>
+          </div>
+        </a>
+
+        <!-- Card 8: LoRA Fine-Tuning for SDXL Portrait Generation -->
+        <a href="lora-finetuning-sdxl/index.html" class="domain-card" style="--card-color: #8b5cf6;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);">
+                <i class="fas fa-wand-magic-sparkles text-xl" style="color:#c4b5fd;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Model Development</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">LoRA Fine-Tuning for SDXL Portrait Generation</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              Custom SDXL LoRA training on identity-specific face data, followed by controlled prompt-based portrait generation for consistent, client-ready visual outputs across scenes and styles.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-violet-900/40 border border-violet-700/50 text-violet-300 px-2.5 py-1 rounded-full">SDXL</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">LoRA</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">DreamBooth</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Kaggle GPU</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Identity tuning · 27 images · SDXL LoRA</span>
+            <i class="fas fa-arrow-right" style="color:#c4b5fd;"></i>
+          </div>
+        </a>
+
+        <!-- Card 9: Job Application Bot -->
+        <a href="job-application-bot/index.html" class="domain-card" style="--card-color: #06b6d4;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3);">
+                <i class="fas fa-briefcase text-xl" style="color:#22d3ee;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Integration &amp; Agents</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Job Application Bot</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              End-to-end job discovery on Indeed and Dice — AI-assisted filtering and matching, tailored resumes, browser automation with human-in-the-loop review, and optional Gmail tracking — deployed on Azure Container Apps.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-cyan-900/40 border border-cyan-700/50 text-cyan-300 px-2.5 py-1 rounded-full">FastAPI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure OpenAI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Selenium</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">SQLite</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Job boards · HITL apply · Container Apps</span>
+            <i class="fas fa-arrow-right" style="color:#22d3ee;"></i>
+          </div>
+        </a>
+
+        <!-- Card 10: Legal Blog Drafting Assistant -->
+        <a href="law-blog/index.html" class="domain-card" style="--card-color: #f59e0b;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3);">
+                <i class="fas fa-scale-balanced text-xl" style="color:#fbbf24;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">AI Integration &amp; Agents</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Legal Blog Drafting Assistant</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              A law-firm content workflow that transforms curated legal DOCX articles into firm-branded drafts with tone/keyword controls, guided revision, AI image generation, and formatted export.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-amber-900/40 border border-amber-700/50 text-amber-300 px-2.5 py-1 rounded-full">Flask</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure OpenAI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure Functions</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure SQL</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Legal content ops · AI drafting · DOCX export</span>
+            <i class="fas fa-arrow-right" style="color:#fbbf24;"></i>
+          </div>
+        </a>
+
+        <!-- Card 11: MLOps teaser -->
+        <div class="domain-card" style="--card-color: #f59e0b; cursor: default;">
+          <div class="card-top-bar"></div>
+          <div class="card-body">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3);">
+                <i class="fas fa-server text-xl" style="color:#fbbf24;"></i>
+              </div>
+              <span class="text-xs text-slate-500 font-medium">MLOps &amp; Deployment</span>
+            </div>
+            <h2 class="text-lg font-bold text-white mb-2">Production Deployment &amp; SaaS</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-5">
+              All systems above are deployed to production on Azure VM using FastAPI, systemd, nginx, and HTTPS via certbot. Includes a full multi-tenant SaaS with Stripe and Google OAuth.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-amber-900/40 border border-amber-700/50 text-amber-300 px-2.5 py-1 rounded-full">FastAPI</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Azure VM</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">Stripe</span>
+              <span class="text-xs bg-slate-800 border border-slate-700 text-slate-400 px-2.5 py-1 rounded-full">nginx</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span class="text-slate-500">Azure VM · nginx/systemd · HTTPS</span>
+            <i class="fas fa-check text-amber-400"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────────────── -->
+  <section class="py-20 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="cta-panel p-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          Looking for a similar solution?
+        </h2>
+        <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+          Whether you need customer-facing AI, internal automation, or a full product—we can walk through a fit on a short call.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/"
+             class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-indigo-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com"
+             class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-3 flex-wrap">
+        <img src="assets/bit-tech-solutions-logo.png" alt="Bit Tech Solutions" class="portfolio-site-logo portfolio-site-logo--footer" width="180" height="52" />
+        <span class="text-slate-500">Applied AI Portfolio</span>
+      </div>
+      <a href="https://bittechsol.com/contact/" class="text-indigo-400 hover:text-indigo-300 transition-colors">Bit Tech Solutions</a>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const raw = link.getAttribute('href');
+        if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return;
+        if (raw.startsWith('http://') || raw.startsWith('https://')) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set('theme', theme);
+          link.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark") ? paramTheme : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+  })();
+</script>
+</body>
+</html>

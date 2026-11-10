@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sports Analytics &amp; Real-Time Predictive ML — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-800/55"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"],
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="border-slate-600/50"],
+    body.light-theme [class*="border-slate-700/50"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme a[class*="bg-"][class*="text-white"],
+    body.light-theme button[class*="bg-"][class*="text-white"] { color: #ffffff !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #1f2937 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #374151 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    /* light-surface-pass */
+    body.light-theme .project-shell,
+    body.light-theme .workflow-canvas,
+    body.light-theme .flow-box,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .hero-border,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      background-color: #ffffff !important;
+    }
+    body.light-theme .workflow-canvas,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme section[class*="bg-slate-"] {
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .project-shell, body.light-theme .flow-box { background: #ffffff; border-color: #cbd5e1; }
+    body.light-theme .project-title { color: #0f172a !important; }
+    body.light-theme .project-desc { color: #334155 !important; }
+    body.light-theme .project-label, body.light-theme .panel-kicker { color: #475569 !important; }
+    body.light-theme .flow-list li { color: #1f2937 !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+                  linear-gradient(135deg, #f97316, #fbbf24, #ec4899) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .tag {
+      background: #fff7ed !important;
+      color: #0f172a !important;
+      border-color: #fdba74 !important;
+    }
+    body.light-theme span[class*="rounded-full"][class*="border"] {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .hero-domain-tag {
+      background-color: #ffedd5 !important;
+      border-color: #fdba74 !important;
+      color: #7c2d12 !important;
+    }
+    body.light-theme .sports-hero-visual {
+      background: linear-gradient(155deg, #ffffff 0%, #fffbeb 48%, #fff7ed 100%);
+      border-color: rgba(251, 146, 60, 0.45);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+    body.light-theme .sports-panel {
+      background: linear-gradient(180deg, #ffffff 0%, #fffdfb 100%);
+      border-color: #e2e8f0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    body.light-theme .sports-panel h3 {
+      color: #64748b;
+    }
+    body.light-theme .sports-panel svg > rect[rx="10"] {
+      fill: #fffbeb !important;
+      stroke: rgba(234, 88, 12, 0.28) !important;
+    }
+    body.light-theme .sports-panel svg path[stroke*="251,146,60"] {
+      stroke: rgba(194, 65, 12, 0.38) !important;
+    }
+    body.light-theme .sports-panel svg path[stroke="#f8fafc"] {
+      stroke: #64748b !important;
+    }
+    body.light-theme .sports-panel svg polyline {
+      stroke: #ea580c !important;
+      opacity: 0.92;
+    }
+    body.light-theme .sports-panel svg .sports-rim {
+      stroke: #d97706 !important;
+    }
+    body.light-theme .sports-panel svg .sports-dot[fill="#fb923c"] { fill: #ea580c !important; }
+    body.light-theme .sports-panel svg .sports-dot[fill="#fdba74"] { fill: #f59e0b !important; }
+    body.light-theme .sports-panel svg .sports-dot[fill="#f472b6"] { fill: #db2777 !important; }
+    body.light-theme .sports-panel svg .sports-dot[fill="#fbcfe8"] { fill: #f9a8d4 !important; }
+    body.light-theme .hero-metric strong {
+      color: #0f172a;
+    }
+    body.light-theme .hero-metric span {
+      color: #c2410c;
+    }
+    body.light-theme .hero-live-event {
+      border-color: rgba(251, 146, 60, 0.55);
+      background: linear-gradient(180deg, #fff7ed, #ffedd5);
+      color: #9a3412;
+    }
+    body.light-theme .sports-player-line {
+      stroke: #1e293b;
+    }
+    body.light-theme .sports-player-off .sports-head { fill: #ea580c; }
+    body.light-theme .sports-player-def .sports-head { fill: #0284c7; }
+    body.light-theme .sports-ball-sync {
+      fill: #ea580c;
+      stroke: #9a3412;
+    }
+    body.light-theme .sports-pass-line,
+    body.light-theme .sports-dribble-line,
+    body.light-theme .sports-shot-line {
+      opacity: 0.22;
+    }
+    body.light-theme .sports-pass-line.active,
+    body.light-theme .sports-dribble-line.active,
+    body.light-theme .sports-shot-line.active {
+      opacity: 1;
+    }
+    body.light-theme a[href^="mailto:"] {
+      background-color: #1e293b !important;
+      border-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    body.light-theme a[href^="mailto:"]:hover { background-color: #0f172a !important; color: #ffffff !important; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fb923c, #fbbf24, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme .gradient-text {
+      background: linear-gradient(135deg, #c2410c, #b45309, #be185d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme [class*="text-emerald-400"] { color: #059669 !important; }
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(251,146,60,0.4), 0 8px 32px rgba(251,146,60,0.12);
+      transform: translateY(-2px);
+      transition: all 0.2s ease;
+    }
+    .card-glow { transition: all 0.2s ease; }
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box,
+                  linear-gradient(135deg, #f97316, #fbbf24, #ec4899) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    .flow-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 110px;
+      padding: 0.75rem 1rem;
+      border-radius: 0.625rem;
+      background: #1e293b;
+    }
+    .flow-arrow { color: #94a3b8; font-size: 1.25rem; font-weight: 700; flex-shrink: 0; align-self: center; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #f97316; border-radius: 3px; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #f97316;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .project-head {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+    .project-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0;
+      color: #ffffff;
+    }
+    .project-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 100%;
+    }
+    .workflow-canvas {
+      border-radius: 0.625rem;
+      padding: 1.25rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: flex-start; width: 100%; }
+    .tag {
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .t-orange { background: rgba(249, 115, 22, 0.14); color: #fdba74; border: 1px solid rgba(251, 146, 60, 0.38); }
+    .t-amber { background: rgba(245, 158, 11, 0.12); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.32); }
+    .t-pink { background: rgba(244, 114, 182, 0.12); color: #fbcfe8; border: 1px solid rgba(244, 114, 182, 0.3); }
+    .t-sky { background: rgba(14, 165, 233, 0.12); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.28); }
+    .t-def { background: rgba(51, 65, 85, 0.85); color: #cbd5e1; border: 1px solid #475569; }
+    .flow-list { list-style: none; margin: 0; padding: 0; }
+    .flow-list li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      color: #cbd5e1;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+    }
+    .flow-list li:last-child { margin-bottom: 0; }
+    .project-shell .flow-list i { color: #fb923c; margin-top: 0.2rem; font-size: 0.75rem; flex-shrink: 0; }
+    .sports-hero-visual {
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.92));
+      border: 1px solid rgba(251,146,60,0.32);
+      border-radius: 0.9rem;
+      padding: 1rem;
+      max-width: 760px;
+      margin: 0 auto 1.75rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.26);
+    }
+    .sports-hero-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+    .sports-panel {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(71,85,105,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 0.7rem 0.8rem;
+    }
+    .sports-panel h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .hero-metric { display: flex; align-items: baseline; gap: 0.35rem; margin: 0; }
+    .hero-metric strong { color: #f8fafc; font-size: 1.35rem; font-weight: 800; }
+    .hero-metric span { color: #fb923c; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .hero-live-event {
+      margin-top: 0.35rem;
+      margin-bottom: 0.45rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(251,146,60,0.45);
+      background: rgba(249,115,22,0.14);
+      color: #fdba74;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .sports-dot { animation: sportsPulse 1.35s ease-in-out infinite; }
+    .sports-bars rect { animation: barShift 1.55s ease-in-out infinite; }
+    .sports-bars rect:nth-child(2) { animation-delay: 0.2s; }
+    .sports-bars rect:nth-child(3) { animation-delay: 0.35s; }
+    .sports-bars rect:nth-child(4) { animation-delay: 0.5s; }
+    .sports-bars rect:nth-child(5) { animation-delay: 0.65s; }
+    .sports-bars rect:nth-child(6) { animation-delay: 0.8s; }
+    .sports-bars rect:nth-child(7) { animation-delay: 0.95s; }
+    .sports-player-off .sports-head { fill: #fbbf24; }
+    .sports-player-def .sports-head { fill: #7dd3fc; }
+    .sports-player-line {
+      stroke: #f8fafc;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+    .sports-ball-sync { fill: #fb923c; stroke: #fed7aa; stroke-width: 1.3; }
+    .sports-pass-line,
+    .sports-dribble-line,
+    .sports-shot-line {
+      opacity: 0.12;
+      transition: opacity 120ms ease;
+      stroke-dasharray: 4 4;
+    }
+    .sports-dribble-line { stroke-dasharray: 2 5; }
+    .sports-pass-line.active,
+    .sports-dribble-line.active,
+    .sports-shot-line.active { opacity: 0.95; }
+    .sports-rim {
+      transition: transform 150ms ease, opacity 150ms ease;
+      transform-origin: center;
+      opacity: 0.8;
+    }
+    .sports-rim.goal {
+      transform: scale(1.11);
+      opacity: 1;
+    }
+    @keyframes sportsPulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    @keyframes barShift {
+      0%, 100% { transform: scaleY(0.75); transform-origin: bottom; opacity: 0.7; }
+      50% { transform: scaleY(1.15); transform-origin: bottom; opacity: 1; }
+    }
+    @media (min-width: 900px) {
+      .sports-hero-grid { grid-template-columns: 1.55fr 1fr; gap: 0.9rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sports-dot,
+      .sports-bars rect { animation: none !important; }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0">
+        <i class="fas fa-basketball text-orange-400 text-lg shrink-0"></i>
+        <span class="font-semibold text-white text-sm tracking-wide whitespace-nowrap">Sports analytics</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/"
+           class="text-sm bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-lg transition-colors font-medium">
+          Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+  <section class="pt-28 pb-10 md:pb-12 px-6" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(249,115,22,0.1), transparent);">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/30 text-orange-300 text-xs font-medium px-3 py-1.5 rounded-full mb-5">
+        <span class="relative w-2 h-2 pulse-dot">
+          <span class="block w-2 h-2 rounded-full bg-orange-400"></span>
+        </span>
+        Predictive ML · Real-time · Sports Analytics
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Sports Analytics &amp;<br>
+        <span class="gradient-text">Real-Time Predictive ML</span>
+      </h1>
+
+      <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        <strong class="text-slate-100">Live sports inference</strong> with <strong class="text-slate-100">XGBoost</strong>, API-fed in-game features, and sentiment fusion.
+        <span class="text-slate-400">Reference implementation uses professional basketball data.</span>
+      </p>
+
+      <div class="sports-hero-visual" aria-label="Animated sports analytics hero visual">
+        <div class="sports-hero-grid">
+          <div id="home-embed-root" class="sports-panel">
+            <h3>In-Game Sequence</h3>
+            <svg viewBox="0 0 460 200" class="w-full h-auto" role="img" aria-label="Basketball motion and live prediction trend">
+              <defs>
+                <linearGradient id="courtGlow" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f97316" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#f472b6" stop-opacity="0.08"/>
+                </linearGradient>
+                <linearGradient id="lineGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#fb923c"/>
+                  <stop offset="100%" stop-color="#f472b6"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="456" height="196" rx="10" fill="url(#courtGlow)" stroke="rgba(148,163,184,0.22)"/>
+              <path d="M50 150 C145 105, 245 105, 340 150" fill="none" stroke="rgba(251,146,60,0.55)" stroke-width="2"/>
+              <path id="dribble-line-1" class="sports-dribble-line" d="M58 166 C65 176, 75 176, 83 166 C90 157, 99 157, 106 166" fill="none" stroke="#fb923c" stroke-width="2.1" stroke-linecap="round"/>
+              <path id="dribble-line-2" class="sports-dribble-line" d="M160 145 C168 157, 178 157, 187 145 C196 133, 206 133, 214 145" fill="none" stroke="#fdba74" stroke-width="2.1" stroke-linecap="round"/>
+              <path id="dribble-line-counter" class="sports-dribble-line" d="M286 132 C278 145, 266 145, 258 132 C250 119, 238 119, 230 132" fill="none" stroke="#7dd3fc" stroke-width="2.1" stroke-linecap="round"/>
+              <line id="pass-line-1" class="sports-pass-line" x1="70" y1="164" x2="170" y2="142" stroke="#fdba74" stroke-width="2.1"/>
+              <line id="pass-line-2" class="sports-pass-line" x1="170" y1="142" x2="286" y2="122" stroke="#fbbf24" stroke-width="2.1"/>
+              <line id="counter-pass-line" class="sports-pass-line" x1="338" y1="94" x2="268" y2="130" stroke="#7dd3fc" stroke-width="2.1"/>
+              <path id="shot-line" class="sports-shot-line" d="M286 122 C312 92, 336 74, 355 65" fill="none" stroke="#f472b6" stroke-width="2.2" stroke-linecap="round"/>
+              <g id="offense-1" class="sports-player-off">
+                <circle class="sports-head" cx="0" cy="0" r="6.5"/>
+                <line class="sports-player-line" x1="0" y1="7" x2="0" y2="23"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="-10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="-7" y2="34"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="7" y2="34"/>
+              </g>
+              <g id="offense-2" class="sports-player-off">
+                <circle class="sports-head" cx="0" cy="0" r="6.5"/>
+                <line class="sports-player-line" x1="0" y1="7" x2="0" y2="23"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="-10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="-7" y2="34"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="7" y2="34"/>
+              </g>
+              <g id="offense-3" class="sports-player-off">
+                <circle class="sports-head" cx="0" cy="0" r="6.5"/>
+                <line class="sports-player-line" x1="0" y1="7" x2="0" y2="23"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="-10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="10" y2="17"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="-7" y2="34"/>
+                <line class="sports-player-line" x1="0" y1="23" x2="7" y2="34"/>
+              </g>
+              <g id="defense-1" class="sports-player-def">
+                <circle class="sports-head" cx="0" cy="0" r="6"/>
+                <line class="sports-player-line" x1="0" y1="7" x2="0" y2="22"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="-10" y2="16"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="10" y2="16"/>
+                <line class="sports-player-line" x1="0" y1="22" x2="-7" y2="33"/>
+                <line class="sports-player-line" x1="0" y1="22" x2="7" y2="33"/>
+              </g>
+              <g id="defense-2" class="sports-player-def">
+                <circle class="sports-head" cx="0" cy="0" r="6"/>
+                <line class="sports-player-line" x1="0" y1="7" x2="0" y2="22"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="-10" y2="16"/>
+                <line class="sports-player-line" x1="0" y1="12" x2="10" y2="16"/>
+                <line class="sports-player-line" x1="0" y1="22" x2="-7" y2="33"/>
+                <line class="sports-player-line" x1="0" y1="22" x2="7" y2="33"/>
+              </g>
+              <circle id="hero-ball" class="sports-ball-sync" cx="70" cy="164" r="8.5"/>
+              <path d="M355 65 L382 65 L382 125" fill="none" stroke="#f8fafc" stroke-width="3"/>
+              <ellipse id="hero-rim" class="sports-rim" cx="339" cy="65" rx="16" ry="4.5" fill="none" stroke="#fbbf24" stroke-width="2"/>
+              <polyline points="58,156 108,136 158,144 208,118 258,122 308,96 358,101 408,84" fill="none" stroke="url(#lineGlow)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <g>
+                <circle class="sports-dot" cx="108" cy="136" r="3.5" fill="#fb923c"/>
+                <circle class="sports-dot" cx="208" cy="118" r="3.5" fill="#fdba74"/>
+                <circle class="sports-dot" cx="308" cy="96" r="3.5" fill="#f472b6"/>
+                <circle class="sports-dot" cx="408" cy="84" r="3.5" fill="#fbcfe8"/>
+              </g>
+            </svg>
+          </div>
+          <div class="sports-panel text-left">
+            <h3>Live Inference Pulse</h3>
+            <p class="hero-metric">
+              <strong id="hero-win-prob">62%</strong>
+              <span>win probability</span>
+            </p>
+            <p class="text-[11px] text-orange-300/90 uppercase tracking-widest font-semibold mt-1 mb-1">
+              Team A (orange offense) outlook
+            </p>
+            <p id="hero-live-event" class="hero-live-event"><i class="fas fa-wave-square"></i> steady update</p>
+            <p class="text-xs text-slate-400 mt-1.5 mb-3">Updated from rolling features and real-time game state.</p>
+            <svg viewBox="0 0 240 92" class="w-full h-auto sports-bars" role="img" aria-label="Animated prediction confidence bars">
+              <rect x="10" y="54" width="20" height="30" rx="3" fill="#fb923c"/>
+              <rect x="43" y="42" width="20" height="42" rx="3" fill="#fdba74"/>
+              <rect x="76" y="32" width="20" height="52" rx="3" fill="#fbbf24"/>
+              <rect x="109" y="48" width="20" height="36" rx="3" fill="#f59e0b"/>
+              <rect x="142" y="37" width="20" height="47" rx="3" fill="#f97316"/>
+              <rect x="175" y="29" width="20" height="55" rx="3" fill="#fb7185"/>
+              <rect x="208" y="22" width="20" height="62" rx="3" fill="#f472b6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="bg-slate-800 border border-orange-700/50 text-orange-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-brain mr-1"></i>XGBoost</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-plug mr-1 text-orange-400"></i>RapidAPI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-chart-line mr-1 text-amber-400"></i>Scikit-learn</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-comments mr-1 text-pink-400"></i>Sentiment</span>
+        <span class="bg-slate-800 border border-amber-700/50 text-amber-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-bolt mr-1"></i>FastAPI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-database mr-1 text-sky-400"></i>PostgreSQL</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto text-center">
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">Live</p>
+          <p class="text-[11px] text-slate-400 leading-tight">In-game inference</p>
+        </div>
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">4</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Per-stat targets</p>
+        </div>
+        <div class="hero-border px-4 py-3 col-span-2 md:col-span-1">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">3</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Sentiment sources</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS SNAPSHOT ─────────────────────────────────────────── -->
+  <section class="py-8 md:py-10 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-orange-400 text-xs font-semibold uppercase tracking-wider mb-2">Problem</p>
+          <p class="text-slate-300 text-sm leading-relaxed">Sports models trained on static pre-game features go stale minutes after tip-off.</p>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-orange-400 text-xs font-semibold uppercase tracking-wider mb-2">Solution</p>
+          <p class="text-slate-300 text-sm leading-relaxed">Per-stat XGBoost models with rolling features, live API ingestion, PostgreSQL state, and a sentiment overlay for narrative risk.</p>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-orange-400 text-xs font-semibold uppercase tracking-wider mb-2">Outcome</p>
+          <p class="text-slate-300 text-sm leading-relaxed">A real-time prediction stack that refreshes with game state and combines statistical and alternative signals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ML PIPELINE ──────────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-orange-400 font-medium text-sm uppercase tracking-widest mb-3 text-center">Architecture</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-3">End-to-End Prediction Pipeline</h2>
+      <p class="text-slate-400 text-center max-w-xl mx-auto mb-8 text-sm">
+        From historical training through live feature assembly, inference, and multi-signal output.
+      </p>
+
+      <div class="bg-slate-900 border border-slate-700/50 rounded-xl workflow-canvas mb-6">
+
+        <!-- Training phase -->
+        <p class="text-xs text-orange-400 font-semibold uppercase tracking-widest mb-3 text-center">Model Training Phase</p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+          <div class="flow-box border border-orange-500/40" style="min-width:130px;">
+            <i class="fas fa-table text-orange-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Historical Data</p>
+            <p class="text-xs text-slate-400 mt-0.5">Game logs · box scores</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-amber-500/40" style="min-width:140px;">
+            <i class="fas fa-sliders text-amber-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Feature Engineering</p>
+            <p class="text-xs text-slate-400 mt-0.5">5-game rolling avg<br>MinMax scaling</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-pink-500/40" style="min-width:130px;">
+            <i class="fas fa-dumbbell text-pink-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">XGBoost Training</p>
+            <p class="text-xs text-slate-400 mt-0.5">Train · validate<br>fine-tune</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-emerald-500/40" style="min-width:120px;">
+            <i class="fas fa-floppy-disk text-emerald-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Saved Model</p>
+            <p class="text-xs text-slate-400 mt-0.5">Per-stat models<br>serialised</p>
+          </div>
+        </div>
+
+        <!-- Real-time inference phase -->
+        <p class="text-xs text-sky-400 font-semibold uppercase tracking-widest mb-3 text-center">Real-time Inference Phase</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="flow-box border border-sky-500/40" style="min-width:130px;">
+            <i class="fas fa-satellite-dish text-sky-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Live API Feed</p>
+            <p class="text-xs text-slate-400 mt-0.5">RapidAPI · in-game<br>score &amp; stats</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-amber-500/40" style="min-width:140px;">
+            <i class="fas fa-sliders text-amber-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Feature Assembly</p>
+            <p class="text-xs text-slate-400 mt-0.5">Rolling stats<br>scaled on the fly</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-orange-500/40" style="min-width:130px;">
+            <i class="fas fa-brain text-orange-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">XGBoost Inference</p>
+            <p class="text-xs text-slate-400 mt-0.5">Player stat<br>predictions</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-pink-500/40" style="min-width:130px;">
+            <i class="fas fa-comments text-pink-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Sentiment Layer</p>
+            <p class="text-xs text-slate-400 mt-0.5">Twitter · Reddit<br>Google Trends</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-emerald-500/40" style="min-width:120px;">
+            <i class="fas fa-chart-bar text-emerald-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Prediction Output</p>
+            <p class="text-xs text-slate-400 mt-0.5">FGM · FGA · FG3M<br>MIN · outcome</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MODEL DEVELOPMENT ────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Training &amp; modelling</p>
+          <h2 class="project-title">Model Development &amp; Training</h2>
+          <p class="project-desc">Separate XGBoost models per stat — trained, validated, and fine-tuned on historical pro-basketball game logs with engineered rolling features and tabular-friendly boosting.</p>
+          <div class="tags">
+            <span class="tag t-orange">XGBoost</span>
+            <span class="tag t-amber">Scikit-learn</span>
+            <span class="tag t-def">Pandas</span>
+            <span class="tag t-pink">Per-stat models</span>
+          </div>
+        </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-bullseye text-orange-400 text-lg"></i>
+            <h3 class="font-bold text-white text-sm">Prediction Targets</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-slate-900/60 rounded-lg p-3 text-center">
+              <p class="text-orange-300 font-bold text-lg">FGM</p>
+              <p class="text-slate-500 text-xs mt-0.5">Field Goals Made</p>
+            </div>
+            <div class="bg-slate-900/60 rounded-lg p-3 text-center">
+              <p class="text-orange-300 font-bold text-lg">FGA</p>
+              <p class="text-slate-500 text-xs mt-0.5">Field Goals Attempted</p>
+            </div>
+            <div class="bg-slate-900/60 rounded-lg p-3 text-center">
+              <p class="text-orange-300 font-bold text-lg">FG3M</p>
+              <p class="text-slate-500 text-xs mt-0.5">3-Pointers Made</p>
+            </div>
+            <div class="bg-slate-900/60 rounded-lg p-3 text-center">
+              <p class="text-orange-300 font-bold text-lg">MIN</p>
+              <p class="text-slate-500 text-xs mt-0.5">Minutes Played</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-sliders text-amber-400 text-lg"></i>
+            <h3 class="font-bold text-white text-sm">Feature Engineering</h3>
+          </div>
+          <ul class="space-y-1.5 text-slate-400 text-sm">
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>5-game rolling averages per player per stat</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>MinMax scaling for feature normalisation</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Opponent defensive rating features</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Home/away context encoding</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Back-to-back game fatigue flag</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-4">
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+          <i class="fas fa-dumbbell text-orange-400 text-xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">XGBoost</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Gradient boosted trees for mixed tabular features, non-linear interactions, and strong generalisation on sports box-score data.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+          <i class="fas fa-flask text-amber-400 text-xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">Training &amp; fine-tuning</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Train/validation splits with iterative hyperparameter tuning (learning rate, depth, estimators) per stat.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+          <i class="fas fa-layer-group text-pink-400 text-xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">Per-stat architecture</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Dedicated models per target instead of one multi-output head — independent calibration per stat category.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ingest history:</strong> Clean game logs and box scores into a reproducible training table.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Engineer features:</strong> Rolling windows, scaling, and contextual flags aligned to each stat.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Train per target:</strong> Fit and validate separate XGBoost models for FGM, FGA, FG3M, and MIN.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Tune carefully:</strong> Iterate hyperparameters to reduce error without overfitting noisy game samples.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Serialize for inference:</strong> Export models for the live pipeline and versioned retraining.</span></li>
+        </ul>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-table text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Tabular ML depth</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">End-to-end pipeline from raw logs to validated boosted models.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-chart-line text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Sports feature design</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Rolling form, opponent context, and schedule-aware signals.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-sliders text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Per-stat calibration</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Independent models so each output can be tuned on its own error profile.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── REAL-TIME CONVERSION ──────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Live inference stack</p>
+          <h2 class="project-title">Batch → Real-time Conversion</h2>
+          <p class="project-desc">The baseline predicted from static pre-game snapshots. The upgrade ingests live in-game signals, rebuilds features on a polling loop, and re-runs inference as the game evolves.</p>
+          <div class="tags">
+            <span class="tag t-sky">RapidAPI</span>
+            <span class="tag t-def">PostgreSQL</span>
+            <span class="tag t-amber">FastAPI</span>
+            <span class="tag t-orange">Polling + feature rebuild</span>
+          </div>
+        </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-slate-800/60 border border-slate-700/80 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-clock-rotate-left text-slate-400 text-lg"></i>
+            <h3 class="font-bold text-slate-400 text-sm">Before — batch</h3>
+          </div>
+          <ul class="space-y-1.5 text-slate-500 text-sm">
+            <li class="flex items-start gap-2"><i class="fas fa-xmark text-slate-600 mt-0.5 flex-shrink-0 text-xs"></i>Pre-game prediction only — static before tip-off</li>
+            <li class="flex items-start gap-2"><i class="fas fa-xmark text-slate-600 mt-0.5 flex-shrink-0 text-xs"></i>No live ingestion during the game</li>
+            <li class="flex items-start gap-2"><i class="fas fa-xmark text-slate-600 mt-0.5 flex-shrink-0 text-xs"></i>Could not react to foul trouble, injuries, hot streaks</li>
+            <li class="flex items-start gap-2"><i class="fas fa-xmark text-slate-600 mt-0.5 flex-shrink-0 text-xs"></i>Outputs stale within minutes of tip-off</li>
+          </ul>
+        </div>
+
+        <div class="rounded-xl p-5" style="background: linear-gradient(135deg, rgba(249,115,22,0.1), rgba(30,41,59,0.8)); border: 1px solid rgba(251,146,60,0.35);">
+          <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-satellite-dish text-orange-400 text-lg"></i>
+            <h3 class="font-bold text-white text-sm">After — real-time</h3>
+          </div>
+          <ul class="space-y-1.5 text-slate-300 text-sm">
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Live score, stat, and pace data via RapidAPI mid-game</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Feature vector rebuilt each polling cycle</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Inference re-runs with updated in-game context</li>
+            <li class="flex items-start gap-2"><i class="fas fa-check text-orange-400 mt-0.5 flex-shrink-0 text-xs"></i>Predictions track live game state continuously</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-700/50 rounded-xl workflow-canvas mb-4">
+        <p class="text-xs text-sky-400 font-semibold uppercase tracking-widest mb-3 text-center">Real-time API integration</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+            <i class="fas fa-plug text-sky-400 text-xl mb-2"></i>
+            <p class="text-white font-semibold text-sm mb-1">RapidAPI sports feed</p>
+            <p class="text-slate-400 text-xs">Live scores, box stats, and play-by-play polled during active games</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+            <i class="fas fa-rotate text-amber-400 text-xl mb-2"></i>
+            <p class="text-white font-semibold text-sm mb-1">Polling &amp; feature rebuild</p>
+            <p class="text-slate-400 text-xs">Interval polling; vectors assembled from live stats plus stored rolling averages</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4 text-center">
+            <i class="fas fa-database text-orange-400 text-xl mb-2"></i>
+            <p class="text-white font-semibold text-sm mb-1">PostgreSQL state store</p>
+            <p class="text-slate-400 text-xs">Historical averages and profiles persisted for instant rolling features at inference time</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Subscribe to live data:</strong> Poll the sports feed while games are active.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Merge state:</strong> Combine API snapshots with PostgreSQL rolling history.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Rebuild features:</strong> Recompute scaled inputs on every cycle.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Re-infer:</strong> Run XGBoost with the latest in-game vector.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Stay fresh:</strong> Outputs track momentum, pace, and lineup effects as they happen.</span></li>
+        </ul>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-satellite-dish text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Live data contracts</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Robust handling of external sports APIs and changing payload shapes.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-gears text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Stateful inference</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Database-backed rolling windows so live rows stay aligned with history.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-bolt text-orange-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Low-latency loop</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Polling, assembly, and model scoring tuned for repeated mid-game execution.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SENTIMENT ANALYSIS ───────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Alternative data &amp; sentiment</p>
+          <h2 class="project-title">Sentiment Analysis Integration</h2>
+          <p class="project-desc">Social and search signals sit alongside structured model outputs — useful for spotting when statistical projections diverge from public narrative and market pricing.</p>
+          <div class="tags">
+            <span class="tag t-pink">Twitter / X</span>
+            <span class="tag t-orange">Reddit</span>
+            <span class="tag t-sky">Google Trends</span>
+          </div>
+        </div>
+
+      <div class="grid md:grid-cols-3 gap-4 mb-4">
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow text-center">
+          <i class="fab fa-x-twitter text-slate-300 text-2xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">Twitter / X</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Player and team sentiment from tweets — momentum, injury chatter, and lineup noise ahead of full line moves.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow text-center">
+          <i class="fab fa-reddit text-orange-400 text-2xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">Reddit</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Community threads from r/nba and betting subs — sharp vs. public sentiment trends.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow text-center">
+          <i class="fab fa-google text-sky-400 text-2xl mb-2"></i>
+          <h3 class="font-semibold text-white mb-1.5 text-sm">Google Trends</h3>
+          <p class="text-slate-400 text-xs leading-relaxed">Search-interest spikes as a coarse attention signal for narrative heat.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/40 border border-pink-700/30 rounded-xl p-4 text-left mb-4">
+        <p class="text-pink-300 font-semibold text-sm mb-1">How it&apos;s used</p>
+        <p class="text-slate-400 text-sm leading-relaxed">Sentiment scores are combined with model outputs to flag divergence — where statistical projections and public narrative disagree, surfacing candidate mispricings next to current lines.</p>
+      </div>
+
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ingest text signals:</strong> Pull social and search feeds on a controlled schedule.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Score sentiment:</strong> Normalise outputs into comparable sentiment features.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Fuse with ML:</strong> Layer sentiment alongside XGBoost predictions in one view.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Contrast vs. market:</strong> Compare fused signals to posted lines for discrepancy analysis.</span></li>
+        </ul>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-comments text-pink-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Multi-channel text</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Three independent sentiment sources reduce single-platform bias.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-scale-balanced text-pink-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Narrative vs. model</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Explicit comparison between statistical and sentiment-driven views.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-chart-line text-pink-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Market-facing layer</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Outputs aligned to line comparison and capper-style workflows.</p>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT THIS PROVES ──────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-white mb-6">What This Proves</h2>
+      <div class="grid md:grid-cols-3 gap-4 text-left">
+        <div class="bg-slate-800/60 border border-orange-700/40 rounded-xl p-5">
+          <p class="text-orange-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Full ML lifecycle</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Data prep through training, validation, tuning, and deployment — owned end-to-end.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-orange-700/40 rounded-xl p-5">
+          <p class="text-orange-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Real-time ML systems</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Live ingestion and inference that stay aligned with changing game state.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-orange-700/40 rounded-xl p-5">
+          <p class="text-orange-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Multi-signal fusion</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Structured XGBoost outputs combined with alternative-data sentiment in one decision layer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DOMAIN REFERENCE CARD ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-12" style="background: linear-gradient(to right, transparent, rgba(251,146,60,0.5));"></div>
+        <i class="fas fa-compass text-orange-400" style="font-size:0.7rem;"></i>
+        <div class="h-px w-12" style="background: linear-gradient(to left, transparent, rgba(251,146,60,0.5));"></div>
+      </div>
+      <p class="text-orange-400 font-medium text-sm uppercase tracking-widest mb-2 text-center">Technical Scope</p>
+      <h2 class="text-2xl font-bold text-white text-center mb-3">Domain Coverage</h2>
+      <p class="text-slate-300 text-sm text-center max-w-3xl mx-auto mb-6">
+        Predictive modelling, real-time inference, and alternative-data fusion demonstrated in this sports-analytics portfolio.
+      </p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="rounded-xl p-4 md:col-span-2 lg:col-span-3" style="background: linear-gradient(135deg, rgba(249,115,22,0.18), rgba(30,41,59,0.7)); border: 1px solid rgba(251,146,60,0.45);">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-tag text-orange-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Core Domain</p>
+              </div>
+              <p class="text-white font-semibold text-sm">AI Model Development</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-link text-orange-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Also Covers</p>
+              </div>
+              <p class="text-slate-200 text-sm leading-relaxed">Real-time API ingestion, backend services for inference loops, and production-oriented ML delivery.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-4 mb-2">
+            <i class="fas fa-sitemap text-orange-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Subdomains</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Predictive ML · classical ML · feature engineering · real-time ML · sports analytics · sentiment analysis</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-code-branch text-orange-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Techniques</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">XGBoost · rolling features · MinMax scaling · hyperparameter tuning · batch-to-real-time conversion · API polling · sentiment scoring · multi-signal fusion</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-toolbox text-orange-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Frameworks / Tools</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">XGBoost · Scikit-learn · Pandas · RapidAPI · FastAPI · PostgreSQL · Python · Twitter/X · Reddit · Google Trends</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-bullseye text-orange-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-orange-400 font-bold uppercase tracking-widest">Use Cases</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Live player stat prediction · game forecasting · line mispricing signals · performance analytics with sentiment overlay</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────────────── -->
+  <section class="py-12 md:py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          Need a predictive ML system?
+        </h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+          Custom ML models, real-time data pipelines, or a full sports analytics platform — let's build it.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/"
+             class="bg-orange-600 hover:bg-orange-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-orange-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com"
+             class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-basketball text-orange-400"></i>
+        <span>Sports analytics &amp; real-time predictive ML</span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-orange-400 hover:text-orange-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const raw = link.getAttribute('href');
+        if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return;
+        if (raw.startsWith('http://') || raw.startsWith('https://')) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set('theme', theme);
+          link.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark") ? paramTheme : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+
+    const winProbEl = document.getElementById("hero-win-prob");
+    const liveEventEl = document.getElementById("hero-live-event");
+    const heroBall = document.getElementById("hero-ball");
+    const off1 = document.getElementById("offense-1");
+    const off2 = document.getElementById("offense-2");
+    const off3 = document.getElementById("offense-3");
+    const def1 = document.getElementById("defense-1");
+    const def2 = document.getElementById("defense-2");
+    const passLine1 = document.getElementById("pass-line-1");
+    const passLine2 = document.getElementById("pass-line-2");
+    const counterPassLine = document.getElementById("counter-pass-line");
+    const dribbleLine1 = document.getElementById("dribble-line-1");
+    const dribbleLine2 = document.getElementById("dribble-line-2");
+    const dribbleLineCounter = document.getElementById("dribble-line-counter");
+    const shotLine = document.getElementById("shot-line");
+    const rimEl = document.getElementById("hero-rim");
+
+    if (winProbEl && heroBall && off1 && off2 && off3 && def1 && def2 && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const values = ["62%", "59%", "64%", "61%", "66%", "58%", "63%", "67%"];
+      let idx = 0;
+      let currentDelayMs = 900;
+      let actionTimeout = null;
+      let lastEvent = "";
+
+      const lerp = function (a, b, t) { return a + ((b - a) * t); };
+      const place = function (node, x, y) { node.setAttribute("transform", "translate(" + x.toFixed(1) + " " + y.toFixed(1) + ")"); };
+
+      const setEventState = function (label, delayMs, holdMs) {
+        if (lastEvent === label) return;
+        lastEvent = label;
+        currentDelayMs = delayMs;
+        if (liveEventEl) liveEventEl.innerHTML = label;
+        if (actionTimeout) clearTimeout(actionTimeout);
+        actionTimeout = setTimeout(function () {
+          lastEvent = "";
+          currentDelayMs = 900;
+          if (liveEventEl) liveEventEl.innerHTML = '<i class="fas fa-wave-square"></i> steady update';
+        }, holdMs);
+      };
+
+      const scheduleNextProbTick = function () {
+        setTimeout(function () {
+          idx = (idx + 1) % values.length;
+          winProbEl.textContent = values[idx];
+          scheduleNextProbTick();
+        }, currentDelayMs);
+      };
+
+      scheduleNextProbTick();
+
+      const cycleMs = 4400;
+      const startMs = Date.now();
+
+      setInterval(function () {
+        const elapsed = (Date.now() - startMs) % cycleMs;
+        const phase = elapsed / cycleMs;
+
+        const p1 = { x: 70, y: 164 };
+        const p2 = { x: 170, y: 142 };
+        const p3 = { x: 286, y: 122 };
+        const hoop = { x: 339, y: 65 };
+
+        // Default off-ball movement, then overridden in active dribble/pass phases.
+        place(off1, p1.x + Math.sin(elapsed / 180) * 2, p1.y);
+        place(off2, p2.x + Math.sin((elapsed + 220) / 160) * 2.8, p2.y + Math.cos(elapsed / 220) * 1.6);
+        place(off3, p3.x + Math.sin((elapsed + 380) / 200) * 1.8, p3.y);
+        place(def1, 220 + Math.sin(elapsed / 170) * 4, 150 + Math.cos(elapsed / 190) * 2);
+        place(def2, 312 + Math.sin((elapsed + 300) / 160) * 4, 134 + Math.cos((elapsed + 100) / 200) * 2);
+
+        if (passLine1) passLine1.classList.remove("active");
+        if (passLine2) passLine2.classList.remove("active");
+        if (counterPassLine) counterPassLine.classList.remove("active");
+        if (dribbleLine1) dribbleLine1.classList.remove("active");
+        if (dribbleLine2) dribbleLine2.classList.remove("active");
+        if (dribbleLineCounter) dribbleLineCounter.classList.remove("active");
+        if (shotLine) shotLine.classList.remove("active");
+        if (rimEl) rimEl.classList.remove("goal");
+
+        if (phase < 0.14) {
+          const t = phase / 0.14;
+          const ballX = lerp(p1.x - 2, p1.x + 36, t);
+          const ballY = lerp(p1.y - 3, p1.y + 10, Math.abs(Math.sin(t * Math.PI * 2)));
+          heroBall.setAttribute("cx", String(ballX));
+          heroBall.setAttribute("cy", String(ballY));
+          // Dribbler advances with the ball.
+          place(off1, lerp(p1.x, p1.x + 30, t), lerp(p1.y, p1.y - 4, t));
+          // Nearest defender closes space during drive.
+          place(def1, lerp(220, 190, t), lerp(150, 146, t));
+          place(def2, 312 + Math.sin((elapsed + 300) / 160) * 4, 134 + Math.cos((elapsed + 100) / 200) * 2);
+          if (dribbleLine1) dribbleLine1.classList.add("active");
+          setEventState('<i class="fas fa-person-running"></i> dribble advance', 220, 260);
+        } else if (phase < 0.26) {
+          const t = (phase - 0.14) / 0.12;
+          const ballX = lerp(p1.x + 30, p2.x, t);
+          const ballY = lerp(p1.y - 4, p2.y, t);
+          heroBall.setAttribute("cx", String(ballX));
+          heroBall.setAttribute("cy", String(ballY));
+          place(off1, p1.x + 30 - (t * 6), p1.y - 4 + (t * 2));
+          place(off2, p2.x - (1 - t) * 8, p2.y + (1 - t) * 1.5);
+          place(def1, lerp(190, 184, t), lerp(146, 144, t));
+          if (passLine1) passLine1.classList.add("active");
+          setEventState('<i class="fas fa-share-nodes"></i> pass detected', 240, 280);
+        } else if (phase < 0.47) {
+          const t = (phase - 0.26) / 0.21;
+          const ballX = lerp(p2.x - 6, p2.x + 44, t);
+          const ballY = lerp(p2.y - 1, p2.y + 13, Math.abs(Math.sin(t * Math.PI * 2.5)));
+          heroBall.setAttribute("cx", String(ballX));
+          heroBall.setAttribute("cy", String(ballY));
+          // Second dribbler tracks the ball.
+          place(off2, lerp(p2.x - 2, p2.x + 38, t), lerp(p2.y, p2.y + 2.5, t));
+          // Defender steps up aggressively to the active dribbler.
+          place(def1, lerp(184, 214, t), lerp(144, 136, t));
+          place(def2, lerp(312, 298, t), lerp(134, 128, t));
+          if (dribbleLine2) dribbleLine2.classList.add("active");
+          setEventState('<i class="fas fa-shield-halved"></i> dribble under pressure', 280, 240);
+        } else if (phase < 0.58) {
+          const t = (phase - 0.47) / 0.11;
+          const ballX = lerp(p2.x + 30, p3.x, t);
+          const ballY = lerp(p2.y + 2, p3.y, t);
+          heroBall.setAttribute("cx", String(ballX));
+          heroBall.setAttribute("cy", String(ballY));
+          place(off2, p2.x + 34 - (t * 7), p2.y + 2 - (t * 2));
+          place(off3, p3.x - (1 - t) * 8, p3.y + (1 - t) * 1.4);
+          place(def1, lerp(214, 240, t), lerp(136, 131, t));
+          place(def2, lerp(298, 304, t), lerp(128, 126, t));
+          if (passLine2) passLine2.classList.add("active");
+          setEventState('<i class="fas fa-share-nodes"></i> quick pass', 220, 260);
+        } else if (phase < 0.69) {
+          const t = (phase - 0.58) / 0.11;
+          heroBall.setAttribute("cx", String(lerp(p3.x, hoop.x, t)));
+          heroBall.setAttribute("cy", String(lerp(p3.y, hoop.y, t) - (Math.sin(t * Math.PI) * 30)));
+          place(off3, p3.x + Math.sin(t * Math.PI) * 4, p3.y - t * 4);
+          // Contesting defender cuts between shooter and hoop, then jumps to block.
+          // Defender moves into lane first, then performs a mostly vertical jump contest.
+          const settleT = Math.min(t / 0.45, 1);
+          const blockX = lerp(304, 338, settleT);
+          const blockBaseY = lerp(126, 94, settleT);
+          const jumpPhase = t < 0.45 ? 0 : (t - 0.45) / 0.55;
+          const jumpLift = Math.sin(Math.min(jumpPhase, 1) * Math.PI) * 24;
+          place(def2, blockX, blockBaseY - jumpLift);
+          // Secondary defender closes lane but stays grounded.
+          place(def1, lerp(240, 276, t), lerp(131, 116, t));
+          if (shotLine) shotLine.classList.add("active");
+          if (t > 0.82 && rimEl) rimEl.classList.add("goal");
+          setEventState('<i class="fas fa-up-right-and-down-left-from-center"></i> contested shot', 155, 250);
+          if (t > 0.85) {
+            setEventState('<i class="fas fa-basketball"></i> goal made', 165, 220);
+          }
+        } else if (phase < 0.79) {
+          // Possession flips to the former defenders after made basket.
+          const t = (phase - 0.69) / 0.10;
+          heroBall.setAttribute("cx", String(lerp(hoop.x, 338, t)));
+          heroBall.setAttribute("cy", String(lerp(hoop.y, 94, t)));
+          place(def2, lerp(338, 338, t), lerp(94, 94, t));
+          place(def1, lerp(276, 268, t), lerp(116, 130, t));
+          place(off1, lerp(p1.x + 26, 168, t), lerp(p1.y - 2, 144, t));
+          place(off2, lerp(p2.x + 12, 222, t), lerp(p2.y + 2, 138, t));
+          place(off3, lerp(p3.x + 2, 286, t), lerp(p3.y - 2, 120, t));
+          setEventState('<i class="fas fa-arrow-right-arrow-left"></i> possession switch', 260, 250);
+        } else if (phase < 0.89) {
+          // Counter team pass.
+          const t = (phase - 0.79) / 0.10;
+          heroBall.setAttribute("cx", String(lerp(338, 268, t)));
+          heroBall.setAttribute("cy", String(lerp(94, 130, t)));
+          if (counterPassLine) counterPassLine.classList.add("active");
+          place(def2, lerp(338, 332, t), lerp(94, 100, t));
+          place(def1, lerp(268, 268, t), lerp(130, 130, t));
+          place(off2, lerp(222, 232, t), lerp(138, 132, t));
+          setEventState('<i class="fas fa-share-nodes"></i> counter pass', 210, 240);
+        } else if (phase < 0.95) {
+          // Counter dribble across to other side while avoiding pressure.
+          const t = (phase - 0.89) / 0.06;
+          const counterX = lerp(268, 188, t);
+          const counterY = lerp(130, 134, t) + Math.abs(Math.sin(t * Math.PI * 2.8)) * 11;
+          heroBall.setAttribute("cx", String(counterX));
+          heroBall.setAttribute("cy", String(counterY));
+          place(def1, lerp(268, 194, t), lerp(130, 132, t));
+          place(def2, lerp(332, 286, t), lerp(100, 108, t));
+          // Other-side players pressure and lane-cut.
+          place(off1, lerp(168, 178, t), lerp(144, 137, t));
+          place(off2, lerp(232, 210, t), lerp(132, 126, t));
+          place(off3, lerp(286, 248, t), lerp(120, 116, t));
+          if (dribbleLineCounter) dribbleLineCounter.classList.add("active");
+          setEventState('<i class="fas fa-person-running"></i> counter dribble', 230, 260);
+        } else if (phase < 0.965) {
+          // One more game play: quick give-and-go to beat pressure.
+          const t = (phase - 0.95) / 0.015;
+          heroBall.setAttribute("cx", String(lerp(188, 238, t)));
+          heroBall.setAttribute("cy", String(lerp(134, 118, t)));
+          place(def1, lerp(194, 232, t), lerp(132, 118, t));
+          place(def2, lerp(286, 308, t), lerp(108, 102, t));
+          place(off1, lerp(178, 186, t), lerp(137, 130, t));
+          place(off2, lerp(210, 216, t), lerp(126, 120, t));
+          place(off3, lerp(248, 258, t), lerp(116, 110, t));
+          if (counterPassLine) counterPassLine.classList.add("active");
+          setEventState('<i class="fas fa-share-nodes"></i> give and go', 210, 240);
+        } else if (phase < 0.985) {
+          // Smooth recovery: carrier turns and outlets pass back to opening side.
+          const t = (phase - 0.965) / 0.02;
+          heroBall.setAttribute("cx", String(lerp(238, 124, t)));
+          heroBall.setAttribute("cy", String(lerp(118, 154, t)));
+          if (passLine1) passLine1.classList.add("active");
+          place(off1, lerp(186, 96, t), lerp(130, 160, t));
+          place(off2, lerp(216, 174, t), lerp(120, 142, t));
+          place(off3, lerp(258, 276, t), lerp(110, 122, t));
+          place(def1, lerp(232, 222, t), lerp(118, 148, t));
+          place(def2, lerp(308, 304, t), lerp(102, 132, t));
+          setEventState('<i class="fas fa-right-left"></i> recovery outlet pass', 230, 240);
+        } else {
+          // Receiver secures ball and starts next dribble from the opening lane.
+          const t = (phase - 0.985) / 0.015;
+          const ballX = lerp(124, p1.x, t);
+          const ballY = lerp(154, p1.y, t) + Math.abs(Math.sin(t * Math.PI * 2.2)) * 6;
+          heroBall.setAttribute("cx", String(ballX));
+          heroBall.setAttribute("cy", String(ballY));
+          if (dribbleLine1) dribbleLine1.classList.add("active");
+          place(off1, lerp(96, p1.x, t), lerp(160, p1.y, t));
+          place(off2, lerp(174, p2.x, t), lerp(142, p2.y, t));
+          place(off3, lerp(276, p3.x, t), lerp(122, p3.y, t));
+          place(def1, lerp(222, 220, t), lerp(148, 150, t));
+          place(def2, lerp(304, 312, t), lerp(132, 134, t));
+          setEventState('<i class="fas fa-person-running"></i> reset into next possession', 220, 220);
+        }
+      }, 65);
+    }
+  })();
+</script>
+<script src="../assets/home-embed.js"></script>
+</body>
+</html>

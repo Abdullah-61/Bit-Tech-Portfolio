@@ -1,0 +1,36 @@
+/* Bit Tech Solutions wordmark (transparent PNG): outline + glow on dark UI */
+
+img[src*="bit-tech-solutions-logo"] {
+  filter:
+    /* slim white rim (simulated stroke via 1px offset drop-shadows) */
+    drop-shadow(1px 0 0 #ffffff)
+    drop-shadow(-1px 0 0 #ffffff)
+    drop-shadow(0 1px 0 #ffffff)
+    drop-shadow(0 -1px 0 #ffffff)
+    drop-shadow(1px 1px 0 #ffffff)
+    drop-shadow(-1px -1px 0 #ffffff)
+    drop-shadow(1px -1px 0 #ffffff)
+    drop-shadow(-1px 1px 0 #ffffff)
+    /* soft outer glow */
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.42))
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.22))
+    drop-shadow(0 0 22px rgba(255, 255, 255, 0.1));
+}
+
+/* Domain footers: thinner rim (0.5px), no outer glow */
+footer img[src*="bit-tech-solutions-logo"] {
+  filter:
+    drop-shadow(0.5px 0 0 #ffffff)
+    drop-shadow(-0.5px 0 0 #ffffff)
+    drop-shadow(0 0.5px 0 #ffffff)
+    drop-shadow(0 -0.5px 0 #ffffff)
+    drop-shadow(0.5px 0.5px 0 #ffffff)
+    drop-shadow(-0.5px -0.5px 0 #ffffff)
+    drop-shadow(0.5px -0.5px 0 #ffffff)
+    drop-shadow(-0.5px 0.5px 0 #ffffff);
+}
+
+body.light-theme img[src*="bit-tech-solutions-logo"],
+:root[data-theme="light"] img[src*="bit-tech-solutions-logo"] {
+  filter: none;
+}

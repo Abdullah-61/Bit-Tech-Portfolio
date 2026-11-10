@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legal Blog Drafting Assistant — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #334155 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #475569 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    body.light-theme .hero-domain-tag { background-color: #fef3c7 !important; border-color: #f59e0b !important; color: #92400e !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #f59e0b, #f97316, #fb7185) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .project-shell,
+    body.light-theme .card-glow,
+    body.light-theme .workflow-step {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme .lb-visual {
+      background: linear-gradient(155deg, #ffffff 0%, #fff7ed 48%, #fef2f2 100%);
+      border-color: rgba(245, 158, 11, 0.45);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+    body.light-theme .lb-panel {
+      background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+      border-color: #e2e8f0;
+    }
+    body.light-theme .lb-panel p { color: #0f172a; }
+    body.light-theme .lb-panel span { color: #475569; }
+
+    .flow-list { list-style: none; margin: 0; padding: 0; }
+    .flow-list li {
+      display: flex; gap: 0.55rem; align-items: flex-start;
+      color: #cbd5e1; font-size: 0.9375rem; line-height: 1.55; margin-bottom: 0.45rem;
+    }
+    .flow-list li:last-child { margin-bottom: 0; }
+    .flow-list i { color: #f59e0b; margin-top: 0.2rem; font-size: 0.72rem; flex-shrink: 0; }
+    body.light-theme .flow-list li { color: #334155; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box, linear-gradient(135deg, #f59e0b, #f97316, #fb7185) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .card-glow { transition: all 0.2s ease; }
+    .card-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.45), 0 10px 30px rgba(245, 158, 11, 0.18);
+    }
+    .workflow-step {
+      background: #0f172a;
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      border-radius: 0.75rem;
+      padding: 0.9rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .workflow-step:hover {
+      transform: translateY(-2px);
+      border-color: rgba(251, 146, 60, 0.85);
+    }
+    .workflow-track {
+      display: flex;
+      align-items: stretch;
+      gap: 0.65rem;
+      overflow-x: auto;
+      padding-bottom: 0.2rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: #f59e0b #1e293b;
+    }
+    .workflow-track .workflow-step {
+      min-width: 10.25rem;
+      flex: 0 0 10.25rem;
+      margin: 0;
+    }
+    .workflow-arrow {
+      color: #f59e0b;
+      font-size: 1.2rem;
+      font-weight: 700;
+      animation: pulse-arrow 1.8s ease-in-out infinite;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @keyframes pulse-arrow {
+      0%, 100% { opacity: 0.45; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(3px); }
+    }
+    .pulse-dot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #f59e0b;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    .tag {
+      padding: 0.28rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+    }
+    .lb-visual {
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.92));
+      border: 1px solid rgba(245, 158, 11, 0.38);
+      border-radius: 0.9rem;
+      padding: 1rem 1.1rem;
+      max-width: 760px;
+      margin: 0 auto 1.75rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.26);
+    }
+    .lb-flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem 0.35rem;
+    }
+    .lb-panel {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(71,85,105,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 0.65rem 0.85rem;
+      min-width: 6rem;
+      text-align: center;
+    }
+    .lb-panel i { color: #f59e0b; font-size: 1.1rem; margin-bottom: 0.35rem; display: block; }
+    .lb-panel p { margin: 0; font-size: 0.72rem; font-weight: 700; color: #e2e8f0; text-transform: uppercase; letter-spacing: 0.06em; }
+    .lb-panel span { font-size: 0.65rem; color: #94a3b8; display: block; margin-top: 0.2rem; text-transform: none; font-weight: 500; letter-spacing: 0; }
+    .lb-chevron { color: #f59e0b; font-size: 0.75rem; opacity: 0.85; }
+    @media (prefers-reduced-motion: reduce) {
+      .workflow-arrow, .pulse-dot::before { animation: none !important; }
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 3px; }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0 max-w-[min(100%,16rem)] sm:max-w-none">
+        <i class="fas fa-scale-balanced text-amber-400 text-xl shrink-0"></i>
+        <span class="font-semibold text-white text-xs sm:text-sm tracking-wide leading-tight">Legal Blog Drafting Assistant</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/" class="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition-colors font-medium">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="pt-28 pb-10 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium px-3 py-1.5 rounded-full mb-5">
+        <span class="relative w-2 h-2 pulse-dot"><span class="block w-2 h-2 rounded-full bg-amber-400"></span></span>
+        AI Integration &amp; Agents · Legal Content Operations
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Legal Content Production,<br><span class="gradient-text">From Source File to Client-Ready Draft</span>
+      </h1>
+      <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        A secure Flask workflow for law firms to turn curated legal source material into
+        <strong class="text-slate-200 font-semibold">firm-branded blog drafts</strong>, with
+        <strong class="text-slate-200 font-semibold">tone and keyword controls</strong>,
+        guided editing, AI image generation, and final downloadable export.
+      </p>
+      <div class="lb-visual" aria-label="Legal blog drafting workflow">
+        <div class="lb-flow">
+          <div class="lb-panel"><i class="fas fa-file-word"></i><p>Source</p><span>Curated DOCX</span></div>
+          <i class="fas fa-chevron-right lb-chevron hidden sm:inline" aria-hidden="true"></i>
+          <div class="lb-panel"><i class="fas fa-sliders"></i><p>Customize</p><span>Tone · Keywords</span></div>
+          <i class="fas fa-chevron-right lb-chevron hidden sm:inline" aria-hidden="true"></i>
+          <div class="lb-panel"><i class="fas fa-robot"></i><p>Draft</p><span>Azure AI rewrite</span></div>
+          <i class="fas fa-chevron-right lb-chevron hidden sm:inline" aria-hidden="true"></i>
+          <div class="lb-panel"><i class="fas fa-pen-to-square"></i><p>Review</p><span>Chat + manual edits</span></div>
+          <i class="fas fa-chevron-right lb-chevron hidden sm:inline" aria-hidden="true"></i>
+          <div class="lb-panel"><i class="fas fa-download"></i><p>Finalize</p><span>DOCX export</span></div>
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-fire-flame-curved mr-1 text-amber-400"></i>Flask</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-brain mr-1 text-violet-400"></i>Azure OpenAI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-bolt mr-1 text-sky-400"></i>Azure Functions</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-database mr-1 text-emerald-400"></i>Azure SQL</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-file-word mr-1 text-blue-400"></i>python-docx</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto text-center">
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white">5</p><p class="text-[11px] text-slate-400">Core stages</p></div>
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white">3+</p><p class="text-[11px] text-slate-400">Tone options</p></div>
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white">2</p><p class="text-[11px] text-slate-400">AI functions</p></div>
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white">DOCX</p><p class="text-[11px] text-slate-400">Structured export</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-8 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+      <div class="card-glow bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Problem</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Law firms need consistent, high-quality educational blogs, but manual drafting from legal source material takes too long.</p>
+      </div>
+      <div class="card-glow bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Solution</p>
+        <p class="text-slate-300 text-sm leading-relaxed">An authenticated workflow that rewrites curated DOCX articles into personalized drafts using firm, location, tone, and keyword inputs.</p>
+      </div>
+      <div class="card-glow bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-xs font-bold text-amber-400 uppercase tracking-widest mb-2">Outcome</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Faster legal content turnaround with editor control preserved: AI-assisted first draft, review pass, image generation, and ready-to-publish export.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-2">Under the hood</p>
+        <h2 class="text-2xl font-bold text-white mb-3">Document-to-draft workflow</h2>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag">Flask Session</span>
+          <span class="tag">Jinja Templates</span>
+          <span class="tag">Azure SQL + SQLAlchemy</span>
+          <span class="tag">Async HTTP (httpx/aiohttp)</span>
+          <span class="tag">Markdown + BeautifulSoup</span>
+        </div>
+
+        <div class="workflow-track" aria-label="Document-to-draft horizontal workflow">
+          <div class="workflow-step text-center">
+            <i class="fas fa-right-to-bracket text-amber-400 mb-2"></i>
+            <p class="text-white text-sm font-semibold">Authenticate</p>
+            <p class="text-slate-400 text-xs">User + firm profile</p>
+          </div>
+          <div class="workflow-arrow text-center" aria-hidden="true">-&gt;</div>
+          <div class="workflow-step text-center">
+            <i class="fas fa-folder-open text-amber-400 mb-2"></i>
+            <p class="text-white text-sm font-semibold">Select Source</p>
+            <p class="text-slate-400 text-xs">DOCX + metadata</p>
+          </div>
+          <div class="workflow-arrow text-center" aria-hidden="true">-&gt;</div>
+          <div class="workflow-step text-center">
+            <i class="fas fa-wand-magic-sparkles text-amber-400 mb-2"></i>
+            <p class="text-white text-sm font-semibold">Generate Draft</p>
+            <p class="text-slate-400 text-xs">Azure Function</p>
+          </div>
+          <div class="workflow-arrow text-center" aria-hidden="true">-&gt;</div>
+          <div class="workflow-step text-center">
+            <i class="fas fa-comments text-amber-400 mb-2"></i>
+            <p class="text-white text-sm font-semibold">Refine</p>
+            <p class="text-slate-400 text-xs">Chat + inline edit</p>
+          </div>
+          <div class="workflow-arrow text-center" aria-hidden="true">-&gt;</div>
+          <div class="workflow-step text-center">
+            <i class="fas fa-file-arrow-down text-amber-400 mb-2"></i>
+            <p class="text-white text-sm font-semibold">Export</p>
+            <p class="text-slate-400 text-xs">Formatted DOCX</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 px-6 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto space-y-4">
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-3 text-left">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Curate legal sources</strong> as DOCX documents with optional article metadata and series information.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Collect writing controls</strong> including tone, custom tones, firm identity, location, and SEO keywords.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Generate first draft</strong> through an Azure Function endpoint backed by Azure OpenAI.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Iterate safely</strong> with chat-style edits and manual adjustments before finalization.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Add visual support</strong> through on-demand AI image generation for the same post.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ship final output</strong> as formatted DOCX for marketing and publishing workflows.</span></li>
+        </ul>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-3 text-left">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-user-shield text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Account &amp; profile management</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Registration, login, and firm-level profile fields used to personalize each draft automatically.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-pen-ruler text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Tone governance</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Built-in writing styles plus user-defined custom tones stored per account for repeatable output.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-database text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Structured legal source library</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">DOCX ingestion and metadata mapping support serial content programs and reusable source material.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-comment-dots text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Conversational revision loop</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Chat history and session-scoped editing let legal teams refine drafts without restarting the workflow.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-image text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">AI image generation</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Optional generated visuals are tied to the current draft and stored alongside final content assets.</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-file-export text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-base">Formatted document export</h3>
+            <p class="text-slate-200 text-sm leading-relaxed">Markdown-aware DOCX generation preserves heading and paragraph structure for handoff-ready content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 px-6 bg-slate-900/70">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-amber-400 font-medium text-sm uppercase tracking-widest mb-4 text-center">Technical depth</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-3">What makes it production-minded</h2>
+      <div class="grid md:grid-cols-3 gap-5 mt-8">
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3"><i class="fas fa-scale-balanced text-xl text-amber-400"></i><h3 class="font-semibold text-white text-sm">Domain-specific input controls</h3></div>
+          <p class="text-slate-400 text-xs leading-relaxed">Firm profile fields, planning-session context, and keyword injection keep drafts aligned to legal practice goals.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3"><i class="fas fa-layer-group text-xl text-amber-400"></i><h3 class="font-semibold text-white text-sm">Composable AI services</h3></div>
+          <p class="text-slate-400 text-xs leading-relaxed">Content generation, editing, and image creation are split into dedicated cloud functions for cleaner scaling.</p>
+        </div>
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-5 card-glow">
+          <div class="flex items-center gap-2 mb-3"><i class="fas fa-clipboard-check text-xl text-amber-400"></i><h3 class="font-semibold text-white text-sm">Human-final publishing</h3></div>
+          <p class="text-slate-400 text-xs leading-relaxed">AI accelerates drafting while final review and manual adjustment remain explicit before export and publication.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Need AI-assisted content operations?</h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+          We design domain-specific workflows that keep quality high while reducing drafting time.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-indigo-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-scale-balanced text-amber-400"></i>
+        <span>Legal Blog Drafting Assistant — Portfolio</span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-indigo-400 hover:text-indigo-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll("a[href]").forEach((link) => {
+        const raw = link.getAttribute("href");
+        if (!raw || raw.startsWith("#") || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("javascript:")) return;
+        if (raw.startsWith("http://") || raw.startsWith("https://")) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set("theme", theme);
+          link.setAttribute("href", url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark")
+      ? paramTheme
+      : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+  })();
+</script>
+</body>
+</html>

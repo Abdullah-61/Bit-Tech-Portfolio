@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Collection & Engineering — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-3"] { color: #334155 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #475569 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    body.light-theme .hero-domain-tag { background-color: #ecfdf5 !important; border-color: #a7f3d0 !important; color: #047857 !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(135deg, #16a34a, #14b8a6, #0ea5e9) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .project-shell,
+    body.light-theme .card-glow,
+    body.light-theme .workflow-step {
+      background-color: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #22c55e, #14b8a6, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box, linear-gradient(135deg, #16a34a, #14b8a6, #0ea5e9) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .project-head { display: flex; flex-direction: column; align-items: stretch; gap: 0.75rem; text-align: left; margin-bottom: 1rem; }
+    .project-label { font-size: 0.7rem; color: #94a3b8; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; }
+    .project-title { font-size: 1.25rem; font-weight: 800; line-height: 1.25; margin: 0; color: #fff; }
+    .project-desc { color: #94a3b8; font-size: 0.9rem; line-height: 1.55; margin: 0; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tags .tag { padding: 0.28rem 0.7rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+    .flow-list { list-style: none; margin: 0; padding: 0; }
+    .flow-list li { display: flex; gap: 0.55rem; align-items: flex-start; color: #cbd5e1; font-size: .9375rem; line-height: 1.55; margin-bottom: .5rem; }
+    .flow-list li:last-child { margin-bottom: 0; }
+    .flow-list i { color: #4ade80; margin-top: .2rem; font-size: .75rem; flex-shrink: 0; }
+    .pipeline-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; }
+    .pipeline-step {
+      background: rgba(30,41,59,0.9);
+      border: 1px solid #475569;
+      border-radius: 0.65rem;
+      padding: 0.68rem 0.72rem;
+      min-width: 155px;
+      max-width: 220px;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(148,163,184,0.12);
+    }
+    .pipeline-step p { margin: 0; color: #f8fafc; font-size: 0.8rem; line-height: 1.4; font-weight: 600; letter-spacing: 0.01em; }
+    .pipeline-step i { display: block; margin-bottom: 0.35rem; }
+    .pipeline-arrow { color: #64748b; font-weight: 700; font-size: 1rem; }
+    .card-glow {
+      transition: all 0.2s ease;
+    }
+    .card-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.45), 0 10px 30px rgba(34, 197, 94, 0.18);
+    }
+    .workflow-step {
+      background: #0f172a;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      border-radius: 0.75rem;
+      padding: 0.9rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .workflow-step:hover {
+      transform: translateY(-2px);
+      border-color: rgba(52, 211, 153, 0.9);
+    }
+    .workflow-arrow {
+      color: #34d399;
+      font-size: 1.2rem;
+      font-weight: 700;
+      animation: pulse-arrow 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    @keyframes pulse-arrow {
+      0%, 100% { opacity: 0.45; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(3px); }
+    }
+    .pulse-dot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #22c55e;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+    .tag {
+      padding: 0.28rem 0.72rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(30, 41, 59, 0.8);
+      color: #cbd5e1;
+    }
+    .tag.t-green { background: rgba(22,163,74,.14); color: #86efac; border: 1px solid rgba(74,222,128,.35); }
+    .tag.t-teal { background: rgba(20,184,166,.12); color: #99f6e4; border: 1px solid rgba(45,212,191,.3); }
+    .tag.t-sky { background: rgba(14,165,233,.12); color: #7dd3fc; border: 1px solid rgba(14,165,233,.3); }
+    .tag.t-def { background: rgba(51,65,85,.85); color: #cbd5e1; border: 1px solid #475569; }
+    .lora-hero-visual {
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(30,41,59,0.92));
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 0.9rem;
+      padding: 1rem;
+      max-width: 760px;
+      margin: 0 auto 1.75rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.26);
+    }
+    .lora-hero-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; }
+    .lora-panel {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(71,85,105,0.7);
+      background: rgba(15,23,42,0.85);
+      padding: 0.7rem 0.8rem;
+    }
+    .lora-panel h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .lora-compare-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.7rem;
+      align-items: center;
+    }
+    .lora-frame {
+      position: relative;
+      border-radius: 0.7rem;
+      overflow: hidden;
+      border: 1px solid rgba(167, 139, 250, 0.42);
+      background: #0b1220;
+      min-height: 180px;
+    }
+    .lora-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .training-stack img {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 520ms ease, transform 650ms ease;
+    }
+    .training-stack img.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .lora-label {
+      position: absolute;
+      left: 0.5rem;
+      top: 0.5rem;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #ede9fe;
+      border: 1px solid rgba(196, 181, 253, 0.45);
+      background: rgba(76, 29, 149, 0.5);
+      backdrop-filter: blur(2px);
+    }
+    .lora-arrow-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      color: #c4b5fd;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      padding: 0.2rem 0;
+    }
+    .lora-arrow-wrap i {
+      animation: pulse-arrow 1.5s ease-in-out infinite;
+    }
+    .lora-generated-stack {
+      position: relative;
+      border-radius: 0.7rem;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.42);
+      min-height: 180px;
+      background: #020617;
+    }
+    .lora-generated-stack img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 550ms ease, transform 700ms ease;
+    }
+    .lora-generated-stack img.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .lora-dot { animation: loraPulse 1.45s ease-in-out infinite; }
+    .lora-bars rect { animation: barShift 1.55s ease-in-out infinite; }
+    .lora-bars rect:nth-child(2) { animation-delay: 0.15s; }
+    .lora-bars rect:nth-child(3) { animation-delay: 0.3s; }
+    .lora-bars rect:nth-child(4) { animation-delay: 0.45s; }
+    .lora-bars rect:nth-child(5) { animation-delay: 0.6s; }
+    .lora-bars rect:nth-child(6) { animation-delay: 0.75s; }
+    .lora-bars rect:nth-child(7) { animation-delay: 0.9s; }
+    @keyframes loraPulse {
+      0%, 100% { opacity: 0.55; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+    @keyframes barShift {
+      0%, 100% { transform: scaleY(0.78); transform-origin: bottom; opacity: 0.75; }
+      50% { transform: scaleY(1.12); transform-origin: bottom; opacity: 1; }
+    }
+    @media (min-width: 900px) {
+      .lora-compare-grid {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 0.9rem;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .lora-dot,
+      .workflow-arrow { animation: none !important; }
+    }
+    body.light-theme .lora-hero-visual {
+      background: linear-gradient(155deg, #ffffff 0%, #faf5ff 48%, #f5f3ff 100%);
+      border-color: rgba(167, 139, 250, 0.5);
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+    body.light-theme .lora-panel {
+      background: linear-gradient(180deg, #ffffff 0%, #fafafc 100%);
+      border-color: #e2e8f0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    body.light-theme .lora-frame,
+    body.light-theme .lora-generated-stack {
+      background: #ffffff;
+    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 3px; }
+
+    .dce-hero-visual {
+      margin: 0 auto 1.5rem;
+      max-width: 980px;
+      border-radius: 1rem;
+      border: 1px solid rgba(52, 211, 153, 0.24);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.86));
+      padding: 0.75rem;
+    }
+    .dce-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+    @media (min-width: 1024px) {
+      .dce-hero-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+        gap: 0.75rem;
+      }
+    }
+    .dce-panel {
+      border: 1px solid rgba(71, 85, 105, 0.55);
+      border-radius: 0.75rem;
+      background: rgba(15, 23, 42, 0.72);
+      padding: 0.6rem 0.7rem;
+      min-width: 0;
+    }
+    .dce-hero-viz-wrap { min-width: 0; }
+    .dce-hero-viz-wrap .dce-pipeline-legend { justify-content: center; }
+    @media (min-width: 1024px) {
+      .dce-hero-viz-wrap { text-align: left; }
+      .dce-hero-viz-wrap .dce-pipeline-legend { justify-content: flex-start; }
+    }
+    .dce-source-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      text-align: left;
+    }
+    .dce-pane-item {
+      border-radius: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-left-width: 3px;
+    }
+    .dce-pane-item h4 { font-size: 0.8rem; font-weight: 600; color: #e2e8f0; margin: 0 0 0.4rem; line-height: 1.3; }
+    .dce-pane-item p { font-size: 0.72rem; color: #94a3b8; line-height: 1.5; margin: 0; }
+    .dce-pane-item.batch { border-left-color: #22c55e; }
+    .dce-pane-item.live { border-left-color: #38bdf8; }
+    .dce-pane-item.files { border-left-color: #a78bfa; }
+    body.light-theme .dce-pane-item {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+      border-left-width: 3px;
+    }
+    body.light-theme .dce-pane-item.batch { border-left-color: #16a34a; }
+    body.light-theme .dce-pane-item.live { border-left-color: #0ea5e9; }
+    body.light-theme .dce-pane-item.files { border-left-color: #9333ea; }
+    body.light-theme .dce-pane-item h4 { color: #0f172a; }
+    body.light-theme .dce-pane-item p { color: #64748b; }
+
+    .dce-hero-viz {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
+    }
+    .dce-panel > .dce-hero-viz {
+      max-width: none;
+    }
+    .dce-hero-viz svg { display: block; width: 100%; height: auto; vertical-align: middle; }
+    .dce-viz-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      overflow: hidden;
+    }
+    .dce-viz-bg-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .dce-hero-viz > svg:not(.dce-viz-bg-svg) {
+      position: relative;
+      z-index: 1;
+    }
+    .dce-bg-dart {
+      stroke-dasharray: 5 14;
+      stroke-linejoin: round;
+    }
+    .dce-bg-dart-a { animation: dceBgDash 5s linear infinite; }
+    .dce-bg-dart-b { animation: dceBgDash 7s linear infinite reverse; stroke-dasharray: 4 18; }
+    .dce-bg-dart-c { animation: dceBgDash 9s linear infinite; stroke-dasharray: 3 12; }
+    @keyframes dceBgDash {
+      to { stroke-dashoffset: -72; }
+    }
+    .dce-bg-float-el {
+      animation: dceBgBob 2.6s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .dce-bg-floats > g:nth-child(2) .dce-bg-float-el { animation-delay: 0.45s; }
+    .dce-bg-floats > g:nth-child(3) .dce-bg-float-el { animation-delay: 0.9s; }
+    .dce-bg-floats > g:nth-child(4) .dce-bg-float-el { animation-delay: 0.2s; }
+    .dce-bg-floats > g:nth-child(5) .dce-bg-float-el { animation-delay: 0.65s; }
+    @keyframes dceBgBob {
+      0%, 100% { transform: translateY(0); opacity: 0.38; }
+      50% { transform: translateY(-5px); opacity: 0.78; }
+    }
+    .dce-bg-jitter {
+      animation: dceBgJitter 4.5s ease-in-out infinite;
+    }
+    .dce-bg-jitter:nth-child(2) { animation-delay: 1.1s; }
+    @keyframes dceBgJitter {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(2px, -1px) rotate(1.2deg); }
+      75% { transform: translate(-1px, 2px) rotate(-0.8deg); }
+    }
+    body.light-theme .dce-viz-bg .dce-bg-wash { opacity: 0.85; }
+    body.light-theme .dce-viz-bg #dceBgGrid path { stroke: rgba(100, 116, 139, 0.14); }
+    body.light-theme .dce-viz-bg .dce-bg-corner path { stroke: rgba(16, 185, 129, 0.24); }
+    .dce-src-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; fill: #e2e8f0; font-family: Inter, system-ui, sans-serif; paint-order: stroke fill; stroke: rgba(15, 23, 42, 0.55); stroke-width: 0.35px; }
+    .dce-pipeline-legend {
+      display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; justify-content: center;
+      margin-top: 0.75rem; padding: 0 0.5rem; font-size: 0.7rem; color: #94a3b8;
+    }
+    .dce-pipeline-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .dce-pipeline-legend .swatch { width: 0.65rem; height: 0.25rem; border-radius: 2px; flex-shrink: 0; }
+    .dce-pipeline-legend .swatch.batch { background: #22c55e; }
+    .dce-pipeline-legend .swatch.live { background: #38bdf8; }
+    .dce-pipeline-legend .swatch.state { background: #f59e0b; }
+    .dce-pipeline-legend .swatch.out { background: #a78bfa; }
+    .dce-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.25rem; }
+    @media (max-width: 520px) { .dce-tiles { grid-template-columns: 1fr; } }
+    .dce-hero-visual + .flex.flex-wrap { margin-top: 1.5rem; }
+    .dce-tile {
+      border-radius: 0.75rem; padding: 0.75rem 0.85rem; text-align: left;
+      background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .dce-tile h4 { font-size: 0.75rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.35rem; }
+    .dce-tile p { font-size: 0.65rem; color: #94a3b8; line-height: 1.45; margin: 0; }
+    .dce-tile.batch { border-color: rgba(34, 197, 94, 0.35); }
+    .dce-tile.live { border-color: rgba(56, 189, 248, 0.35); }
+    .dce-tile.state { border-color: rgba(245, 158, 11, 0.35); }
+    .dce-tile.files { border-color: rgba(167, 139, 250, 0.35); }
+    body.light-theme .dce-hero-visual {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+    body.light-theme .dce-panel {
+      background: #ffffff;
+      border-color: #cbd5e1;
+    }
+    body.light-theme .dce-hero-viz {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+    body.light-theme .dce-pipeline-legend { color: #64748b; }
+    body.light-theme .dce-src-label { fill: #334155 !important; stroke: rgba(15, 23, 42, 0.06) !important; stroke-width: 0.4px !important; }
+    body.light-theme .dce-stage-label { fill: #0f172a !important; stroke: rgba(255, 255, 255, 0.85) !important; stroke-width: 0.55 !important; }
+    body.light-theme .dce-hero-viz #dce-funnel-shape { fill: url(#dceNormFunnelFillLt) !important; stroke: rgba(100, 116, 139, 0.4) !important; }
+    body.light-theme .dce-hero-viz svg rect[fill*="dceGradBars"] { fill: url(#dceGradBarsLt) !important; }
+    body.light-theme .dce-hero-viz defs marker#dceArrow path { fill: #64748b !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#f8fafc"] { fill: #0f172a !important; stroke: rgba(15, 23, 42, 0.07) !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#fef3c7"] { fill: #92400e !important; stroke: rgba(120, 53, 15, 0.1) !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#cbd5e1"] { fill: #475569 !important; stroke: none !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#f5f3ff"] { fill: #5b21b6 !important; stroke: rgba(91, 33, 182, 0.12) !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#e0f2fe"] { fill: #0369a1 !important; stroke: rgba(3, 105, 161, 0.1) !important; }
+    body.light-theme .dce-hero-viz svg text[fill="#f0f9ff"] { fill: #0c4a6e !important; }
+    body.light-theme .dce-hero-viz .dce-motion path,
+    body.light-theme .dce-hero-viz .dce-static path { stroke-opacity: 0.85 !important; }
+    body.light-theme .dce-hero-viz .dce-motion circle,
+    body.light-theme .dce-hero-viz .dce-static circle { opacity: 1 !important; }
+    body.light-theme .dce-tile { background: #f8fafc; border-color: #e2e8f0; }
+    body.light-theme .dce-tile h4 { color: #0f172a; }
+    body.light-theme .dce-tile p { color: #64748b; }
+    body.light-theme .project-title { color: #0f172a !important; }
+    body.light-theme .project-desc { color: #64748b !important; }
+    body.light-theme .project-label { color: #64748b !important; }
+    body.light-theme .flow-list li { color: #334155 !important; }
+    body.light-theme .flow-list li strong { color: #0f172a !important; }
+    body.light-theme .pipeline-step { background: #f8fafc !important; border-color: #cbd5e1 !important; }
+    body.light-theme .pipeline-step p { color: #0f172a !important; }
+    body.light-theme .pipeline-arrow { color: #94a3b8 !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .dce-bg-dart-a,
+      .dce-bg-dart-b,
+      .dce-bg-dart-c,
+      .dce-bg-float-el,
+      .dce-bg-jitter { animation: none !important; }
+      .dce-hero-viz .dce-motion { display: none !important; }
+      .dce-hero-viz .dce-static { display: block !important; }
+      .dce-hero-viz .dce-consumer-motion { display: none !important; }
+      .dce-hero-viz .dce-consumer-static { display: block !important; }
+    }
+    .dce-hero-viz .dce-static { display: none; }
+    .dce-hero-viz .dce-consumer-static { display: none; }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0 max-w-[min(100%,16rem)] sm:max-w-none">
+        <i class="fas fa-diagram-project text-emerald-400 text-xl shrink-0" aria-hidden="true"></i>
+        <span class="font-semibold text-white text-xs sm:text-sm tracking-wide leading-tight">Data Collection &amp; Engineering</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/" class="text-sm bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg transition-colors font-medium">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="pt-28 pb-10 md:pb-12 px-6" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(22,163,74,0.12), transparent);">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium px-3 py-1.5 rounded-full mb-5">
+        <i class="fas fa-table-columns" aria-hidden="true"></i>
+        Data pipelines · Live ingestion · Production delivery
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Data Collection &amp;<br><span class="gradient-text">Engineering Systems</span>
+      </h1>
+      <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        Building reliable data workflows from source collection to analysis-ready outputs — for investment studies, AI model inputs, lead intelligence, and location-aware personalization.
+      </p>
+    </div>
+
+    <div class="max-w-3xl mx-auto">
+      
+      <div id="home-embed-root" class="dce-hero-visual" role="region" aria-label="Data pipeline hero: Collect diagram and source lanes">
+        <div class="dce-hero-grid">
+          <div class="dce-hero-viz-wrap text-center lg:text-left">
+            <div class="dce-panel">
+              <div class="dce-hero-viz" role="img" aria-label="Data pipeline diagram: collect from APIs, files, and systems; clean and validate; engineer features; serve to dashboards and outreach">
+        <div class="dce-viz-bg" aria-hidden="true">
+          <svg class="dce-viz-bg-svg" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <pattern id="dceBgGrid" width="26" height="26" patternUnits="userSpaceOnUse">
+                <path d="M 26 0 L 0 0 0 26" fill="none" stroke="rgba(148,163,184,0.11)" stroke-width="0.45"/>
+              </pattern>
+              <linearGradient id="dceBgWash" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="rgba(34,197,94,0.07)"/>
+                <stop offset="45%" stop-color="transparent"/>
+                <stop offset="100%" stop-color="rgba(56,189,248,0.06)"/>
+              </linearGradient>
+            </defs>
+            <rect class="dce-bg-wash" width="280" height="220" fill="url(#dceBgWash)"/>
+            <rect width="280" height="220" fill="url(#dceBgGrid)" opacity="0.55"/>
+            <g class="dce-bg-corner" stroke="rgba(52,211,153,0.28)" stroke-width="0.85" fill="none" stroke-linecap="round">
+              <path d="M 14 20 L 14 9 L 25 9"/>
+              <path d="M 266 20 L 266 9 L 255 9"/>
+              <path d="M 14 200 L 14 211 L 25 211"/>
+              <path d="M 266 200 L 266 211 L 255 211"/>
+            </g>
+            <g class="dce-bg-motion" fill="none" stroke-linecap="round">
+              <path class="dce-bg-dart dce-bg-dart-a" d="M -30 195 L 295 35" stroke="rgba(34,197,94,0.22)" stroke-width="0.9"/>
+              <path class="dce-bg-dart dce-bg-dart-b" d="M 35 235 L 250 -25" stroke="rgba(56,189,248,0.18)" stroke-width="0.75"/>
+              <path class="dce-bg-dart dce-bg-dart-c" d="M -15 105 L 295 95" stroke="rgba(167,139,250,0.16)" stroke-width="0.65"/>
+            </g>
+            <g fill="none" stroke="rgba(148,163,184,0.2)" stroke-width="0.6" opacity="0.9">
+              <path d="M 88 12 L 98 12 M 93 7 L 93 17"/>
+              <path d="M 182 205 L 192 205 M 187 200 L 187 210"/>
+            </g>
+            <g class="dce-bg-floats">
+              <g transform="translate(38,42)"><g class="dce-bg-float-el"><circle r="2.8" fill="rgba(34,197,94,0.4)"/></g></g>
+              <g transform="translate(228,52)"><g class="dce-bg-float-el"><circle r="2.2" fill="rgba(56,189,248,0.45)"/></g></g>
+              <g transform="translate(200,168)"><g class="dce-bg-float-el"><circle r="2.5" fill="rgba(167,139,250,0.35)"/></g></g>
+              <g transform="translate(72,188)"><g class="dce-bg-float-el"><circle r="2" fill="rgba(251,191,36,0.28)"/></g></g>
+              <g transform="translate(248,128)"><g class="dce-bg-float-el"><circle r="1.8" fill="rgba(52,211,153,0.32)"/></g></g>
+            </g>
+            <g transform="translate(118,28)">
+              <g class="dce-bg-jitter">
+                <path d="M 0 -5 L 4 0 L 0 5 L -4 0 Z" fill="rgba(34,197,94,0.2)" stroke="rgba(52,211,153,0.35)" stroke-width="0.4"/>
+              </g>
+            </g>
+            <g transform="translate(188,178)">
+              <g class="dce-bg-jitter">
+                <rect x="-4" y="-4" width="8" height="8" rx="1.5" fill="rgba(56,189,248,0.12)" stroke="rgba(56,189,248,0.28)" stroke-width="0.45" transform="rotate(12)"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <svg class="w-full h-auto block" viewBox="0 0 280 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet" font-family="Inter, system-ui, sans-serif" text-rendering="geometricPrecision">
+          <defs>
+            <linearGradient id="dceGradDb" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#15803d"/>
+            </linearGradient>
+            <linearGradient id="dceGradPanel" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(30,41,59,0.95)"/><stop offset="100%" stop-color="rgba(15,23,42,0.98)"/>
+            </linearGradient>
+            <linearGradient id="dceNormFunnelFill" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(148,163,184,0.4)"/><stop offset="100%" stop-color="rgba(71,85,105,0.2)"/>
+            </linearGradient>
+            <linearGradient id="dceGradBars" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#c4b5fd"/>
+            </linearGradient>
+            <linearGradient id="dceNormFunnelFillLt" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="rgba(148,163,184,0.5)"/><stop offset="100%" stop-color="rgba(226,232,240,0.45)"/>
+            </linearGradient>
+            <linearGradient id="dceGradBarsLt" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#6d28d9"/><stop offset="100%" stop-color="#8b5cf6"/>
+            </linearGradient>
+            <marker id="dceArrow" markerWidth="3.4" markerHeight="3.4" refX="2.85" refY="1.7" orient="auto" markerUnits="strokeWidth">
+              <path d="M0,0 L3.4,1.7 L0,3.4 z" fill="#64748b"/>
+            </marker>
+          </defs>
+          <g transform="translate(24.11 0) scale(0.65,1) translate(-98 -35)">
+          <g transform="translate(274,134) scale(0.68) translate(-274,-124)">
+          <!-- Stage labels: centered on each band; placed clear of icons and curves -->
+          <text class="dce-stage-label" x="54" y="10" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" letter-spacing="0.1em" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(15,23,42,0.65)" stroke-width="0.55">COLLECT</text>
+          <text class="dce-stage-label" x="262" y="242" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" letter-spacing="0.1em" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(15,23,42,0.65)" stroke-width="0.55">CLEAN</text>
+          <text class="dce-stage-label" x="364" y="30" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" letter-spacing="0.1em" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(15,23,42,0.65)" stroke-width="0.55">ENGINEER</text>
+          <text class="dce-stage-label" x="508" y="8" text-anchor="middle" fill="#f1f5f9" font-size="13" font-weight="700" letter-spacing="0.1em" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(15,23,42,0.65)" stroke-width="0.55">SERVE</text>
+          <!-- Animated paths: curved merge, rise to state, fork -->
+          <g class="dce-motion" stroke-linecap="round" fill="none">
+            <path d="M 90 48 Q 145 95 198 158" stroke="#22c55e" stroke-width="2.25" stroke-opacity="0.62" marker-end="url(#dceArrow)"/>
+            <path d="M 90 136 Q 148 150 198 158" stroke="#38bdf8" stroke-width="2.25" stroke-opacity="0.62" marker-end="url(#dceArrow)"/>
+            <path d="M 90 224 Q 155 195 198 158" stroke="#a78bfa" stroke-width="2.25" stroke-opacity="0.58" marker-end="url(#dceArrow)"/>
+            <path d="M 273 118 C 298 90 312 78 330 72" stroke="#94a3b8" stroke-width="2.25" stroke-opacity="0.58" marker-end="url(#dceArrow)"/>
+            <path d="M 410 70 C 432 52 456 48 478 52" stroke="#a78bfa" stroke-width="2.25" stroke-opacity="0.62" marker-end="url(#dceArrow)"/>
+            <path d="M 410 88 C 418 140 444 198 478 218" stroke="#38bdf8" stroke-width="2.25" stroke-opacity="0.58" marker-end="url(#dceArrow)"/>
+            <circle r="1.9" fill="#22c55e"><animateMotion dur="5.2s" repeatCount="indefinite" path="M 90 48 Q 145 95 198 158"/></circle>
+            <circle r="1.9" fill="#38bdf8"><animateMotion dur="3.4s" repeatCount="indefinite" path="M 90 136 Q 148 150 198 158"/></circle>
+            <circle r="1.9" fill="#c4b5fd"><animateMotion dur="4.2s" repeatCount="indefinite" path="M 90 224 Q 155 195 198 158"/></circle>
+            <circle r="1.55" fill="#e2e8f0"><animateMotion dur="3s" repeatCount="indefinite" path="M 273 118 C 298 90 312 78 330 72"/></circle>
+            <circle r="1.55" fill="#c4b5fd"><animateMotion dur="2.6s" repeatCount="indefinite" path="M 410 70 C 432 52 456 48 478 52"/></circle>
+            <circle r="1.55" fill="#7dd3fc"><animateMotion dur="2.9s" repeatCount="indefinite" path="M 410 88 C 418 140 444 198 478 218"/></circle>
+          </g>
+          <g class="dce-static" stroke-linecap="round" fill="none">
+            <path d="M 90 48 Q 145 95 198 158" stroke="#22c55e" stroke-width="2.25" stroke-opacity="0.42"/>
+            <path d="M 90 136 Q 148 150 198 158" stroke="#38bdf8" stroke-width="2.25" stroke-opacity="0.42"/>
+            <path d="M 90 224 Q 155 195 198 158" stroke="#a78bfa" stroke-width="2.25" stroke-opacity="0.38"/>
+            <path d="M 273 118 C 298 90 312 78 330 72" stroke="#94a3b8" stroke-width="2.25" stroke-opacity="0.42"/>
+            <path d="M 410 70 C 432 52 456 48 478 52" stroke="#a78bfa" stroke-width="2.25" stroke-opacity="0.42"/>
+            <path d="M 410 88 C 418 140 444 198 478 218" stroke="#38bdf8" stroke-width="2.25" stroke-opacity="0.38"/>
+          </g>
+          <!-- Source: warehouse -->
+          <g transform="translate(22, 20)">
+            <title>Relational warehouse — scheduled exports, snapshots, and historical tables</title>
+            <ellipse cx="32" cy="12" rx="26" ry="7" fill="url(#dceGradDb)" stroke="#4ade80" stroke-width="1.2"/>
+            <path d="M 6 12 L 6 40 A 26 7 0 0 0 58 40 L 58 12" fill="url(#dceGradDb)" stroke="#4ade80" stroke-width="1.2"/>
+            <ellipse cx="32" cy="40" rx="26" ry="7" fill="#14532d" stroke="#4ade80" stroke-width="1.2"/>
+            <line x1="14" y1="22" x2="50" y2="22" stroke="#bbf7d0" stroke-opacity="0.35" stroke-width="1.2"/>
+            <line x1="14" y1="28" x2="50" y2="28" stroke="#bbf7d0" stroke-opacity="0.28" stroke-width="1.2"/>
+            <line x1="14" y1="34" x2="44" y2="34" stroke="#bbf7d0" stroke-opacity="0.22" stroke-width="1.2"/>
+            <text x="32" y="60" text-anchor="middle" class="dce-src-label">Warehouse</text>
+          </g>
+          <!-- Source: API -->
+          <g transform="translate(22, 108)">
+            <title>REST and JSON APIs — authenticated pulls, webhooks, and streaming endpoints</title>
+            <rect x="4" y="4" width="56" height="44" rx="9" fill="rgba(56,189,248,0.1)" stroke="#38bdf8" stroke-width="1.4"/>
+            <circle cx="22" cy="20" r="4" fill="#0ea5e9"/>
+            <circle cx="42" cy="16" r="4" fill="#38bdf8"/>
+            <circle cx="32" cy="32" r="4" fill="#7dd3fc"/>
+            <line x1="22" y1="20" x2="32" y2="32" stroke="#bae6fd" stroke-width="1.2"/>
+            <line x1="42" y1="16" x2="32" y2="32" stroke="#bae6fd" stroke-width="1.2"/>
+            <line x1="22" y1="20" x2="42" y2="16" stroke="#bae6fd" stroke-width="1.2"/>
+            <rect x="10" y="38" width="22" height="7" rx="2" fill="#0c4a6e"/>
+            <text x="21" y="43.5" text-anchor="middle" fill="#f0f9ff" font-size="8" font-weight="800" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(12,74,110,0.9)" stroke-width="0.4">GET</text>
+            <text x="32" y="62" text-anchor="middle" class="dce-src-label">REST / JSON</text>
+          </g>
+          <!-- Source: files & logs -->
+          <g transform="translate(22, 196)">
+            <title>Files and logs — CSV dumps, application logs, object storage, and batch drops</title>
+            <path d="M 12 6 L 44 6 L 52 14 L 52 44 L 12 44 Z" fill="rgba(167,139,250,0.12)" stroke="#a78bfa" stroke-width="1.3"/>
+            <path d="M 44 6 L 44 14 L 52 14" fill="rgba(167,139,250,0.25)" stroke="#a78bfa" stroke-width="1"/>
+            <line x1="18" y1="22" x2="46" y2="22" stroke="#c4b5fd" stroke-opacity="0.7" stroke-width="1.5"/>
+            <line x1="18" y1="28" x2="44" y2="28" stroke="#c4b5fd" stroke-opacity="0.5" stroke-width="1.5"/>
+            <line x1="18" y1="34" x2="40" y2="34" stroke="#c4b5fd" stroke-opacity="0.35" stroke-width="1.5"/>
+            <rect x="16" y="38" width="20" height="5" rx="1" fill="#f59e0b" fill-opacity="0.35"/>
+            <text x="32" y="60" text-anchor="middle" class="dce-src-label">Files &amp; logs</text>
+          </g>
+          <!-- Clean: merge → funnel → stream → validated row (no outer panel) -->
+          <g>
+            <title>Clean — normalize fields, handle nulls, dedupe, validate</title>
+            <circle cx="228" cy="132" r="3" fill="#22c55e" opacity="0.85"/>
+            <circle cx="248" cy="128" r="3" fill="#38bdf8" opacity="0.85"/>
+            <circle cx="268" cy="132" r="3" fill="#a78bfa" opacity="0.85"/>
+            <path id="dce-funnel-shape" d="M 216 138 L 280 138 L 272 154 L 224 154 Z" fill="url(#dceNormFunnelFill)" stroke="rgba(148,163,184,0.45)" stroke-width="0.85"/>
+            <line x1="248" y1="154" x2="248" y2="166" stroke="rgba(100,116,139,0.75)" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- single typed row + pass check -->
+            <line x1="218" y1="170" x2="292" y2="170" stroke="#64748b" stroke-width="1" stroke-opacity="0.35" stroke-linecap="round"/>
+            <line x1="220" y1="175" x2="278" y2="175" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.55"/>
+            <path d="M 297 176 L 300 179 L 307 171" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="253" y="196" text-anchor="middle" fill="#f8fafc" font-size="16" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(15,23,42,0.55)" stroke-width="0.5">Clean</text>
+            <text x="253" y="210" text-anchor="middle" fill="#cbd5e1" font-size="12" font-family="Inter, system-ui, sans-serif">normalize · nulls · dedupe · validate</text>
+          </g>
+          <!-- Engineer: feature / enrichment context (durable state) -->
+          <g>
+            <title>Engineer — analysis and model features, enrichment context, durable state</title>
+            <ellipse cx="364" cy="56" rx="34" ry="9" fill="#b45309" stroke="#fbbf24" stroke-width="1.2"/>
+            <path d="M 330 56 L 330 78 A 34 9 0 0 0 398 78 L 398 56" fill="rgba(245,158,11,0.22)" stroke="#fbbf24" stroke-width="1.2"/>
+            <ellipse cx="364" cy="78" rx="34" ry="9" fill="#78350f" stroke="#fbbf24" stroke-width="1.2"/>
+            <ellipse cx="364" cy="70" rx="34" ry="9" fill="rgba(251,191,36,0.15)" stroke="#f59e0b" stroke-width="1" opacity="0.85"/>
+            <path d="M 344 88 L 350 94 L 380 70" fill="none" stroke="#34d399" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="364" y="112" text-anchor="middle" fill="#fef3c7" font-size="14" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(69,26,3,0.55)" stroke-width="0.45">Engineer</text>
+            <text x="364" y="126" text-anchor="middle" fill="#cbd5e1" font-size="11" font-family="Inter, system-ui, sans-serif">features · enrichment · context</text>
+          </g>
+          <!-- Serve: dashboards / models and outreach (animated vs static for reduced motion) -->
+          <g class="dce-consumer-motion">
+            <g transform="translate(10,0)">
+            <g>
+            <title>Serve — dashboards, models, and analytics consumption</title>
+            <text x="494" y="35" text-anchor="middle" fill="#f5f3ff" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(46,16,101,0.5)" stroke-width="0.45">Dashboards &amp; models</text>
+            <path d="M 478 46 L 482 42 L 485 44 L 488 40 L 491 43 L 495 39 L 499 41 L 504 38" fill="none" stroke="#ddd6fe" stroke-width="0.58" stroke-opacity="0.85" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="44" stroke-dashoffset="44">
+              <animate attributeName="stroke-dashoffset" from="44" to="0" dur="2.4s" repeatCount="indefinite"/>
+            </path>
+            <circle cx="488" cy="40" r="1.15" fill="#c4b5fd">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="1.6s" repeatCount="indefinite"/>
+            </circle>
+            <line x1="478" y1="54" x2="510" y2="54" stroke="#64748b" stroke-width="0.34" stroke-opacity="0.25"/>
+            <line x1="478" y1="62" x2="510" y2="62" stroke="#64748b" stroke-width="0.34" stroke-opacity="0.18"/>
+            <line x1="478" y1="78" x2="510" y2="78" stroke="#64748b" stroke-width="0.42" stroke-opacity="0.35"/>
+            <rect x="479" y="52" width="4" height="26" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="0s"/></rect>
+            <rect x="484" y="46" width="4" height="32" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="0.2s"/></rect>
+            <rect x="489" y="56" width="4" height="22" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="0.4s"/></rect>
+            <rect x="494" y="42" width="4" height="36" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="0.6s"/></rect>
+            <rect x="499" y="50" width="4" height="28" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="0.8s"/></rect>
+            <rect x="504" y="58" width="4" height="20" rx="1.5" fill="url(#dceGradBars)"><animate attributeName="opacity" values="0.55;1;0.55" dur="1.6s" repeatCount="indefinite" begin="1s"/></rect>
+            <text x="494" y="94" text-anchor="middle" fill="#cbd5e1" font-size="11" font-family="Inter, system-ui, sans-serif">BI · metrics · ML</text>
+            </g>
+            <g>
+            <title>Serve — outreach systems and operational delivery</title>
+            <text x="494" y="208" text-anchor="middle" fill="#e0f2fe" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(12,74,110,0.55)" stroke-width="0.65">Outreach &amp; ops</text>
+            <path d="M 478 238 L 481 224 L 484 232 L 487 216 L 490 228 L 494 218 L 498 226 L 501 220 L 504 214 L 507 222 L 507 244 L 478 244 Z" fill="rgba(56,189,248,0.28)">
+              <animate attributeName="opacity" values="0.22;0.48;0.22" dur="2.8s" repeatCount="indefinite"/>
+            </path>
+            <path d="M 478 238 L 481 224 L 484 232 L 487 216 L 490 228 L 494 218 L 498 226 L 501 220 L 504 214 L 507 222" fill="none" stroke="#22d3ee" stroke-width="1.25" stroke-opacity="0.95" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="54" stroke-dashoffset="54">
+              <animate attributeName="stroke-dashoffset" from="54" to="0" dur="2.2s" repeatCount="indefinite"/>
+            </path>
+            <circle cx="488" cy="216" r="2.45" fill="#fb7185"><animate attributeName="opacity" values="0.72;1;0.72" dur="1.2s" repeatCount="indefinite"/></circle>
+            <circle cx="494" cy="218" r="2.05" fill="#fcd34d"><animate attributeName="opacity" values="0.72;1;0.72" dur="1.2s" repeatCount="indefinite" begin="0.3s"/></circle>
+            <circle cx="501" cy="220" r="1.75" fill="#4ade80"><animate attributeName="opacity" values="0.72;1;0.72" dur="1.2s" repeatCount="indefinite" begin="0.6s"/></circle>
+            <path d="M 502 196 L 505 196 L 505 202 Q 504 206 502 202 Z" fill="none" stroke="#e2e8f0" stroke-width="1.05" stroke-linejoin="round"/>
+            <path d="M 505 212 L 506 216 L 505 220 Z" fill="#38bdf8" stroke="#7dd3fc" stroke-width="0.45" stroke-linejoin="round" opacity="1"/>
+            <text x="494" y="256" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600" font-family="Inter, system-ui, sans-serif">campaigns · integrations · jobs</text>
+            </g>
+            </g>
+          </g>
+          <g class="dce-consumer-static">
+            <g transform="translate(10,0)">
+            <g>
+            <title>Serve — dashboards, models, and analytics consumption</title>
+            <text x="494" y="35" text-anchor="middle" fill="#f5f3ff" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(46,16,101,0.5)" stroke-width="0.45">Dashboards &amp; models</text>
+            <path d="M 478 46 L 482 42 L 485 44 L 488 40 L 491 43 L 495 39 L 499 41 L 504 38" fill="none" stroke="#ddd6fe" stroke-width="0.58" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="488" cy="40" r="1.15" fill="#c4b5fd" opacity="0.9"/>
+            <line x1="478" y1="54" x2="510" y2="54" stroke="#64748b" stroke-width="0.34" stroke-opacity="0.25"/>
+            <line x1="478" y1="62" x2="510" y2="62" stroke="#64748b" stroke-width="0.34" stroke-opacity="0.18"/>
+            <line x1="478" y1="78" x2="510" y2="78" stroke="#64748b" stroke-width="0.42" stroke-opacity="0.35"/>
+            <rect x="479" y="52" width="4" height="26" rx="1.5" fill="url(#dceGradBars)" opacity="0.95"/>
+            <rect x="484" y="46" width="4" height="32" rx="1.5" fill="url(#dceGradBars)" opacity="0.88"/>
+            <rect x="489" y="56" width="4" height="22" rx="1.5" fill="url(#dceGradBars)" opacity="0.78"/>
+            <rect x="494" y="42" width="4" height="36" rx="1.5" fill="url(#dceGradBars)" opacity="0.92"/>
+            <rect x="499" y="50" width="4" height="28" rx="1.5" fill="url(#dceGradBars)" opacity="0.72"/>
+            <rect x="504" y="58" width="4" height="20" rx="1.5" fill="url(#dceGradBars)" opacity="0.65"/>
+            <text x="494" y="94" text-anchor="middle" fill="#cbd5e1" font-size="11" font-family="Inter, system-ui, sans-serif">BI · metrics · ML</text>
+            </g>
+            <g>
+            <title>Serve — outreach systems and operational delivery</title>
+            <text x="494" y="208" text-anchor="middle" fill="#e0f2fe" font-size="13" font-weight="700" font-family="Inter, system-ui, sans-serif" paint-order="stroke fill" stroke="rgba(12,74,110,0.55)" stroke-width="0.65">Outreach &amp; ops</text>
+            <path d="M 478 238 L 481 224 L 484 232 L 487 216 L 490 228 L 494 218 L 498 226 L 501 220 L 504 214 L 507 222 L 507 244 L 478 244 Z" fill="rgba(56,189,248,0.32)"/>
+            <path d="M 478 238 L 481 224 L 484 232 L 487 216 L 490 228 L 494 218 L 498 226 L 501 220 L 504 214 L 507 222" fill="none" stroke="#22d3ee" stroke-width="1.25" stroke-opacity="0.95" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="488" cy="216" r="2.45" fill="#fb7185" opacity="1"/>
+            <circle cx="494" cy="218" r="2.05" fill="#fcd34d" opacity="1"/>
+            <circle cx="501" cy="220" r="1.75" fill="#4ade80" opacity="1"/>
+            <path d="M 502 196 L 505 196 L 505 202 Q 504 206 502 202 Z" fill="none" stroke="#e2e8f0" stroke-width="1.05" stroke-linejoin="round"/>
+            <path d="M 505 212 L 506 216 L 505 220 Z" fill="#38bdf8" stroke="#7dd3fc" stroke-width="0.45" stroke-linejoin="round" opacity="1"/>
+            <text x="494" y="256" text-anchor="middle" fill="#e2e8f0" font-size="11" font-weight="600" font-family="Inter, system-ui, sans-serif">campaigns · integrations · jobs</text>
+            </g>
+            </g>
+          </g>
+          </g>
+          </g>
+        </svg>
+              </div>
+            </div>
+          </div>
+
+        <aside class="dce-panel dce-source-pane" aria-label="Collect: operational systems, APIs and scraping, files and logs">
+          <div class="dce-pane-item batch">
+            <h4><i class="fas fa-database text-emerald-400 mr-1.5" aria-hidden="true"></i>Operational systems</h4>
+            <p>Warehouse and app data: exports, CDC snapshots, typed tables—backfills and reconciliation.</p>
+          </div>
+          <div class="dce-pane-item live">
+            <h4><i class="fas fa-satellite-dish text-sky-400 mr-1.5" aria-hidden="true"></i>APIs &amp; scraping</h4>
+            <p>REST/JSON, scraping, webhooks—rate-aware pulls on one collect path.</p>
+          </div>
+          <div class="dce-pane-item files">
+            <h4><i class="fas fa-file-lines text-violet-400 mr-1.5" aria-hidden="true"></i>Files &amp; logs</h4>
+            <p>Storage, CSV drops, structured logs—shared schemas, then clean and validate.</p>
+          </div>
+        </aside>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-8 mt-8">
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-database mr-1 text-emerald-400"></i>SQL &amp; warehouses</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-code mr-1 text-sky-400"></i>Python &amp; Pandas</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-plug mr-1 text-violet-400"></i>REST &amp; RapidAPI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-clock mr-1 text-amber-400"></i>Schedulers &amp; idempotency</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto text-center">
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white mb-0.5">Batch</p><p class="text-[11px] text-slate-400">Collection &amp; curation</p></div>
+        <div class="hero-border px-4 py-3"><p class="text-2xl md:text-3xl font-bold text-white mb-0.5">Live</p><p class="text-[11px] text-slate-400">Ingestion loops</p></div>
+        <div class="hero-border px-4 py-3 col-span-2 md:col-span-1"><p class="text-2xl md:text-3xl font-bold text-white mb-0.5">State</p><p class="text-[11px] text-slate-400">Feature persistence</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-8 md:py-10 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-4 md:gap-6">
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-green-400 text-xs font-semibold uppercase tracking-wider mb-2">Problem</p>
+        <p class="text-slate-300 text-sm leading-relaxed">ML quality breaks when source data is inconsistent, stale, or delayed.</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-green-400 text-xs font-semibold uppercase tracking-wider mb-2">Solution</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Collection, cleaning, enrichment, and stateful serving patterns that support both batch analysis and live inference.</p>
+      </div>
+      <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+        <p class="text-green-400 text-xs font-semibold uppercase tracking-wider mb-2">Outcome</p>
+        <p class="text-slate-300 text-sm leading-relaxed">Model-ready datasets and real-time feature streams that keep analytics and predictions usable in production.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-green-400 font-medium text-sm uppercase tracking-widest mb-3 text-center">Core workflow</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-3">General Data Collection &amp; Engineering Pipeline</h2>
+      <p class="text-slate-400 text-center max-w-3xl mx-auto mb-8 text-sm">
+        Baseline process used across projects, with domain-specific adjustments for investment analysis, real-time inference, lead enrichment, and locale-based personalization.
+      </p>
+      <div class="bg-slate-900 border border-slate-700/50 rounded-xl p-5 mb-4">
+        <div class="grid md:grid-cols-4 gap-4 text-center">
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-database text-green-400 text-xl mb-2"></i>
+            <p class="text-white text-sm font-semibold mb-1">1. Collect</p>
+            <p class="text-slate-400 text-xs">APIs, scraping, files, and operational systems</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-broom text-green-400 text-xl mb-2"></i>
+            <p class="text-white text-sm font-semibold mb-1">2. Clean</p>
+            <p class="text-slate-400 text-xs">Normalize fields, handle nulls, dedupe, validate</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-layer-group text-green-400 text-xl mb-2"></i>
+            <p class="text-white text-sm font-semibold mb-1">3. Engineer</p>
+            <p class="text-slate-400 text-xs">Build analysis/model features and enrichment context</p>
+          </div>
+          <div class="bg-slate-800/60 rounded-xl p-4">
+            <i class="fas fa-share-nodes text-green-400 text-xl mb-2"></i>
+            <p class="text-white text-sm font-semibold mb-1">4. Serve</p>
+            <p class="text-slate-400 text-xs">Deliver to dashboards, models, or outreach systems</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+        <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How this changes by project type</p>
+        <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">For investment studies:</strong> organize market and financial data so decision trends are easy to compare.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">For AI models:</strong> keep data fresh and structured so predictions stay accurate over time.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">For lead generation:</strong> combine and clean contact/business sources before outreach starts.</span></li>
+          <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">For local personalization:</strong> pull nearby places/events so outputs feel location-aware and relevant.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 1</p>
+          <h2 class="project-title">Market-Ready Data for Better Investment Decisions</h2>
+          <p class="project-desc">Collected and curated the core dataset for a biofuel investment study to evaluate how an advisor system can read market signals for investment decisions.</p>
+          <div class="tags"><span class="tag t-green">Python</span><span class="tag t-def">Pandas</span><span class="tag t-teal">Collection + curation</span></div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-3 py-2 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3"><i class="fas fa-diagram-project mr-1 text-green-400"></i>Client Delivery Flow</p>
+          <div class="pipeline-row">
+            <div class="pipeline-step"><i class="fas fa-bullseye text-green-400 text-sm"></i><p>Define analysis goals (risk, feasibility, benefits, stakeholders)</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-database text-green-400 text-sm"></i><p>Collect multi-source market, location, and event data</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-table-columns text-green-400 text-sm"></i><p>Normalize, validate, and structure scenario-ready tables</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Capability section</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-table text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Scenario-ready schema</p><p class="text-slate-300 text-xs">Risk/benefit and stakeholder dimensions modeled in one dataset.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-shield-alt text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Cross-source validation</p><p class="text-slate-300 text-xs">Confidence checks across multiple specialty inputs.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-arrows-rotate text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Decision-focused outputs</p><p class="text-slate-300 text-xs">Tables prepared for feasibility and investment comparison.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 2</p>
+          <h2 class="project-title">Nearby Places &amp; Events Data for Smarter Recommendations</h2>
+          <p class="project-desc">Collecting nearby places and local events data by zipcode/region and converting it into clean, deduplicated context that customises generated activity recommendations.</p>
+          <div class="tags"><span class="tag t-green">Ticketmaster</span><span class="tag t-teal">Eventbrite</span><span class="tag t-def">ScrapeGraphAI</span><span class="tag t-sky">Azure Maps</span></div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-3 py-2 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3"><i class="fas fa-diagram-project mr-1 text-green-400"></i>Client Delivery Flow</p>
+          <div class="pipeline-row">
+            <div class="pipeline-step"><i class="fas fa-location-dot text-green-400 text-sm"></i><p>Resolve zipcode/address into location context</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-cloud-arrow-down text-green-400 text-sm"></i><p>Collect places and events from multiple APIs/scraping sources</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-shield-check text-green-400 text-sm"></i><p>Apply fallback, dedupe, and freshness checks</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-wand-magic-sparkles text-green-400 text-sm"></i><p>Serve ranked local context to personalization prompts</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Capability section</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-code-branch text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Multi-source reliability</p><p class="text-slate-300 text-xs">APIs and scraping combined so outputs don&apos;t depend on one source.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-circle-check text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Fallback coverage</p><p class="text-slate-300 text-xs">Fallback routing protects continuity when primary providers fail.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-wand-magic-sparkles text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Personalisation context</p><p class="text-slate-300 text-xs">Local relevance signals directly improve activity quality.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 3</p>
+          <h2 class="project-title">Live Data Pipelines for Always-Updated Predictions</h2>
+          <p class="project-desc">Converting static prediction inputs into live feature streams through interval polling, stateful joins, and continuous feature rebuild loops that balance baseline performance with current condition.</p>
+          <div class="tags"><span class="tag t-green">Live APIs</span><span class="tag t-def">FastAPI</span><span class="tag t-sky">PostgreSQL</span><span class="tag t-teal">Real-time ingestion</span></div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-3 py-2 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3"><i class="fas fa-diagram-project mr-1 text-green-400"></i>Client Delivery Flow</p>
+          <div class="pipeline-row">
+            <div class="pipeline-step"><i class="fas fa-satellite-dish text-green-400 text-sm"></i><p>Poll live feeds on interval schedule</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-code-merge text-green-400 text-sm"></i><p>Merge in-game snapshots with historical state</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-sliders text-green-400 text-sm"></i><p>Recompute features balancing baseline vs current condition</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-chart-line text-green-400 text-sm"></i><p>Add sentiment/market enrichment when needed</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Capability section</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-database text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Baseline + live balance</p><p class="text-slate-300 text-xs">Blends typical performance with real-time game condition.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-plug-circle-check text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Feed resilience</p><p class="text-slate-300 text-xs">Stable ingestion despite source variability and timing shifts.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-gauge-high text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Adaptive prediction loop</p><p class="text-slate-300 text-xs">Outputs refresh continuously as the game evolves.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 4</p>
+          <h2 class="project-title">Lead Data Collection &amp; Enrichment for Outreach Teams</h2>
+          <p class="project-desc">Collecting prospect records and enriching them from multiple sources, with deduplication, normalization, scoring context, and fallback strategies for higher-quality lead intelligence.</p>
+          <div class="tags"><span class="tag t-green">Apollo</span><span class="tag t-teal">LinkedIn + Fathom</span><span class="tag t-def">Azure Maps</span><span class="tag t-sky">ScrapeGraphAI</span></div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-3 py-2 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3"><i class="fas fa-diagram-project mr-1 text-green-400"></i>Client Delivery Flow</p>
+          <div class="pipeline-row">
+            <div class="pipeline-step"><i class="fas fa-magnifying-glass text-green-400 text-sm"></i><p>Discover raw leads from structured and scraped sources</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-filter text-green-400 text-sm"></i><p>Normalize fields and apply DNC filtering</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-circle-plus text-green-400 text-sm"></i><p>Enrich business profiles with context APIs/scraping</p></div>
+            <div class="pipeline-arrow">&rarr;</div>
+            <div class="pipeline-step"><i class="fas fa-paper-plane text-green-400 text-sm"></i><p>Deduplicate and deliver outreach-ready records</p></div>
+          </div>
+        </div>
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Capability section</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-magnifying-glass-chart text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Lead enrichment sources</p><p class="text-slate-300 text-xs">Apollo, LinkedIn, Fathom, Azure Maps, ScrapeGraphAI, website extraction.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-filter text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Quality + compliance controls</p><p class="text-slate-300 text-xs">Deduplication, normalization, DNC filtering, and contact validation.</p></div>
+            <div class="bg-slate-800/60 rounded-xl p-4"><i class="fas fa-share-nodes text-green-400 text-lg mb-2"></i><p class="text-white font-semibold text-sm mb-1">Ops integration</p><p class="text-slate-300 text-xs">Clean lead records delivered to call/email campaign systems.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-white mb-6">What This Proves</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+        <div class="bg-slate-800/60 border border-green-700/40 rounded-xl p-5"><p class="text-green-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Data quality ownership</p><p class="text-slate-200 text-sm leading-relaxed">Raw-source collection through clean, model-ready structures.</p></div>
+        <div class="bg-slate-800/60 border border-green-700/40 rounded-xl p-5"><p class="text-green-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Batch + real-time capability</p><p class="text-slate-200 text-sm leading-relaxed">Both curated offline datasets and live ingestion loops in production.</p></div>
+        <div class="bg-slate-800/60 border border-green-700/40 rounded-xl p-5"><p class="text-green-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Enrichment pipelines</p><p class="text-slate-200 text-sm leading-relaxed">Fallback-aware external data integration for resilient analytics inputs.</p></div>
+        <div class="bg-slate-800/60 border border-green-700/40 rounded-xl p-5"><p class="text-green-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Compliance-aware lead ops</p><p class="text-slate-200 text-sm leading-relaxed">DNC-filtered, deduplicated lead datasets ready for outreach execution.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Need a data pipeline built right?</h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">From collection and cleaning to real-time ingestion and feature serving, let&apos;s design your data backbone.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/" class="bg-green-700 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all">Start a Project <i class="fas fa-arrow-right ml-1"></i></a>
+          <a href="mailto:Info@bittechsol.com" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors"><i class="fas fa-envelope mr-2"></i>Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2"><i class="fas fa-database text-green-400"></i><span>Data Collection &amp; Engineering</span></div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-green-400 hover:text-green-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll("a[href]").forEach((link) => {
+        const raw = link.getAttribute("href");
+        if (!raw || raw.startsWith("#") || raw.startsWith("mailto:") || raw.startsWith("tel:") || raw.startsWith("javascript:")) return;
+        if (raw.startsWith("http://") || raw.startsWith("https://")) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set("theme", theme);
+          link.setAttribute("href", url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark")
+      ? paramTheme
+      : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+
+  })();
+</script>
+<script src="../assets/home-embed.js"></script>
+</body>
+</html>

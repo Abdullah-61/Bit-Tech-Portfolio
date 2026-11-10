@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG Pipelines & LLM Integration — Bit Tech Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0f172a; }
+    :root { color-scheme: dark; }
+    body.theme-ready { transition: background-color 0.2s ease, color 0.2s ease; }
+    .theme-toggle {
+      width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; border: 1px solid #334155;
+      background: #1e293b; color: #cbd5e1; display: inline-flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle:hover { background: #334155; color: #ffffff; }
+    body.light-theme .theme-toggle { background: #f1f5f9; color: #0f172a; border-color: #cbd5e1; }
+    body.light-theme .theme-toggle:hover { background: #e2e8f0; color: #0f172a; }
+    body.light-theme { background: #f8fafc !important; color: #0f172a; }
+    body.light-theme nav { background: rgba(248,250,252,0.9) !important; border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-"] { background-color: #ffffff !important; }
+    body.light-theme [class*="border-slate-"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-800/55"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"],
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="border-slate-600/50"],
+    body.light-theme [class*="border-slate-700/50"] { border-color: #cbd5e1 !important; }
+    body.light-theme [class*="bg-slate-900/60"],
+    body.light-theme [class*="bg-slate-900/50"],
+    body.light-theme [class*="bg-slate-800/60"],
+    body.light-theme [class*="bg-slate-800/50"] { background-color: #f8fafc !important; }
+    body.light-theme [class*="text-white"] { color: #0f172a !important; }
+    body.light-theme a[class*="bg-"][class*="text-white"],
+    body.light-theme button[class*="bg-"][class*="text-white"] { color: #ffffff !important; }
+    body.light-theme [class*="text-slate-2"] { color: #1e293b !important; }
+    body.light-theme [class*="text-slate-1"] { color: #0f172a !important; }
+    body.light-theme [class*="text-slate-3"] { color: #1f2937 !important; }
+    body.light-theme [class*="text-slate-4"] { color: #374151 !important; }
+    body.light-theme [class*="text-slate-5"] { color: #64748b !important; }
+    /* light-surface-pass */
+    body.light-theme .project-shell,
+    body.light-theme .workflow-canvas,
+    body.light-theme .flow-box,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .hero-border,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      background-color: #ffffff !important;
+    }
+    body.light-theme .workflow-canvas,
+    body.light-theme .step-chip,
+    body.light-theme .pipeline-step,
+    body.light-theme .workflow-panel,
+    body.light-theme .delivery-panel,
+    body.light-theme .hero-stat-tile {
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme section[class*="bg-slate-"] {
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .project-shell, body.light-theme .flow-box { background: #ffffff; border-color: #cbd5e1; }
+    body.light-theme .project-title { color: #0f172a !important; }
+    body.light-theme .project-desc { color: #334155 !important; }
+    body.light-theme .project-label, body.light-theme .panel-kicker { color: #475569 !important; }
+    body.light-theme .flow-list li { color: #1f2937 !important; }
+    body.light-theme .hero-border {
+      background: linear-gradient(#ffffff, #ffffff) padding-box,
+                  linear-gradient(135deg, #0d9488, #0ea5e9, #6366f1) border-box !important;
+      border-color: transparent !important;
+    }
+    body.light-theme .tag {
+      background: #ecfeff !important;
+      color: #0f172a !important;
+      border-color: #99f6e4 !important;
+    }
+    body.light-theme span[class*="rounded-full"][class*="border"] {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+      background-color: #f8fafc !important;
+    }
+    body.light-theme .hero-domain-tag {
+      background-color: #ccfbf1 !important;
+      border-color: #5eead4 !important;
+      color: #134e4a !important;
+    }
+    body.light-theme .rag-hero-visual {
+      background: linear-gradient(145deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.96)) !important;
+      border-color: rgba(45, 212, 191, 0.38) !important;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08) !important;
+    }
+    body.light-theme .rag-panel {
+      background: #ffffff !important;
+      border-color: #cbd5e1 !important;
+    }
+    body.light-theme .rag-panel h3 {
+      color: #64748b !important;
+    }
+    body.light-theme .rag-panel .hero-metric strong {
+      color: #0f172a !important;
+    }
+    body.light-theme .rag-panel .hero-live-event {
+      border-color: rgba(13, 148, 136, 0.45) !important;
+      background: rgba(13, 148, 136, 0.1) !important;
+      color: #0f766e !important;
+    }
+    body.light-theme .rag-panel .hero-metric span {
+      color: #0f766e !important;
+    }
+    body.light-theme .rag-panel--quality .rag-hero-quality-sub {
+      color: #0d9488 !important;
+    }
+    body.light-theme a[href^="mailto:"] {
+      background-color: #1e293b !important;
+      border-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 600;
+    }
+    body.light-theme a[href^="mailto:"]:hover { background-color: #0f172a !important; color: #ffffff !important; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #2dd4bf, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme .gradient-text {
+      background: linear-gradient(135deg, #0f766e, #0e7490, #4338ca);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    body.light-theme [class*="text-teal-200"] { color: #115e59 !important; }
+    body.light-theme [class*="text-teal-300"] { color: #0f766e !important; }
+    body.light-theme [class*="text-teal-400"] { color: #0d9488 !important; }
+    body.light-theme [class*="text-emerald-400"] { color: #059669 !important; }
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.4), 0 8px 32px rgba(45, 212, 191, 0.12);
+      transform: translateY(-2px);
+      transition: all 0.2s ease;
+    }
+    .card-glow { transition: all 0.2s ease; }
+    .hero-border {
+      background: linear-gradient(#0f172a, #0f172a) padding-box,
+                  linear-gradient(135deg, #0d9488, #0ea5e9, #6366f1) border-box;
+      border: 1px solid transparent;
+      border-radius: 1rem;
+    }
+    .flow-box {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-width: 110px;
+      padding: 0.75rem 1rem;
+      border-radius: 0.625rem;
+      background: #1e293b;
+    }
+    .flow-arrow { color: #94a3b8; font-size: 1.25rem; font-weight: 700; flex-shrink: 0; align-self: center; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1e293b; }
+    ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 3px; }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #0d9488;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    /* Project blocks — aligned with voice-ai / automation */
+    .project-shell {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 1.25rem;
+    }
+    .project-head {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+    .project-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0;
+      color: #ffffff;
+    }
+    .project-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 100%;
+    }
+    .workflow-canvas {
+      border-radius: 0.625rem;
+      padding: 1.25rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: flex-start; width: 100%; }
+    .tag {
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .t-teal { background: rgba(13, 148, 136, 0.14); color: #5eead4; border: 1px solid rgba(45, 212, 191, 0.35); }
+    .t-rose { background: rgba(251, 113, 133, 0.12); color: #fda4af; border: 1px solid rgba(251, 113, 133, 0.32); }
+    .t-sky { background: rgba(14, 165, 233, 0.12); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, 0.28); }
+    .t-def { background: rgba(51, 65, 85, 0.85); color: #cbd5e1; border: 1px solid #475569; }
+    .flow-list { list-style: none; margin: 0; padding: 0; }
+    .flow-list li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      color: #cbd5e1;
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+    }
+    .project-shell .flow-list i { color: #2dd4bf; margin-top: 0.2rem; font-size: 0.75rem; flex-shrink: 0; }
+    .flow-list li:last-child { margin-bottom: 0; }
+
+    /* ─── RAG hero visual (NBA-style layout, teal–cyan) ───────────────── */
+    .rag-hero-visual {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.92));
+      border: 1px solid rgba(14, 165, 233, 0.32);
+      border-radius: 0.9rem;
+      padding: 1rem;
+      max-width: 760px;
+      margin: 0 auto;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.26);
+    }
+    .rag-hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    @media (min-width: 900px) {
+      .rag-hero-grid {
+        grid-template-columns: 1.55fr 1fr;
+        gap: 0.9rem;
+        /* Hug content so the quality column isn’t stretched taller than the path viz */
+        align-items: start;
+      }
+      .rag-hero-grid > .rag-panel {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+    }
+    .rag-panel {
+      border-radius: 0.75rem;
+      border: 1px solid rgba(71, 85, 105, 0.7);
+      background: rgba(15, 23, 42, 0.85);
+      padding: 0.7rem 0.8rem;
+    }
+    .rag-panel--quality .rag-quality-spark {
+      flex: 1 1 auto;
+      min-height: 7.5rem;
+      max-height: 10rem;
+    }
+    /* Tighter vertical rhythm so the right card matches the path column height */
+    .rag-panel--quality {
+      padding: 0.45rem 0.65rem 0.5rem;
+    }
+    .rag-panel--quality .hero-metric {
+      margin: 0;
+    }
+    .rag-panel--quality .hero-live-event {
+      margin-top: 0.25rem;
+      margin-bottom: 0.3rem;
+    }
+    .rag-panel--quality h3 {
+      margin: 0.15rem 0 0.2rem;
+    }
+    .rag-panel--quality .rag-quality-term {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
+    body.light-theme .rag-panel--quality .rag-quality-term {
+      color: #334155 !important;
+    }
+    .rag-panel h3 {
+      margin: 0 0 0.35rem;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      font-weight: 700;
+    }
+    .rag-panel .hero-metric {
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+      margin: 0;
+    }
+    .rag-panel .hero-metric strong {
+      color: #f8fafc;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+    .rag-panel .hero-metric span {
+      color: #5eead4;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .rag-panel .hero-live-event {
+      margin-top: 0.35rem;
+      margin-bottom: 0.45rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 212, 191, 0.45);
+      background: rgba(13, 148, 136, 0.14);
+      color: #99f6e4;
+      font-size: 0.64rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      animation: ragLivePulse 2.4s ease-in-out infinite;
+    }
+    @keyframes ragLivePulse {
+      0%, 100% { opacity: 0.88; box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.12); }
+      50% { opacity: 1; box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.08); }
+    }
+    .rag-dot {
+      animation: ragPulse 1.35s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    @keyframes ragPulse {
+      0%, 100% { opacity: 0.6; transform: scale(0.95); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .rag-bars rect {
+      animation: ragBarShift 1.55s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: bottom;
+    }
+    .rag-bars rect:nth-child(2) { animation-delay: 0.2s; }
+    .rag-bars rect:nth-child(3) { animation-delay: 0.35s; }
+    .rag-bars rect:nth-child(4) { animation-delay: 0.5s; }
+    .rag-bars rect:nth-child(5) { animation-delay: 0.65s; }
+    .rag-bars rect:nth-child(6) { animation-delay: 0.8s; }
+    .rag-bars rect:nth-child(7) { animation-delay: 0.95s; }
+    @keyframes ragBarShift {
+      0%, 100% { transform: scaleY(0.75); opacity: 0.7; }
+      50% { transform: scaleY(1.15); opacity: 1; }
+    }
+    /* Hero story canvas (NBA-style: motion + trend, no jargon on SVG) */
+    .rag-story-viz { overflow: visible; }
+    .rag-story-viz .rag-story-trend {
+      stroke-dasharray: 100 180;
+      animation: ragStoryTrend 4s linear infinite;
+    }
+    @keyframes ragStoryTrend {
+      to { stroke-dashoffset: -280; }
+    }
+    .rag-story-viz .rag-story-dash {
+      stroke-dasharray: 6 10;
+      animation: ragStoryDash 2.2s linear infinite;
+    }
+    @keyframes ragStoryDash {
+      to { stroke-dashoffset: -64; }
+    }
+    .rag-story-viz .rag-story-quality-dot {
+      animation: ragQualityPulse 1.2s ease-in-out infinite;
+    }
+    @keyframes ragQualityPulse {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
+    .rag-story-viz .rag-stage-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .rag-story-viz .rag-stage-label--indigo { fill: #a5b4fc; }
+    .rag-story-viz .rag-stage-label--amber { fill: #fcd34d; }
+    .rag-story-viz .rag-stage-label--violet { fill: #c4b5fd; }
+    .rag-story-viz .rag-stage-label--rose { fill: #fda4af; }
+    .rag-story-viz .rag-stage-label--emerald { fill: #6ee7b7; }
+    .rag-story-viz .rag-stage-sub {
+      font-size: 8.5px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      fill: #64748b;
+      text-transform: none;
+    }
+    body.light-theme .rag-story-viz .rag-stage-sub {
+      fill: #475569 !important;
+    }
+    body.light-theme .rag-story-viz .rag-stage-label--indigo { fill: #4338ca !important; }
+    body.light-theme .rag-story-viz .rag-stage-label--amber { fill: #b45309 !important; }
+    body.light-theme .rag-story-viz .rag-stage-label--violet { fill: #6d28d9 !important; }
+    body.light-theme .rag-story-viz .rag-stage-label--rose { fill: #be123c !important; }
+    body.light-theme .rag-story-viz .rag-stage-label--emerald { fill: #047857 !important; }
+    /* Light theme: brighten hero stage surfaces (paired with gradient ids in defs) */
+    body.light-theme .rag-story-viz .rag-svg-bg {
+      fill: url(#ragStoryBgLight) !important;
+      stroke: rgba(148, 163, 184, 0.45) !important;
+    }
+    body.light-theme .rag-story-viz .rag-svg-inner {
+      stroke: rgba(99, 102, 241, 0.22) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-back {
+      fill: #f1f5f9 !important;
+      stroke: #cbd5e1 !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-mid {
+      fill: #f8fafc !important;
+      stroke: rgba(99, 102, 241, 0.32) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-front {
+      fill: url(#ragDocFrontLight) !important;
+      stroke: rgba(79, 70, 229, 0.42) !important;
+    }
+    body.light-theme .rag-story-viz .rag-bubble-fill {
+      fill: url(#ragBubbleBodyLight) !important;
+      stroke: rgba(234, 88, 12, 0.55) !important;
+      filter: none !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-core {
+      fill: url(#ragCloudCoreLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-shield-body {
+      fill: #ffffff !important;
+      stroke: rgba(244, 63, 94, 0.4) !important;
+    }
+    body.light-theme .rag-story-viz .rag-shield-check {
+      fill: rgba(254, 205, 211, 0.65) !important;
+      stroke: #f43f5e !important;
+    }
+    body.light-theme .rag-story-viz .rag-answer-bg {
+      fill: #ffffff !important;
+      stroke: rgba(16, 185, 129, 0.45) !important;
+    }
+    body.light-theme .rag-story-viz .rag-answer-wash {
+      fill: url(#ragAnswerFaceLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-motion circle {
+      stroke: #0f766e !important;
+    }
+    body.light-theme .rag-story-viz .rag-bubble-halo {
+      fill: url(#ragBubbleGlowLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-halo {
+      fill: url(#ragCloudGlowLight) !important;
+      opacity: 0.9 !important;
+    }
+    body.light-theme .rag-story-viz .rag-hero-arc {
+      stroke: url(#ragArcStrLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-trend-line {
+      stroke: url(#ragStoryTrendLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-dash {
+      stroke: rgba(139, 92, 246, 0.32) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-line:nth-child(5) {
+      stroke: rgba(217, 119, 6, 0.42) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-line:nth-child(6) {
+      stroke: rgba(99, 102, 241, 0.38) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-line:nth-child(7) {
+      stroke: rgba(100, 116, 139, 0.42) !important;
+    }
+    body.light-theme .rag-story-viz .rag-doc-tab {
+      fill: url(#ragDocTabLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-bubble-rim {
+      stroke: rgba(251, 191, 36, 0.55) !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-ring-outer {
+      stroke: rgba(139, 92, 246, 0.42) !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-ring-inner {
+      stroke: rgba(14, 165, 233, 0.35) !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-dots {
+      filter: none !important;
+    }
+    body.light-theme .rag-story-viz .rag-shield-halo-outer {
+      stroke: rgba(251, 191, 36, 0.5) !important;
+      opacity: 0.85 !important;
+    }
+    body.light-theme .rag-story-viz .rag-shield-halo-inner {
+      stroke: rgba(251, 113, 133, 0.14) !important;
+    }
+    body.light-theme .rag-story-viz .rag-answer-wrap {
+      filter: url(#ragCardShadowLight) !important;
+    }
+    body.light-theme .rag-story-viz .rag-answer-accent {
+      fill: url(#ragAnswerAccentLight) !important;
+      opacity: 0.98 !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-stage--answer rect.rag-answer-skel:nth-of-type(4) {
+      fill: rgba(167, 139, 250, 0.38) !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-stage--answer rect.rag-answer-skel:nth-of-type(5) {
+      fill: rgba(56, 189, 248, 0.32) !important;
+    }
+    body.light-theme .rag-story-viz .rag-story-stage--answer rect.rag-answer-skel:nth-of-type(6) {
+      fill: rgba(52, 211, 153, 0.36) !important;
+    }
+    body.light-theme .rag-story-viz .rag-answer-check {
+      stroke: #34d399 !important;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-dots .rag-dot {
+      opacity: 0.94;
+    }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(3) { fill: #a78bfa !important; }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(4) { fill: #7dd3fc !important; }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(5) { fill: #6ee7b7 !important; }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(6) { fill: #f9a8d4 !important; }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(7) { fill: #ddd6fe !important; }
+    body.light-theme .rag-story-viz .rag-cloud-dots > circle.rag-dot:nth-of-type(8) { fill: #bae6fd !important; }
+    body.light-theme .rag-story-viz .rag-story-quality-dot {
+      stroke: #0d9488 !important;
+    }
+    /* Stage “hit” when the teal dot passes (6.5s loop = main animateMotion) */
+    .rag-story-viz .rag-story-stage {
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .rag-story-viz .rag-story-stage--docs {
+      animation: ragStoryHitDocs 6.5s linear infinite;
+    }
+    .rag-story-viz .rag-story-stage--bubble {
+      animation: ragStoryHitBubble 6.5s linear infinite;
+    }
+    .rag-story-viz .rag-story-stage--cloud {
+      animation: ragStoryHitCloud 6.5s linear infinite;
+    }
+    .rag-story-viz .rag-story-stage--shield {
+      animation: ragStoryHitShield 6.5s linear infinite;
+    }
+    .rag-story-viz .rag-story-stage--answer {
+      animation: ragStoryHitAnswer 6.5s linear infinite;
+    }
+    @keyframes ragStoryHitDocs {
+      0%, 2%, 12%, 100% { filter: brightness(1); transform: scale(1); }
+      7% { filter: brightness(1.18) drop-shadow(0 0 12px rgba(129, 140, 248, 0.55)); transform: scale(1.05); }
+    }
+    @keyframes ragStoryHitBubble {
+      0%, 18%, 27%, 100% { filter: brightness(1); transform: scale(1); }
+      22% { filter: brightness(1.2) drop-shadow(0 0 14px rgba(251, 191, 36, 0.55)); transform: scale(1.06); }
+    }
+    @keyframes ragStoryHitCloud {
+      0%, 48%, 57%, 100% { filter: brightness(1); transform: scale(1); }
+      52% { filter: brightness(1.16) drop-shadow(0 0 16px rgba(167, 139, 250, 0.55)); transform: scale(1.05); }
+    }
+    @keyframes ragStoryHitShield {
+      0%, 68%, 77%, 100% { filter: brightness(1); transform: scale(1); }
+      72% { filter: brightness(1.18) drop-shadow(0 0 12px rgba(251, 113, 133, 0.5)); transform: scale(1.06); }
+    }
+    @keyframes ragStoryHitAnswer {
+      0%, 89%, 98%, 100% { filter: brightness(1); transform: scale(1); }
+      93% { filter: brightness(1.16) drop-shadow(0 0 14px rgba(52, 211, 153, 0.55)); transform: scale(1.04); }
+    }
+    /* Light theme: softer stage pulses so peaks don’t read as muddy on white */
+    body.light-theme .rag-story-viz .rag-story-stage--docs { animation-name: ragStoryHitDocsLight; }
+    body.light-theme .rag-story-viz .rag-story-stage--bubble { animation-name: ragStoryHitBubbleLight; }
+    body.light-theme .rag-story-viz .rag-story-stage--cloud { animation-name: ragStoryHitCloudLight; }
+    body.light-theme .rag-story-viz .rag-story-stage--shield { animation-name: ragStoryHitShieldLight; }
+    body.light-theme .rag-story-viz .rag-story-stage--answer { animation-name: ragStoryHitAnswerLight; }
+    @keyframes ragStoryHitDocsLight {
+      0%, 2%, 12%, 100% { filter: brightness(1); transform: scale(1); }
+      7% { filter: brightness(1.06) drop-shadow(0 0 10px rgba(129, 140, 248, 0.35)); transform: scale(1.04); }
+    }
+    @keyframes ragStoryHitBubbleLight {
+      0%, 18%, 27%, 100% { filter: brightness(1); transform: scale(1); }
+      22% { filter: brightness(1.08) drop-shadow(0 0 12px rgba(251, 191, 36, 0.38)); transform: scale(1.05); }
+    }
+    @keyframes ragStoryHitCloudLight {
+      0%, 48%, 57%, 100% { filter: brightness(1); transform: scale(1); }
+      52% { filter: brightness(1.06) drop-shadow(0 0 14px rgba(167, 139, 250, 0.36)); transform: scale(1.04); }
+    }
+    @keyframes ragStoryHitShieldLight {
+      0%, 68%, 77%, 100% { filter: brightness(1); transform: scale(1); }
+      72% { filter: brightness(1.06) drop-shadow(0 0 10px rgba(251, 113, 133, 0.34)); transform: scale(1.05); }
+    }
+    @keyframes ragStoryHitAnswerLight {
+      0%, 89%, 98%, 100% { filter: brightness(1); transform: scale(1); }
+      93% { filter: brightness(1.06) drop-shadow(0 0 12px rgba(52, 211, 153, 0.38)); transform: scale(1.03); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .rag-dot,
+      .rag-bars rect,
+      .rag-panel .hero-live-event,
+      .rag-story-viz .rag-story-trend,
+      .rag-story-viz .rag-story-dash,
+      .rag-story-viz .rag-story-quality-dot,
+      .rag-story-viz .rag-story-stage {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-200 antialiased">
+
+  <!-- ─── NAV ──────────────────────────────────────────────────────── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
+      <div class="flex items-center gap-4 min-w-0 justify-self-start">
+        <a href="../index.html" class="flex items-center gap-1 text-slate-400 hover:text-white text-xs font-medium transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          All Portfolios
+        </a>
+        <a href="https://bittechsol.com/" class="hidden sm:flex items-center shrink-0" aria-label="Bit Tech Solutions">
+          <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-7 w-auto max-w-[8rem] object-contain" width="160" height="46" />
+        </a>
+      </div>
+      <div class="flex items-center justify-center gap-2 text-center px-1 min-w-0">
+        <i class="fas fa-database text-teal-400 text-lg shrink-0"></i>
+        <span class="font-semibold text-white text-sm tracking-wide whitespace-nowrap">RAG &amp; LLM</span>
+      </div>
+      <div class="flex items-center gap-2 justify-self-end shrink-0">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode">
+          <i class="fas fa-sun"></i>
+        </button>
+        <a href="https://bittechsol.com/contact/"
+           class="text-sm bg-teal-700 hover:bg-teal-600 text-white px-4 py-2 rounded-lg transition-colors font-medium">
+          Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ──────────────────────────────────────────────────────── -->
+  <section class="pt-28 pb-10 md:pb-12 px-6" style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(13,148,136,0.12), transparent);">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <div class="hero-domain-tag inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-medium px-3 py-1.5 rounded-full mb-5">
+        <span class="relative w-2 h-2 pulse-dot">
+          <span class="block w-2 h-2 rounded-full bg-teal-400"></span>
+        </span>
+        Production Integrations · Delivered
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        RAG Pipelines &amp;<br>
+        <span class="gradient-text">Production LLM Integration</span>
+      </h1>
+
+      <p class="text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+        Reliable AI that <strong class="text-slate-100">answers from real data</strong>, stays safe with guardrails,
+        and holds up in production — <strong class="text-slate-100">four deployments</strong> across industrial, construction, internal docs, and financial filings.
+      </p>
+
+
+      <!-- RAG hero: cinematic arc — docs → question → think → safety → answer (bouncy path, not a block diagram) -->
+      <div class="rag-hero-visual mt-8" aria-label="Animated hero: documents, question, AI retrieval, safety, answer">
+        <div class="rag-hero-grid">
+          <div id="home-embed-root" class="rag-panel flex flex-col min-h-0">
+            <h3>Live assistant path</h3>
+            <div class="min-h-0 min-w-0">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 460 230" class="rag-story-viz w-full h-auto block" role="img" aria-label="Labeled stages: your content, question, AI retrieval, safety, and answer. Teal dot on the path; multicolor quality trend.">
+              <defs>
+                <linearGradient id="ragStoryBg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.14" />
+                  <stop offset="38%" stop-color="#0f172a" stop-opacity="0.05" />
+                  <stop offset="72%" stop-color="#7c3aed" stop-opacity="0.07" />
+                  <stop offset="100%" stop-color="#059669" stop-opacity="0.1" />
+                </linearGradient>
+                <linearGradient id="ragStoryTrend" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#818cf8" />
+                  <stop offset="22%" stop-color="#f59e0b" />
+                  <stop offset="48%" stop-color="#a78bfa" />
+                  <stop offset="72%" stop-color="#fb7185" />
+                  <stop offset="100%" stop-color="#34d399" />
+                </linearGradient>
+                <linearGradient id="ragDocFront" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#334155" />
+                  <stop offset="35%" stop-color="#1e1b4b" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#0f172a" />
+                </linearGradient>
+                <linearGradient id="ragDocTab" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.95" />
+                  <stop offset="100%" stop-color="#ea580c" stop-opacity="0.85" />
+                </linearGradient>
+                <linearGradient id="ragDocTabLight" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#fdba74" />
+                  <stop offset="100%" stop-color="#fb923c" />
+                </linearGradient>
+                <linearGradient id="ragBubbleBody" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#292524" />
+                  <stop offset="100%" stop-color="#1c1917" />
+                </linearGradient>
+                <radialGradient id="ragBubbleGlow" cx="45%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#fde68a" stop-opacity="0.45" />
+                  <stop offset="45%" stop-color="#fb923c" stop-opacity="0.18" />
+                  <stop offset="100%" stop-color="#ea580c" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="ragCloudGlow" cx="50%" cy="45%" r="55%">
+                  <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.35" />
+                  <stop offset="55%" stop-color="#6366f1" stop-opacity="0.12" />
+                  <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="ragCloudCore" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#c4b5fd" stop-opacity="0.15" />
+                  <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="ragShieldRim" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.55" />
+                  <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.35" />
+                </linearGradient>
+                <linearGradient id="ragAnswerFace" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#312e81" stop-opacity="0.45" />
+                  <stop offset="100%" stop-color="#064e3b" stop-opacity="0.35" />
+                </linearGradient>
+                <linearGradient id="ragAnswerAccent" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa" />
+                  <stop offset="100%" stop-color="#10b981" />
+                </linearGradient>
+                <linearGradient id="ragAnswerAccentLight" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c4b5fd" />
+                  <stop offset="100%" stop-color="#6ee7b7" />
+                </linearGradient>
+                <linearGradient id="ragArcStr" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#818cf8" stop-opacity="0.45" />
+                  <stop offset="45%" stop-color="#fbbf24" stop-opacity="0.28" />
+                  <stop offset="100%" stop-color="#34d399" stop-opacity="0.38" />
+                </linearGradient>
+                <linearGradient id="ragStoryBgLight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f8fafc" stop-opacity="0.98" />
+                  <stop offset="40%" stop-color="#ffffff" stop-opacity="0.99" />
+                  <stop offset="100%" stop-color="#f0fdfa" stop-opacity="0.96" />
+                </linearGradient>
+                <linearGradient id="ragDocFrontLight" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="50%" stop-color="#f8fafc" />
+                  <stop offset="100%" stop-color="#f1f5f9" />
+                </linearGradient>
+                <linearGradient id="ragBubbleBodyLight" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#fffbeb" />
+                  <stop offset="100%" stop-color="#fef3c7" />
+                </linearGradient>
+                <radialGradient id="ragCloudCoreLight" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#f5f3ff" stop-opacity="0.7" />
+                  <stop offset="55%" stop-color="#eef2ff" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="ragAnswerFaceLight" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#eef2ff" stop-opacity="0.65" />
+                  <stop offset="100%" stop-color="#ecfdf5" stop-opacity="0.55" />
+                </linearGradient>
+                <radialGradient id="ragBubbleGlowLight" cx="45%" cy="40%" r="55%">
+                  <stop offset="0%" stop-color="#fef9c3" stop-opacity="0.75" />
+                  <stop offset="55%" stop-color="#fde68a" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#fffbeb" stop-opacity="0" />
+                </radialGradient>
+                <radialGradient id="ragCloudGlowLight" cx="50%" cy="45%" r="55%">
+                  <stop offset="0%" stop-color="#ede9fe" stop-opacity="0.65" />
+                  <stop offset="50%" stop-color="#ddd6fe" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#f8fafc" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="ragStoryTrendLight" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#a5b4fc" />
+                  <stop offset="22%" stop-color="#fcd34d" />
+                  <stop offset="48%" stop-color="#c4b5fd" />
+                  <stop offset="72%" stop-color="#fda4af" />
+                  <stop offset="100%" stop-color="#6ee7b7" />
+                </linearGradient>
+                <linearGradient id="ragArcStrLight" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#a5b4fc" stop-opacity="0.5" />
+                  <stop offset="45%" stop-color="#fcd34d" stop-opacity="0.38" />
+                  <stop offset="100%" stop-color="#6ee7b7" stop-opacity="0.48" />
+                </linearGradient>
+                <filter id="ragSoftGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="b" />
+                  <feMerge>
+                    <feMergeNode in="b" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="ragCardShadow" x="-8%" y="-8%" width="116%" height="116%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.35" />
+                </filter>
+                <filter id="ragCardShadowLight" x="-8%" y="-8%" width="116%" height="116%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#64748b" flood-opacity="0.14" />
+                </filter>
+                <path id="rag-story-path" fill="none" d="M 50 54 C 38 96 42 126 60 148 C 116 150 170 92 200 100 C 238 82 258 88 288 92 C 322 88 348 82 372 78 C 392 74 408 72 418 78" />
+                <path id="rag-trend-path" fill="none" d="M 52 210 L 152 191 L 162 202 L 218 176 L 272 180 L 322 154 L 372 158 L 418 142" />
+              </defs>
+
+              <rect class="rag-svg-bg" x="2" y="2" width="456" height="226" rx="12" fill="url(#ragStoryBg)" stroke="rgba(148,163,184,0.25)" />
+              <rect class="rag-svg-inner" x="5" y="5" width="450" height="220" rx="9" fill="none" stroke="rgba(129,140,248,0.12)" stroke-width="1" />
+              <path class="rag-hero-arc" d="M 44 142 C 138 98 248 98 352 142" fill="none" stroke="url(#ragArcStr)" stroke-width="2" stroke-linecap="round" />
+
+              <!-- Stage 1: inner g = vertical nudge (CSS scale on outer would drop SVG translate) -->
+              <g class="rag-story-stage rag-story-stage--docs">
+                <g transform="translate(0,18)">
+                  <g aria-hidden="true">
+                    <text class="rag-stage-label rag-stage-label--indigo" x="58" y="15" text-anchor="middle">Your content</text>
+                    <text class="rag-stage-sub" x="58" y="26" text-anchor="middle">Files you own</text>
+                  </g>
+                  <g opacity="0.98">
+                    <rect class="rag-doc-back" x="22" y="54" width="40" height="52" rx="5" fill="rgba(30,41,59,0.92)" stroke="rgba(100,116,139,0.5)" stroke-width="1" />
+                    <rect class="rag-doc-mid" x="30" y="44" width="40" height="52" rx="5" fill="rgba(30,27,75,0.45)" stroke="rgba(129,140,248,0.35)" stroke-width="1" />
+                    <rect class="rag-doc-front" x="38" y="34" width="40" height="52" rx="5" fill="url(#ragDocFront)" stroke="rgba(129,140,248,0.55)" stroke-width="1.25" />
+                    <rect class="rag-doc-tab" x="38" y="34" width="14" height="5" rx="2" fill="url(#ragDocTab)" />
+                    <line class="rag-doc-line" x1="46" y1="46" x2="70" y2="46" stroke="rgba(251,191,36,0.55)" stroke-width="1.3" stroke-linecap="round" />
+                    <line class="rag-doc-line" x1="46" y1="54" x2="66" y2="54" stroke="rgba(165,180,252,0.45)" stroke-width="1.1" stroke-linecap="round" />
+                    <line class="rag-doc-line" x1="46" y1="62" x2="68" y2="62" stroke="rgba(148,163,184,0.35)" stroke-width="1.1" stroke-linecap="round" />
+                  </g>
+                </g>
+              </g>
+
+              <!-- 2. Question (~22%) — inner g holds translate; outer g uses CSS scale (same element would drop SVG translate) -->
+              <g class="rag-story-stage rag-story-stage--bubble">
+                <g transform="translate(48,0)">
+                  <ellipse class="rag-bubble-halo" cx="62" cy="138" rx="40" ry="31" fill="url(#ragBubbleGlow)" opacity="0.98" />
+                  <path class="rag-bubble-fill" d="M 28 132 Q 28 122 38 122 L 76 122 Q 86 122 86 132 L 86 152 Q 86 160 76 160 L 52 160 L 42 170 L 38 154 Q 28 152 28 144 Z" fill="url(#ragBubbleBody)" stroke="rgba(251,146,60,0.65)" stroke-width="1.45" filter="url(#ragSoftGlow)" />
+                  <path class="rag-bubble-rim" d="M 28 132 Q 28 122 38 122 L 76 122 Q 86 122 86 132" fill="none" stroke="rgba(253,230,138,0.35)" stroke-width="1" stroke-linecap="round" />
+                  <circle cx="52" cy="140" r="2.6" fill="#fef08a" opacity="0.98" />
+                  <circle cx="64" cy="144" r="2.6" fill="#fb923c" opacity="0.85" />
+                </g>
+              </g>
+
+              <!-- 3. AI cloud (~52%) -->
+              <g class="rag-story-stage rag-story-stage--cloud">
+                <circle class="rag-cloud-halo" cx="200" cy="102" r="36" fill="url(#ragCloudGlow)" opacity="0.95" />
+                <circle class="rag-cloud-core" cx="200" cy="100" r="24" fill="url(#ragCloudCore)" />
+                <g class="rag-cloud-dots" transform="translate(200,100)" filter="url(#ragSoftGlow)">
+                  <circle class="rag-cloud-ring-outer" cx="0" cy="0" r="27" fill="none" stroke="rgba(167,139,250,0.55)" stroke-width="1.4" />
+                  <circle class="rag-cloud-ring-inner" cx="0" cy="0" r="19" fill="none" stroke="rgba(56,189,248,0.28)" stroke-width="1" />
+                  <circle class="rag-dot" cx="-13" cy="-7" r="3.2" fill="#8b5cf6" />
+                  <circle class="rag-dot" cx="11" cy="-11" r="3.2" fill="#38bdf8" />
+                  <circle class="rag-dot" cx="13" cy="9" r="3.2" fill="#34d399" />
+                  <circle class="rag-dot" cx="-11" cy="11" r="3.2" fill="#f472b6" />
+                  <circle class="rag-dot" cx="0" cy="-15" r="3.2" fill="#c4b5fd" />
+                  <circle class="rag-dot" cx="4" cy="4" r="2.4" fill="#a5f3fc" opacity="0.95" />
+                </g>
+              </g>
+
+              <!-- 4. Safety (~72%) — inner g so CSS scale doesn’t replace translate -->
+              <g transform="translate(288,94)">
+                <g class="rag-story-stage rag-story-stage--shield">
+                  <ellipse class="rag-shield-halo-outer" cx="0" cy="2" rx="30" ry="26" fill="none" stroke="url(#ragShieldRim)" stroke-width="5" opacity="0.9" />
+                  <ellipse class="rag-shield-halo-inner" cx="0" cy="2" rx="28" ry="24" fill="none" stroke="rgba(251,113,133,0.18)" stroke-width="6" />
+                  <path class="rag-shield-body" d="M 0 -17 L 13 -4 L 13 13 Q 0 24 -13 13 L -13 -4 Z" fill="rgba(15,23,42,0.94)" stroke="rgba(251,113,133,0.55)" stroke-width="1.35" />
+                  <path class="rag-shield-check" d="M 0 -11 L 6.5 -2.5 L 0 9 L -6.5 -2.5 Z" fill="rgba(251,113,133,0.28)" stroke="#fda4af" stroke-width="1" />
+                </g>
+              </g>
+
+              <!-- 5. Answer (~93%) — outer filter preserved while inner g animates -->
+              <g class="rag-answer-wrap" filter="url(#ragCardShadow)">
+                <g class="rag-story-stage rag-story-stage--answer">
+                  <rect class="rag-answer-bg" x="336" y="58" width="100" height="54" rx="8" fill="rgba(15,23,42,0.98)" stroke="rgba(52,211,153,0.55)" stroke-width="1.45" />
+                  <rect class="rag-answer-wash" x="336" y="58" width="100" height="54" rx="8" fill="url(#ragAnswerFace)" opacity="0.55" />
+                  <rect class="rag-answer-accent" x="336" y="58" width="4" height="54" rx="2" fill="url(#ragAnswerAccent)" opacity="0.92" />
+                  <rect class="rag-answer-skel" x="348" y="70" width="42" height="5" rx="2" fill="rgba(167,139,250,0.5)" />
+                  <rect class="rag-answer-skel" x="348" y="80" width="76" height="5" rx="2" fill="rgba(56,189,248,0.35)" />
+                  <rect class="rag-answer-skel" x="348" y="90" width="50" height="5" rx="2" fill="rgba(52,211,153,0.38)" />
+                  <circle class="rag-answer-check" cx="414" cy="86" r="12" fill="none" stroke="#6ee7b7" stroke-width="1.7" opacity="0.98" />
+                  <path class="rag-answer-check" fill="none" stroke="#a7f3d0" stroke-width="2.1" stroke-linecap="round" d="M 408 86 L 412 91 L 422 79" />
+                </g>
+              </g>
+
+              <path d="M 104 150 C 128 114 168 102 200 102 C 250 97 270 96 288 94 C 320 90 350 84 380 80" fill="none" stroke="rgba(167,139,250,0.22)" stroke-width="1.35" stroke-dasharray="4 7" stroke-linecap="round" class="rag-story-dash" />
+
+              <polyline class="rag-story-trend rag-story-trend-line" points="52,210 152,191 162,202 218,176 272,180 322,154 372,158 418,142" fill="none" stroke="url(#ragStoryTrend)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              <g>
+                <circle class="rag-dot" cx="154" cy="138" r="3.5" fill="#f59e0b" />
+                <circle class="rag-dot" cx="218" cy="120" r="3.5" fill="#a78bfa" />
+                <circle class="rag-dot" cx="322" cy="98" r="3.5" fill="#fb7185" />
+                <circle class="rag-dot" cx="418" cy="86" r="3.5" fill="#6ee7b7" />
+              </g>
+
+              <!-- Labels next to each stage (drawn after paths so text stays readable) -->
+              <g aria-hidden="true">
+                <text class="rag-stage-label rag-stage-label--amber" x="110" y="176" text-anchor="middle">Question</text>
+                <text class="rag-stage-sub" x="110" y="187" text-anchor="middle">What someone asks</text>
+                <text class="rag-stage-label rag-stage-label--violet" x="200" y="152" text-anchor="middle">Think &amp; retrieve</text>
+                <text class="rag-stage-sub" x="200" y="163" text-anchor="middle">AI finds the right bits</text>
+                <text class="rag-stage-label rag-stage-label--rose" x="288" y="54" text-anchor="middle">Safety</text>
+                <text class="rag-stage-sub" x="288" y="65" text-anchor="middle">Checks in / out</text>
+                <text class="rag-stage-label rag-stage-label--emerald" x="386" y="124" text-anchor="middle">Answer</text>
+                <text class="rag-stage-sub" x="386" y="135" text-anchor="middle">Clear, grounded reply</text>
+              </g>
+
+              <!-- Main “assistant” light (bouncy path, 6.5s) -->
+              <g class="rag-story-motion">
+                <animateMotion dur="6.5s" repeatCount="indefinite" rotate="auto">
+                  <mpath xlink:href="#rag-story-path" href="#rag-story-path" />
+                </animateMotion>
+                <circle r="6" fill="#14b8a6" stroke="#ecfdf5" stroke-width="1.5" opacity="0.98" />
+              </g>
+              <!-- Second light on quality line (4s, matches trend dash rhythm) -->
+              <g class="rag-story-quality-motion">
+                <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+                  <mpath xlink:href="#rag-trend-path" href="#rag-trend-path" />
+                </animateMotion>
+                <circle class="rag-story-quality-dot" r="4" fill="#a5f3fc" stroke="#0f766e" stroke-width="1" />
+              </g>
+            </svg>
+            </div>
+          </div>
+
+          <div class="rag-panel rag-panel--quality text-left flex flex-col min-h-0">
+
+            <p class="hero-metric shrink-0">
+              <strong id="hero-grounded-score">84%</strong>
+              <span>grounded in sources</span>
+            </p>
+            <p id="hero-retrieval-event" class="hero-live-event shrink-0"><i class="fas fa-wave-square"></i> Live · retrieval &amp; reply</p>
+         
+            <h3>Reading this diagram</h3>
+            <ul class="text-xs text-slate-300 space-y-1.5 mb-2 shrink-0 leading-snug">
+              <li class="flex gap-2.5 items-start">
+                <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-teal-400 shadow-[0_0_0_3px_rgba(45,212,191,0.25)]" aria-hidden="true"></span>
+                <span><span class="font-semibold text-teal-300">Teal</span> — the <strong class="rag-quality-term">retrieval path</strong>: documents → question → finding the right passages → safety checks → final answer.</span>
+              </li>
+              <li class="flex gap-2.5 items-start">
+                <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-sky-300 shadow-[0_0_0_3px_rgba(125,211,252,0.2)]" aria-hidden="true"></span>
+                <span><span class="font-semibold text-sky-300">Cyan</span> — the <strong class="rag-quality-term">grounding</strong> line: how closely the reply stays tied to source material.</span>
+              </li>
+            </ul>
+            <svg viewBox="0 0 240 92" class="w-full h-auto max-h-16 mt-2 shrink-0 rag-bars" role="img" aria-label="Animated fit pulse bars">
+              <rect x="10" y="54" width="20" height="30" rx="3" fill="#0d9488" />
+              <rect x="43" y="42" width="20" height="42" rx="3" fill="#0fbfbc" />
+              <rect x="76" y="32" width="20" height="52" rx="3" fill="#0fbfbc" />
+              <rect x="109" y="48" width="20" height="36" rx="3" fill="#16a39c" />
+              <rect x="142" y="37" width="20" height="47" rx="3" fill="#14b8a6" />
+              <rect x="175" y="29" width="20" height="55" rx="3" fill="#10b981" />
+              <rect x="208" y="22" width="20" height="62" rx="3" fill="#10b981" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      </br>
+
+      <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <span class="bg-slate-800 border border-teal-700/50 text-teal-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-database mr-1"></i>ChromaDB</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-layer-group mr-1 text-cyan-400"></i>FAISS</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-robot mr-1 text-teal-400"></i>Azure OpenAI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-shield-halved mr-1 text-rose-400"></i>NeMo Guardrails</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-link mr-1 text-sky-400"></i>LangChain</span>
+        <span class="bg-slate-800 border border-amber-700/50 text-amber-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-bolt mr-1"></i>FastAPI</span>
+        <span class="bg-slate-800 border border-slate-700 text-slate-300 text-xs px-3 py-1.5 rounded-full"><i class="fas fa-code mr-1 text-indigo-400"></i>OpenRouter</span>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto text-center">
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">4</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Production integrations</p>
+        </div>
+        <div class="hero-border px-4 py-3">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">13+</p>
+          <p class="text-[11px] text-slate-400 leading-tight">QA issues resolved</p>
+        </div>
+        <div class="hero-border px-4 py-3 col-span-2 md:col-span-1">
+          <p class="text-2xl md:text-3xl font-bold text-white mb-0.5">I/O</p>
+          <p class="text-[11px] text-slate-400 leading-tight">Guardrails on both ends</p>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS SNAPSHOT ─────────────────────────────────────────── -->
+  <section class="py-8 md:py-10 px-6 border-y border-slate-800/80 bg-slate-900/40">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-4 md:gap-6">
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-teal-400 text-xs font-semibold uppercase tracking-wider mb-2">Problem</p>
+          <p class="text-slate-300 text-sm leading-relaxed">Teams need LLM answers grounded in private data — without hallucinations, unsafe outputs, or brittle retrieval.</p>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-teal-400 text-xs font-semibold uppercase tracking-wider mb-2">Solution</p>
+          <p class="text-slate-300 text-sm leading-relaxed">RAG pipelines with ChromaDB, Azure OpenAI, LangChain, and NeMo guardrails — tuned for each domain’s documents and risk profile.</p>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-700 rounded-xl p-5">
+          <p class="text-teal-400 text-xs font-semibold uppercase tracking-wider mb-2">Outcome</p>
+          <p class="text-slate-300 text-sm leading-relaxed">Production assistants and copilots that cite sources, respect policy, and ship with measurable QA coverage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CORE RAG WORKFLOW ─────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <p class="text-teal-400 font-medium text-sm uppercase tracking-widest mb-3 text-center">Architecture</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white text-center mb-3">Core RAG Pipeline</h2>
+      <p class="text-slate-400 text-center max-w-xl mx-auto mb-8 text-sm">
+        The same proven architecture deployed across these integrations — adapted per domain.
+      </p>
+
+      <div class="bg-slate-900 border border-slate-700/50 rounded-xl workflow-canvas mb-6">
+        <!-- Ingestion row -->
+        <p class="text-xs text-teal-400 font-semibold uppercase tracking-widest mb-3 text-center">Document Ingestion</p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-6">
+          <div class="flow-box border border-teal-500/40" style="min-width:120px;">
+            <i class="fas fa-file-arrow-up text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Document Upload</p>
+            <p class="text-xs text-slate-400 mt-0.5">PDF · TXT · images</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-teal-500/40" style="min-width:130px;">
+            <i class="fas fa-scissors text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Chunking</p>
+            <p class="text-xs text-slate-400 mt-0.5">Recursive text splitter</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-sky-500/40" style="min-width:130px;">
+            <i class="fas fa-vector-square text-sky-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Embedding</p>
+            <p class="text-xs text-slate-400 mt-0.5">Nomic · Azure OpenAI</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-indigo-500/40" style="min-width:120px;">
+            <i class="fas fa-database text-indigo-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">ChromaDB</p>
+            <p class="text-xs text-slate-400 mt-0.5">Vector store</p>
+          </div>
+        </div>
+
+        <!-- Query row -->
+        <p class="text-xs text-amber-400 font-semibold uppercase tracking-widest mb-3 text-center">Query &amp; Safety</p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <div class="flow-box border border-amber-500/40" style="min-width:120px;">
+            <i class="fas fa-comment-dots text-amber-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">User Query</p>
+            <p class="text-xs text-slate-400 mt-0.5">Natural language</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-amber-500/40" style="min-width:130px;">
+            <i class="fas fa-sitemap text-amber-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Intent Classifier</p>
+            <p class="text-xs text-slate-400 mt-0.5">Route to handler</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-teal-500/40" style="min-width:130px;">
+            <i class="fas fa-robot text-teal-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Response Handler</p>
+            <p class="text-xs text-slate-400 mt-0.5">LLM + RAG context</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-rose-500/40" style="min-width:130px;">
+            <i class="fas fa-shield-halved text-rose-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">NeMo Guardrails</p>
+            <p class="text-xs text-slate-400 mt-0.5">I/O validation</p>
+          </div>
+          <div class="flow-arrow">&rarr;</div>
+          <div class="flow-box border border-emerald-500/40" style="min-width:110px;">
+            <i class="fas fa-check-circle text-emerald-400 mb-2 text-lg"></i>
+            <p class="text-xs font-semibold text-white">Safe Answer</p>
+            <p class="text-xs text-slate-400 mt-0.5">Grounded output</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECT 1: INDUSTRIAL MAINTENANCE PLATFORM ───────────────── -->
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 1</p>
+          <h2 class="project-title">Industrial Maintenance Management Platform</h2>
+          <p class="project-desc">
+            Maintenance engineers query manuals, work orders, and compliance documents in natural language.
+            The AI must be accurate, safe, and route each query to the right data handler.
+          </p>
+          <div class="tags">
+            <span class="tag t-teal">ChromaDB</span>
+            <span class="tag t-def">Azure OpenAI</span>
+            <span class="tag t-def">LangChain</span>
+            <span class="tag t-rose">NeMo Guardrails</span>
+            <span class="tag t-def">FastAPI</span>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <div class="flex items-center gap-2 mb-3">
+              <i class="fas fa-screwdriver-wrench text-teal-400 text-lg"></i>
+              <h3 class="font-bold text-white text-sm">Response Handlers Engineered</h3>
+            </div>
+            <ul class="space-y-1.5 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>parts_answer — parts table queries</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>staff_answer — staff-related queries</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>technical_answer — asset document referencing</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>ppm_handler — planned preventive maintenance</li>
+            </ul>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <div class="flex items-center gap-2 mb-3">
+              <i class="fas fa-shield-halved text-rose-400 text-lg"></i>
+              <h3 class="font-bold text-white text-sm">NeMo Guardrails Integration</h3>
+            </div>
+            <ul class="space-y-1.5 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><i class="fas fa-check text-rose-400 mt-0.5 flex-shrink-0 text-xs"></i>Input validation — reject out-of-scope questions</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-rose-400 mt-0.5 flex-shrink-0 text-xs"></i>Output validation — detect hallucinated answers</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-rose-400 mt-0.5 flex-shrink-0 text-xs"></i>Intent classifiers tuned to manufacturing domain</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-rose-400 mt-0.5 flex-shrink-0 text-xs"></i>13+ QA issues resolved through systematic iteration</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 text-left mb-3">
+          <p class="text-teal-300 font-semibold text-sm mb-1">QA Approach</p>
+          <p class="text-slate-400 text-sm leading-relaxed">Systematic query log review → identify failure pattern → fix handler prompt → verify fix doesn't regress others → next iteration. ~30 tracked queries, 13+ resolved per cycle.</p>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+          <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ingest &amp; index:</strong> Manuals, work orders, and compliance docs chunked and embedded into ChromaDB.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Route by intent:</strong> Queries parsed by an intent classifier and sent to the correct handler.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Specialised handlers:</strong> parts_answer, staff_answer, technical_answer, ppm_handler — each tuned for its slice of maintenance data.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Guard input &amp; output:</strong> NeMo rejects risky queries before the LLM; output rails block hallucinated answers.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Grounded answers:</strong> LLM retrieves context from ChromaDB and responds with source-backed output.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Iterate in production:</strong> Query logs drive handler prompt fixes without regressing other flows.</span></li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-route text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Handler routing</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Four specialised handlers for precise domain-specific query routing.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-shield-halved text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Dual guardrails</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">NeMo on both input and output — tuned for manufacturing and maintenance.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-flask text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Systematic QA</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">~30 queries tracked per cycle; 13+ issues resolved iteratively.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-database text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Azure + ChromaDB</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Azure OpenAI with LangChain orchestration and ChromaDB vector store.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-plug text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">APIs &amp; flows</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">REST API and topical flow endpoints for natural-language asset queries.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-bullseye text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Intent classifiers</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Fine-tuned for manufacturing vocabulary and maintenance workflows.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECT 2: SKU MAPPER ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 2</p>
+          <h2 class="project-title">Construction Material Matching Tool</h2>
+          <p class="project-desc">
+            Automates SKU matching from construction takeoff spreadsheets against a vendor database.
+            The LLM is the final confidence gate — catching fuzzy-match false positives before they reach the output.
+          </p>
+          <div class="tags">
+            <span class="tag t-teal">gpt-4o mini</span>
+            <span class="tag t-sky">FastAPI</span>
+            <span class="tag t-def">React · Vite · TypeScript</span>
+            <span class="tag t-def">Fuzzy match + regex</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-700/50 rounded-xl workflow-canvas mb-4">
+          <p class="text-xs text-teal-400 font-semibold uppercase tracking-widest mb-3 text-center">Matching Pipeline</p>
+          <div class="flex flex-wrap items-center justify-center gap-3 mb-4">
+            <div class="flow-box border border-teal-500/40" style="min-width:120px;">
+              <i class="fas fa-file-excel text-teal-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Takeoff Excel</p>
+              <p class="text-xs text-slate-400 mt-0.5">Raw item descriptions</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-sky-500/40" style="min-width:130px;">
+              <i class="fas fa-code text-sky-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Normalisation</p>
+              <p class="text-xs text-slate-400 mt-0.5">Regex · unit conversion<br>dimension parsing</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-amber-500/40" style="min-width:120px;">
+              <i class="fas fa-magnifying-glass text-amber-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Fuzzy Match</p>
+              <p class="text-xs text-slate-400 mt-0.5">Scored candidate<br>retrieval</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-teal-500/40" style="min-width:140px;">
+              <i class="fas fa-robot text-teal-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">LLM Verification</p>
+              <p class="text-xs text-slate-400 mt-0.5">gpt-4o mini<br>yes/no confidence</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-emerald-500/40" style="min-width:130px;">
+              <i class="fas fa-file-arrow-down text-emerald-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Excel / PDF</p>
+              <p class="text-xs text-slate-400 mt-0.5">SKU-matched output<br>Review flags</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-4">
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-code text-sky-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Normalisation Engine</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Mixed feet-inches to decimal, fractions, dimension spacing, grade rules, DRYWALL-specific rules, reverse tuple matching, unit inference with context rules.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-robot text-teal-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">LLM as Final Gate</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">llm_check_similar() sends candidate pair to gpt-4o mini for a binary yes/no match — catches fuzzy false positives that pass the score threshold.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-flag text-amber-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Human Review Flags</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Low-confidence matches are flagged for human review rather than silently dropped — keeping the pipeline auditable.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+          <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Upload takeoff:</strong> Spreadsheet with natural-language material descriptions.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Normalise text:</strong> Units, abbreviations, and product family names standardised before matching.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Fuzzy retrieval:</strong> Candidate SKUs scored against the vendor database.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">LLM gate:</strong> Every fuzzy candidate gets a binary accept/reject from gpt-4o mini.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Review queue:</strong> Borderline rows flagged for humans before export.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Estimates out:</strong> Approved matches compiled into PDF and Excel reports.</span></li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-filter text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">LLM confidence gate</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Stops false positives that fuzzy scoring alone would let through.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-ruler-combined text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Deep normalisation</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Unit conversions, product families, construction-specific parsing rules.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-calculator text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Quantities &amp; wastage</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Wastage and per-product quantity adjustments built into the flow.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-clipboard-check text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Auditable review</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Human review queue for transparency on low-confidence matches.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-file-pdf text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Dual export</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Formatted PDF and Excel estimate outputs from the same pipeline.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-layer-group text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Full stack</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">FastAPI backend with React + TypeScript/Vite frontend.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECT 3: INTERNAL DOC Q&A ──────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 3</p>
+          <h2 class="project-title">Internal Document Q&amp;A System</h2>
+          <p class="project-desc">
+            Upload any document, ask questions in natural language, get grounded answers.
+            NeMo Guardrails block misuse and hallucinations on both the input and output side.
+          </p>
+          <div class="tags">
+            <span class="tag t-teal">ChromaDB</span>
+            <span class="tag t-def">LangChain</span>
+            <span class="tag t-rose">NeMo Guardrails</span>
+            <span class="tag t-def">OpenRouter</span>
+            <span class="tag t-def">FastAPI</span>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-4">
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-upload text-teal-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Any Document Format</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">PDFs or text files chunked, embedded, and stored in ChromaDB for semantic retrieval.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-shield-halved text-rose-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Malicious Input Detection</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Input rails reject prompt injection, jailbreaks, and out-of-scope questions before they reach the LLM.</p>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4 card-glow">
+            <i class="fas fa-circle-check text-emerald-400 text-xl mb-2"></i>
+            <h3 class="font-semibold text-white mb-1.5 text-sm">Hallucination Guard</h3>
+            <p class="text-slate-400 text-xs leading-relaxed">Output rails verify answers are grounded in retrieved context — speculative answers are blocked.</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+          <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Upload:</strong> PDF or text via the web UI.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Index:</strong> Chunking, Azure OpenAI embeddings, storage in ChromaDB.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ask:</strong> Natural-language questions against the indexed doc.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Screen input:</strong> NeMo rails catch injection, jailbreaks, and off-topic queries.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Retrieve:</strong> Semantic search passes relevant chunks to the LLM with context.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Validate output:</strong> Answers must be supported by retrieved context or they are blocked.</span></li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-file-lines text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Simple upload UX</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">PDF and plain text supported through a minimal upload flow.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-user-shield text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Input guardrails</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Blocks prompt injection, jailbreaks, and out-of-scope questions.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-anchor text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Grounding enforcement</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Only context-backed answers pass the output rails.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-diagram-project text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Shared core pipeline</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Same RAG architecture patterns as the industrial and SKU projects.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-layer-group text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Proven stack</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">LangChain + ChromaDB + NeMo Guardrails + FastAPI.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-right-left text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Model flexibility</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">OpenRouter as provider — swap LLM backends without rewriting the app.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PROJECT 4: FINANCIAL RAG — COMPANY LIBRARY ─────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50">
+    <div class="max-w-6xl mx-auto">
+      <div class="project-shell">
+        <div class="project-head">
+          <p class="project-label">Project 4</p>
+          <h2 class="project-title">Financial RAG — Company Document Library</h2>
+          <p class="project-desc">
+            A FastAPI company portal for institutional-grade document Q&amp;A: annual reports (PDF / SEC-style XHTML),
+            XBRL bundles, earnings call transcripts, and investor decks — ingested into named FAISS indices with
+            citation-grounded answers and structured workflows for section prompts and investment memos.
+          </p>
+          <div class="tags">
+            <span class="tag t-teal">FAISS</span>
+            <span class="tag t-def">LangChain</span>
+            <span class="tag t-def">Azure OpenAI</span>
+            <span class="tag t-sky">FastAPI</span>
+            <span class="tag t-def">unstructured · PDF</span>
+            <span class="tag t-def">sentence-transformers</span>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-700/50 rounded-xl workflow-canvas mb-4">
+          <p class="text-xs text-teal-400 font-semibold uppercase tracking-widest mb-3 text-center">Financial document pipeline</p>
+          <div class="flex flex-wrap items-center justify-center gap-3 mb-2">
+            <div class="flow-box border border-teal-500/40" style="min-width:115px;">
+              <i class="fas fa-file-invoice-dollar text-teal-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Upload</p>
+              <p class="text-xs text-slate-400 mt-0.5">PDF · XHTML · XBRL zip</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-sky-500/40" style="min-width:125px;">
+              <i class="fas fa-sitemap text-sky-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Typed pipelines</p>
+              <p class="text-xs text-slate-400 mt-0.5">PDF · XHTML · transcript</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-amber-500/40" style="min-width:120px;">
+              <i class="fas fa-vector-square text-amber-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Azure embeddings</p>
+              <p class="text-xs text-slate-400 mt-0.5">Chunked + metadata</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-indigo-500/40" style="min-width:105px;">
+              <i class="fas fa-database text-indigo-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">FAISS</p>
+              <p class="text-xs text-slate-400 mt-0.5">Per-company stores</p>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-box border border-emerald-500/40" style="min-width:125px;">
+              <i class="fas fa-comments text-emerald-400 mb-2 text-lg"></i>
+              <p class="text-xs font-semibold text-white">Chat &amp; memos</p>
+              <p class="text-xs text-slate-400 mt-0.5">Cited Q&amp;A · sections</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <div class="flex items-center gap-2 mb-3">
+              <i class="fas fa-building-columns text-teal-400 text-lg"></i>
+              <h3 class="font-bold text-white text-sm">Multi-format financial ingest</h3>
+            </div>
+            <ul class="space-y-1.5 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>Annual reports as PDF or SEC-style XHTML/HTML</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>XBRL zip bundles with structured extraction paths</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>Earnings transcripts and investor presentation PDFs</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-teal-400 mt-0.5 flex-shrink-0 text-xs"></i>Per-company library layout with named vector indices</li>
+            </ul>
+          </div>
+          <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 card-glow">
+            <div class="flex items-center gap-2 mb-3">
+              <i class="fas fa-quote-right text-sky-400 text-lg"></i>
+              <h3 class="font-bold text-white text-sm">Citation-grounded answers</h3>
+            </div>
+            <ul class="space-y-1.5 text-slate-400 text-sm">
+              <li class="flex items-start gap-2"><i class="fas fa-check text-sky-400 mt-0.5 flex-shrink-0 text-xs"></i>Retrieval context labelled by source, page, section, and element type</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-sky-400 mt-0.5 flex-shrink-0 text-xs"></i>Separate analyst prompts for annual reports vs. earnings transcripts</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-sky-400 mt-0.5 flex-shrink-0 text-xs"></i>LLM instructed to cite only the sources it actually used</li>
+              <li class="flex items-start gap-2"><i class="fas fa-check text-sky-400 mt-0.5 flex-shrink-0 text-xs"></i>Optional BM25-style tooling alongside dense vectors for retrieval quality</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 text-left mb-3">
+          <p class="text-teal-300 font-semibold text-sm mb-1">Portal surfaces</p>
+          <p class="text-slate-400 text-sm leading-relaxed">Upload and ingest with job progress; chat against indexed filings; editable section prompts with LLM-backed generation; and investment memo / annual memo flows — all served by FastAPI with static HTML UIs.</p>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5 mb-3">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">How we deliver</p>
+          <ul class="flow-list grid md:grid-cols-2 md:gap-x-6">
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Company workspace:</strong> Each issuer gets its own library folder, config, and vector store paths.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Classify &amp; route:</strong> Document type selects PDF, XHTML, transcript, investor deck, or XBRL ingestion.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Structure-aware chunking:</strong> Pipelines preserve section paths and page metadata for traceable retrieval.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">FAISS + Azure:</strong> Embeddings via Azure OpenAI; LangChain FAISS indices persisted per company and doc type.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Ask with citations:</strong> Chat applies strict citation rules so analysts can audit every claim.</span></li>
+            <li><i class="fas fa-arrow-right"></i><span><strong class="text-white font-semibold">Downstream outputs:</strong> Section prompt workflows and memo generation complete the research loop.</span></li>
+          </ul>
+        </div>
+
+        <div class="bg-slate-800/55 border border-slate-600/50 rounded-xl px-4 py-2.5">
+          <p class="text-center text-xs text-slate-400 uppercase tracking-widest font-semibold mb-3">Platform capabilities</p>
+          <div class="grid md:grid-cols-3 gap-4">
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-folder-tree text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Company library model</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Isolated configs, uploads, and indices per ticker or company slug.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-file-code text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">SEC &amp; PDF pipelines</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">XHTML and PDF paths tuned for long-form filings and tables.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-microphone-lines text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Transcript RAG</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Dedicated transcript ingestion and prompts for earnings Q&amp;A.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-bookmark text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Traceable sources</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Source headers tie every chunk to page or section for compliance-style review.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-file-contract text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">Memo &amp; section flows</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Section prompts and investment memorandum generation on top of the same corpus.</p>
+            </div>
+            <div class="bg-slate-800/60 rounded-xl p-4">
+              <i class="fas fa-server text-teal-400 text-xl mb-2"></i>
+              <h3 class="font-semibold text-white mb-1.5 text-base">FastAPI delivery</h3>
+              <p class="text-slate-200 text-sm leading-relaxed">Production-style app with upload jobs, static pages, and ngrok-friendly testing.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── WHAT THIS PROVES ──────────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/70">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-2xl font-bold text-white mb-6">What This Proves</h2>
+      <div class="grid md:grid-cols-3 gap-4 text-left">
+        <div class="bg-slate-800/60 border border-teal-700/40 rounded-xl p-5">
+          <p class="text-teal-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Production RAG delivery</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Four distinct RAG systems deployed — each with different chunking, embeddings, and handler logic.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-teal-700/40 rounded-xl p-5">
+          <p class="text-teal-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>LLM safety expertise</p>
+          <p class="text-slate-200 text-sm leading-relaxed">NeMo Guardrails on input and output where it matters — prompts tuned for domain-specific risk.</p>
+        </div>
+        <div class="bg-slate-800/60 border border-teal-700/40 rounded-xl p-5">
+          <p class="text-teal-200 font-bold mb-2 text-base"><i class="fas fa-check mr-2"></i>Systematic QA</p>
+          <p class="text-slate-200 text-sm leading-relaxed">Quality treated as engineering: tracked failures, iteration cycles, measurable improvement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DOMAIN REFERENCE CARD ─────────────────────────────────────── -->
+  <section class="py-10 md:py-12 px-6 bg-slate-900/50 border-t border-slate-800">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="h-px w-12" style="background: linear-gradient(to right, transparent, rgba(45,212,191,0.5));"></div>
+        <i class="fas fa-compass text-teal-400" style="font-size:0.7rem;"></i>
+        <div class="h-px w-12" style="background: linear-gradient(to left, transparent, rgba(45,212,191,0.5));"></div>
+      </div>
+      <p class="text-teal-400 font-medium text-sm uppercase tracking-widest mb-2 text-center">Technical Scope</p>
+      <h2 class="text-2xl font-bold text-white text-center mb-3">Domain Coverage</h2>
+      <p class="text-slate-300 text-sm text-center max-w-3xl mx-auto mb-6">
+        Retrieval, safety, and integration depth demonstrated across these RAG deployments.
+      </p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="rounded-xl p-4 md:col-span-2 lg:col-span-3" style="background: linear-gradient(135deg, rgba(13,148,136,0.18), rgba(30,41,59,0.7)); border: 1px solid rgba(45,212,191,0.45);">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-tag text-teal-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Core Domain</p>
+              </div>
+              <p class="text-white font-semibold text-sm">AI Model Development</p>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-link text-teal-400" style="font-size:0.65rem;"></i>
+                <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Also Covers</p>
+              </div>
+              <p class="text-slate-200 text-sm leading-relaxed">Production APIs, document pipelines, and LLM safety layers for internal and customer-facing tools.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-4 mb-2">
+            <i class="fas fa-sitemap text-teal-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Subdomains</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">LLM usage · Prompt engineering · RAG · Embeddings · LLM safety &amp; guardrails · Agentic tool use</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-code-branch text-teal-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Techniques</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">RAG pipeline · dense retrieval (FAISS &amp; ChromaDB) · chunking · vector search · intent classification · response handlers · I/O validation · hallucination checks · fuzzy match · LLM gating · regex normalisation · SEC/XHTML &amp; PDF ingestion</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-toolbox text-teal-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Frameworks / Tools</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">ChromaDB · FAISS · Nomic · Azure OpenAI · LangChain · NeMo Guardrails · OpenRouter · FastAPI</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-2">
+            <i class="fas fa-bullseye text-teal-400" style="font-size:0.65rem;"></i>
+            <p class="text-xs text-teal-400 font-bold uppercase tracking-widest">Use Cases</p>
+          </div>
+          <p class="text-slate-200 text-sm leading-relaxed">Maintenance Q&amp;A · internal doc search with guardrails · construction SKU matching · industrial SaaS QA · financial filings &amp; memo workflows · upload-and-ask platforms</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ──────────────────────────────────────────────────────── -->
+  <section class="py-12 md:py-14 px-6">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="hero-border p-8 rounded-2xl">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+          Need a RAG system or LLM integration?
+        </h2>
+        <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+          Document Q&amp;A, AI safety guardrails, or a full LLM pipeline — let's build it right.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://bittechsol.com/contact/"
+             class="bg-teal-700 hover:bg-teal-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:shadow-teal-500/25">
+            Start a Project <i class="fas fa-arrow-right ml-1"></i>
+          </a>
+          <a href="mailto:Info@bittechsol.com"
+             class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-colors">
+            <i class="fas fa-envelope mr-2"></i>Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────────── -->
+  <footer class="border-t border-slate-800 py-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+      <div class="flex items-center gap-2">
+        <i class="fas fa-database text-teal-400"></i>
+        <span>RAG Pipelines &amp; LLM Integration</span>
+      </div>
+      <div class="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+        <img src="../assets/bit-tech-solutions-logo.png" alt="" class="h-6 w-auto max-w-[8rem] object-contain opacity-90" width="160" height="46" aria-hidden="true" />
+        <span>Produced by <a href="https://bittechsol.com/contact/" class="text-teal-400 hover:text-teal-300 transition-colors">Bit Tech Solutions</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const key = "bittech-theme";
+    const body = document.body;
+    const button = document.getElementById("theme-toggle");
+    if (!button) return;
+    const icon = button.querySelector("i");
+    const applyTheme = (theme) => {
+      const isLight = theme === "light";
+      body.classList.toggle("light-theme", isLight);
+      document.documentElement.setAttribute("data-theme", theme);
+      if (icon) icon.className = isLight ? "fas fa-moon" : "fas fa-sun";
+      button.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+      syncThemeParamLinks(theme);
+    };
+    const syncThemeParamLinks = (theme) => {
+      document.querySelectorAll('a[href]').forEach((link) => {
+        const raw = link.getAttribute('href');
+        if (!raw || raw.startsWith('#') || raw.startsWith('mailto:') || raw.startsWith('tel:') || raw.startsWith('javascript:')) return;
+        if (raw.startsWith('http://') || raw.startsWith('https://')) return;
+        try {
+          const url = new URL(raw, window.location.href);
+          url.searchParams.set('theme', theme);
+          link.setAttribute('href', url.pathname + url.search + url.hash);
+        } catch (_) {}
+      });
+    };
+    const stored = localStorage.getItem(key);
+    const paramTheme = new URLSearchParams(window.location.search).get("theme");
+    const initial = (paramTheme === "light" || paramTheme === "dark") ? paramTheme : (stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"));
+    if (paramTheme === "light" || paramTheme === "dark") localStorage.setItem(key, paramTheme);
+    applyTheme(initial);
+    body.classList.add("theme-ready");
+    button.addEventListener("click", function () {
+      const next = body.classList.contains("light-theme") ? "dark" : "light";
+      localStorage.setItem(key, next);
+      applyTheme(next);
+    });
+  })();
+</script>
+<script>
+  (function () {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.querySelectorAll(".rag-story-motion animateMotion, .rag-story-quality-motion animateMotion").forEach(function (n) {
+        n.remove();
+      });
+      document.querySelectorAll(".rag-story-motion").forEach(function (g) {
+        g.setAttribute("transform", "translate(418, 78)");
+      });
+      document.querySelectorAll(".rag-story-quality-motion").forEach(function (g) {
+        g.setAttribute("transform", "translate(418, 142)");
+      });
+    }
+  })();
+  (function () {
+    var el = document.getElementById("hero-grounded-score");
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var values = ["82%", "84%", "79%", "86%", "83%", "87%", "81%"];
+    var i = 0;
+    setInterval(function () {
+      i = (i + 1) % values.length;
+      el.textContent = values[i];
+    }, 1150);
+  })();
+</script>
+<script src="../assets/home-embed.js"></script>
+</body>
+</html>
